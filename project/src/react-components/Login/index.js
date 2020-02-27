@@ -19,7 +19,7 @@ import "./styles.css";
 class Login extends React.Component {
 
     render() {
-        const {state} = this.props.location
+        const {state} = this.props.location;
 
         if (!state || !state.role) {
             return <Redirect to="./home"/>
