@@ -1,0 +1,22 @@
+#banner {
+    background-color: #25355A;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    margin-left: 15px;
+    height: 50px;
+    display: inline-block;
+}
+
+#title{
+    margin-left: 15px;
+    color: white;
+    font-size: 20px;
+    vertical-align: middle;
+    font-family: 'prata';
+    display: inline-block;
+}
