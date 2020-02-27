@@ -1,6 +1,6 @@
 import React from "react";
 import {} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,15 +17,22 @@ import "./styles.css";
 
 /* Component for the Home page */
 class Login extends React.Component {
+
     render() {
+        const {state} = this.props.location
+
+        if (!state || !state.role) {
+            return <Redirect to="./home"/>
+        }
+
         return (
             <Container id="container" component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div>
                     <Avatar className="">
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
+                    <Typography component="h1" variant="h5" value={state.role}>
+                        {"Sign in as " + state.role.charAt(0).toUpperCase() + state.role.slice(1)}
                     </Typography>
                     <form className="form" noValidate>
                         <TextField
