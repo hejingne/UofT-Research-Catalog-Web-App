@@ -29,11 +29,13 @@ class Login extends React.Component {
             <Container id="container" component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div>
-                    <Avatar className="">
-                    </Avatar>
-                    <Typography component="h1" variant="h5" value={state.role}>
-                        {"Sign in as " + state.role.charAt(0).toUpperCase() + state.role.slice(1)}
-                    </Typography>
+                    <div id="sign-in-title-box">
+                        <Avatar className="">
+                        </Avatar>
+                        <Typography id="sign-in-title" component="h1" variant="h5">
+                            {"Sign in as " + state.role.charAt(0).toUpperCase() + state.role.slice(1)}
+                        </Typography>
+                    </div>
                     <form className="form" noValidate>
                         <TextField
                             variant="outlined"
