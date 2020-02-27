@@ -5,14 +5,14 @@ import * as serviceWorker from './serviceWorker';
 import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 import Header from "./react-components/Header";
 import Home from './react-components/Home/index';
-import Login from "./react-components/Login";
+import SignIn from "./react-components/SignIn";
 
 const routing = (
     <Router>
         <Header/>
         <div>
             <Route path="/home" component={Home}/>
-            <Route path="/login" component={Login}/>
+            <Route path="/signin" component={SignIn}/>
             <Route exact path="/" render={() => (
                 <Redirect to="/home"/>
             )}/>

@@ -1,6 +1,6 @@
 import React from "react";
 import {} from "react-bootstrap";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Redirect, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -16,13 +16,16 @@ import "./styles.css";
 
 
 /* Component for the Home page */
-class Login extends React.Component {
+class SignIn extends React.Component {
+    handleSignIn() {
+        localStorage.setItem("hasSignIn", "true");
+    }
 
     render() {
         const {state} = this.props.location;
 
         if (!state || !state.role) {
-            return <Redirect to="./home"/>
+            return <Redirect to="/home"/>;
         }
 
         return (
@@ -68,6 +71,7 @@ class Login extends React.Component {
                             type="submit"
                             fullWidth
                             className="login__button center"
+                            onClick={this.handleSignIn}
                         >
                             Sign In
                         </Button>
@@ -92,4 +96,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default withRouter(SignIn);

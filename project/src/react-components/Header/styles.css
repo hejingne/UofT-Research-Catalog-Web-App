@@ -17,8 +17,17 @@
     padding: 15px;
     color: white;
     font-size: 20px;
-    vertical-align: middle;
     font-family: 'prata';
     display: inline-block;
+
+
+    cursor: pointer;
+}
+
+#sign-out-btn {
+    padding: 15px;
+    color: white;
+    font-family: 'prata';
+    margin-left: auto;
     cursor: pointer;
 }
