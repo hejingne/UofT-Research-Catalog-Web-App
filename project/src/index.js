@@ -2,15 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom'
+import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 import Header from "./react-components/Header";
-import Home from './react-components/Home/index'
+import Home from './react-components/Home/index';
+import Login from "./react-components/Login";
 
 const routing = (
     <Router>
         <Header/>
         <div>
             <Route path="/home" component={Home}/>
+            <Route path="/login" component={Login}/>
             <Route exact path="/" render={() => (
                 <Redirect to="/home"/>
             )}/>

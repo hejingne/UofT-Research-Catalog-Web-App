@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {Container, Nav} from 'react-bootstrap'
 import {MDBCol} from "mdbreact";
 
@@ -10,7 +11,7 @@ class Header extends React.Component {
         const logoUrl = require("./static/uoft-logo.png")
 
         return (
-            <div id="banner">
+            <div id="banner" onClick={() => {window.location.href = "./home"}}>
                 <img id="logo" src={logoUrl}/>
                 <span id="title">U of T Research Catalogue</span>
             </div>
