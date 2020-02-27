@@ -28,7 +28,7 @@ class Home extends React.Component {
                         this.handleOnClick(e, "student")
                     }}>STUDENT</Button></li>
                     <li><Button className="login__button center" onClick={(e) => {
-                        this.handleOnClick(e, "research")
+                        this.handleOnClick(e, "researcher")
                     }}>RESEARCHER</Button></li>
                     <li><Button className="login__button center" onClick={(e) => {
                         this.handleOnClick(e, "administrator")
