@@ -1,0 +1,32 @@
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+#prompt {
+    font-family: "Helvetica Neue";
+    font-size: 1.5em;
+}
+
+ul{
+    list-style: none;
+    margin-top: 50px;
+}
+
+.login__button {
+    width: 200px;
+    height: 50px;
+}
+
+.MuiButton-root.login__button:hover {
+    background-color: transparent;
+    border: 4px darkslategrey solid;
+    border-radius: 0;
+}
+  
+.login__button .MuiButton-label {
+    font-size: 16px;
+    color: darkslategrey;
+}
