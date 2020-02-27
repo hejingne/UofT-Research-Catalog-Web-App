@@ -7,6 +7,12 @@ import "./styles.css";
 
 /* Component for the Home page */
 class Home extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            role : "",
+        };
+    }
     render() {
         return (
             <div className="center" id='prompt'>

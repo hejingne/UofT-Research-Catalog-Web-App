@@ -11,9 +11,13 @@ class Header extends React.Component {
         const logoUrl = require("./static/uoft-logo.png")
 
         return (
-            <div id="banner" onClick={() => {window.location.href = "./home"}}>
-                <img id="logo" src={logoUrl}/>
-                <span id="title">U of T Research Catalogue</span>
+            <div id="banner">
+                <img id="logo" src={logoUrl} onClick={() => {
+                    window.location.href = "./home"
+                }}/>
+                <span id="title" onClick={() => {
+                    window.location.href = "./home"
+                }}>U of T Research Catalogue</span>
             </div>
         );
     }

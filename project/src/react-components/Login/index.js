@@ -1,6 +1,6 @@
 import React from "react";
-import { } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,16 +12,16 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 
-// import "./styles.css";
+import "./styles.css";
 
 
 /* Component for the Home page */
 class Login extends React.Component {
     render() {
         return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div className="a">
+            <Container id="container" component="main" maxWidth="xs">
+                <CssBaseline/>
+                <div>
                     <Avatar className="">
                     </Avatar>
                     <Typography component="h1" variant="h5">
@@ -51,15 +51,14 @@ class Login extends React.Component {
                             autoComplete="current-password"
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
+                            control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
                         <Button
+                            id="submit"
                             type="submit"
                             fullWidth
-                            variant="contained"
-                            color="primary"
-                            className="sumbitBtn"
+                            className="login__button center"
                         >
                             Sign In
                         </Button>

@@ -10,13 +10,15 @@
     margin-left: 15px;
     height: 50px;
     display: inline-block;
+    cursor: pointer;
 }
 
 #title{
-    margin-left: 15px;
+    padding: 15px;
     color: white;
     font-size: 20px;
     vertical-align: middle;
     font-family: 'prata';
     display: inline-block;
+    cursor: pointer;
 }
