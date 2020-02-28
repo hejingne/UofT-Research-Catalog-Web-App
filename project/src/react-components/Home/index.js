@@ -12,10 +12,10 @@ class Home extends React.Component {
         this.state = {};
     }
 
-    handleOnClick(e, role) {
+    handleOnClick(e) {
         this.props.history.push({
             pathname: "/signin",
-            state: {role: role}
+            state: {role: e.target.innerText}
         })
     }
 
@@ -25,13 +25,13 @@ class Home extends React.Component {
                 Please select your user type to login:
                 <ul>
                     <li><Button className="login__button center" onClick={(e) => {
-                        this.handleOnClick(e, "student")
+                        this.handleOnClick(e)
                     }}>STUDENT</Button></li>
                     <li><Button className="login__button center" onClick={(e) => {
-                        this.handleOnClick(e, "researcher")
+                        this.handleOnClick(e)
                     }}>RESEARCHER</Button></li>
                     <li><Button className="login__button center" onClick={(e) => {
-                        this.handleOnClick(e, "administrator")
+                        this.handleOnClick(e)
                     }}>ADMINISTRATOR</Button></li>
                 </ul>
             </div>);
