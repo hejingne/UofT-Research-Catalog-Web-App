@@ -7,11 +7,13 @@ import "./styles.css";
 
 /* Component for the Home page */
 class Home extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {};
     }
 
+    
     handleOnClick(e) {
         this.props.history.push({
             pathname: "/signin",
@@ -44,13 +46,9 @@ class Home extends React.Component {
                 Signed In
             </div>
         );*/
-        if (this.state.role == "student") {
-            return <Redirect to="/student"/>;
-        } else if (this.state.role == "researcher") {
-            return <Redirect to="/researcher"/>;
-        } else {
-            return <Redirect to="/administrator"/>
-        }
+        // temporarily only directing to student home page
+        return <Redirect to="/student"/>;
+
         
     }
 

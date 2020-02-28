@@ -3,6 +3,7 @@ import {Link, Redirect, withRouter} from "react-router-dom";
 import {Container, Nav} from 'react-bootstrap'
 import {MDBCol} from "mdbreact";
 
+
 import './styles.css'
 
 class Header extends React.Component {
