@@ -20,13 +20,15 @@ class Header extends React.Component {
 
     signOut() {
         localStorage.removeItem("hasSignIn");
+        sessionStorage.removeItem("hasSignIn");
         this.redirectToHome();
     }
 
     render() {
         const logoUrl = require("./static/uoft-logo.png")
 
-        const hasSignIn = localStorage.getItem("hasSignIn");
+        const hasSignIn = (localStorage.getItem("hasSignIn") === "true")
+            || (sessionStorage.getItem("hasSignIn") === "true");
         if (hasSignIn) {
             return (<div id="banner">
                 <img id="logo" src={logoUrl} onClick={this.redirectToHome}/>

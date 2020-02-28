@@ -17,8 +17,20 @@ import "./styles.css";
 
 /* Component for the Home page */
 class SignIn extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSignIn = this.handleSignIn.bind(this);
+        this.state = {
+            rememberMe: false,
+        };
+    }
+
     handleSignIn() {
-        localStorage.setItem("hasSignIn", "true");
+        if (this.state.rememberMe) {
+            localStorage.setItem("hasSignIn", "true");
+        } else {
+            sessionStorage.setItem("hasSignIn", "true")
+        }
     }
 
     render() {
@@ -38,7 +50,7 @@ class SignIn extends React.Component {
                             {"Sign in as " + state.role.charAt(0).toUpperCase() + state.role.slice(1)}
                         </Typography>
                     </div>
-                    <form className="form" noValidate>
+                    <form className="form">
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -63,6 +75,9 @@ class SignIn extends React.Component {
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
+                            onChange={() => {
+                                this.setState({rememberMe: true})
+                            }}
                             label="Remember me"
                         />
                         <Button
