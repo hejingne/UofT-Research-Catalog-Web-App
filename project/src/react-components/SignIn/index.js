@@ -30,7 +30,6 @@ class SignIn extends React.Component {
 
         return (
             <Container id="container" component="main" maxWidth="xs">
-                <CssBaseline/>
                 <div>
                     <div id="sign-in-title-box">
                         <Avatar className="">
