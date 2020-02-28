@@ -38,11 +38,20 @@ class Home extends React.Component {
     }
 
     postSignIn() {
+        /*
         return (
             <div className="center" id='prompt'>
                 Signed In
             </div>
-        );
+        );*/
+        if (this.state.role == "student") {
+            return <Redirect to="/student"/>;
+        } else if (this.state.role == "researcher") {
+            return <Redirect to="/researcher"/>;
+        } else {
+            return <Redirect to="/administrator"/>
+        }
+        
     }
 
     render() {
