@@ -40,16 +40,7 @@ class Home extends React.Component {
     }
 
     postSignIn() {
-        /*
-        return (
-            <div className="center" id='prompt'>
-                Signed In
-            </div>
-        );*/
-        // temporarily only directing to student home page
         return <Redirect to="/student"/>;
-
-        
     }
 
     render() {
