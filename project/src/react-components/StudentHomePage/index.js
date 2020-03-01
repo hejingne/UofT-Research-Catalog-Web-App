@@ -1,10 +1,13 @@
 import React from "react";
 import {} from "react-bootstrap";
-import {Link, Redirect, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import MaterialTable from 'material-table';
-import SimpleImageSlider from "react-simple-image-slider";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import Button from "@material-ui/core/Button";
+import Search from "../Search"
+import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/core/styles';
 
 import './styles.css'
 
@@ -23,17 +26,20 @@ class StudentHomePage extends React.Component {
         this.setState({keywords: e.target.value});
     }
     
-    render() {  
     
+    render() {  
         return (
             <div>
                 <ul className="nav_bar">
                     <li className="nav_item"><a href="">Home</a></li>
+                    <Divider orientation="vertical" flexItem="true" />
                     <li className="nav_item"><a href="">Account</a></li>
+                    <Divider orientation="vertical" flexItem />
                     <li className="nav_item"><a href="">Profile</a></li>
+                    <Divider orientation="vertical" flexItem />
                     <li className="nav_item"><a href="">Application Status</a></li>
                 </ul>
-                <div>
+                
                 <Carousel infiniteLoop={true}
                           autoPlay swipeable={false}
                           showThumbs={false}
@@ -56,24 +62,13 @@ class StudentHomePage extends React.Component {
                         <div class="bottom-right">These research <br></br>applications are closing today.</div>
                     </div>
                 </Carousel>
-                </div>
-     
-                <div className="search_box">
-				    <label className="search_label" htmlFor="search_input">
-					    <input
-						    type="text"
-						    value={this.state.keywords}
-						    id="search_input"
-                            placeholder="Search for research opportunities..."
-                            onChange={this.handleChange}
-					    />
-					    <i className="fa fa-search search_icon"/>
-				    </label>
-			    </div>     
+                <br></br>
+                <div id="search-box"><Search/></div>
+                
+                
 
             </div>  
         );
-    
       }
 }
 
