@@ -4,10 +4,10 @@ import {withRouter} from "react-router-dom";
 import MaterialTable from 'material-table';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
-import Button from "@material-ui/core/Button";
+
 import Search from "../Search"
-import Divider from '@material-ui/core/Divider';
-import { makeStyles } from '@material-ui/core/styles';
+
+
 
 import './styles.css'
 
@@ -31,12 +31,9 @@ class StudentHomePage extends React.Component {
         return (
             <div>
                 <ul className="nav_bar">
-                    <li className="nav_item"><a href="">Home</a></li>
-                    <Divider orientation="vertical" flexItem="true" />
+                    <li className="nav_item"><a href="/student">Home</a></li>
                     <li className="nav_item"><a href="">Account</a></li>
-                    <Divider orientation="vertical" flexItem />
                     <li className="nav_item"><a href="">Profile</a></li>
-                    <Divider orientation="vertical" flexItem />
                     <li className="nav_item"><a href="">Application Status</a></li>
                 </ul>
                 
@@ -65,7 +62,7 @@ class StudentHomePage extends React.Component {
                 <br></br>
                 <div id="search-box"><Search/></div>
                 
-                
+                <Footer/>
 
             </div>  
         );
@@ -73,3 +70,10 @@ class StudentHomePage extends React.Component {
 }
 
 export default withRouter(StudentHomePage);
+
+  
+function Footer (props) {
+    return (
+        <div style={{height: 300}}/>
+    );
+}

@@ -1,17 +1,14 @@
 import React from "react";
-import {} from "react-bootstrap";
 import { makeStyles } from '@material-ui/core/styles';
 import {withRouter} from "react-router-dom";
 import MaterialTable from 'material-table';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
-import Button from "@material-ui/core/Button";
-import Select, {Option} from '@material/react-select';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import {BrowserRouter as Router, Redirect} from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 
 import './styles.css'
 
@@ -69,46 +66,50 @@ const useStyles = makeStyles(theme => ({
       flexGrow: 1,
     },
     paper: {
-      padding: theme.spacing(8),
+      padding: theme.spacing(5),
       margin: 'auto',
-      maxWidth: 800,
-    },
-
+      maxWidth: 700,
+      backgroundColor: '#eeeeee'
+    }
 }));
+
   
 function ResearchInfo (props) {
       
-      const classes = useStyles();
+    const classes = useStyles();
   
-      return (
-          <div className={classes.root}>
-              
-              <Paper className={classes.paper}>
-                  <Grid container spacing={2}>
-                  <Grid item xs={12} sm container>
-                      <Grid item xs container direction="column" spacing={2}>
+    return (
+        <div className={classes.root}>   
+        <Paper className={classes.paper}>
+            <Grid container spacing={3}>
+                <Grid item xs={12} sm container>
+                    <Grid item xs container direction="column" spacing={2}>
                         <Grid item xs>
-                        <ButtonBase>
-                          <Typography gutterBottom variant="subtitle1">
-                         Title: {props.research.title}
+                          <ButtonBase>
+                          <Typography gutterBottom variant="h6">
+                          <Link style={{color: '#01579b'}} href="">
+                          {props.research.title}
+                          </Link>
                           </Typography>
                           </ButtonBase>
-                          <Typography variant="body2" gutterBottom>
-                        Introduction
+                          <Typography variant="subtitle1" gutterBottom>
+                          Introduction
                           </Typography>
                           <Typography variant="body2" color="textSecondary">
                           Researcher: {props.research.researcher}
                           </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                          Deadline: {props.research.deadline}     Duration: {props.research.term}
+                          </Typography>
                         </Grid>
-                 </Grid>
-              <Grid item>
-              <Typography variant="subtitle1">Deadline: {props.research.deadline}</Typography>
-              <Typography variant="subtitle1">Duration: {props.research.term}</Typography>
-              </Grid>
+                    </Grid>
+                    <Grid item>
+                    <Link href="" component="button" variant="subtitle1">Apply</Link>
+                    </Grid>
                 </Grid>
             </Grid>
-            </Paper>
+        </Paper>
             
       </div>
     );
-  }
+}
