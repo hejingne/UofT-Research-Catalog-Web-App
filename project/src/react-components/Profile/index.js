@@ -17,6 +17,11 @@ class Profile extends React.Component {
         // this.handleOnClick = this.handleOnClick.bind(this);
         // this.displayContent = this.displayContent.bind(this);
         this.state = {
+            personalInfo: {
+                username: "USERNAME",
+                description: "some personal description",
+                profilePicture: require("./static/no-profile-picture-icon.png"),
+            },
             selectedTab: "",
         };
     }
@@ -36,17 +41,16 @@ class Profile extends React.Component {
 
 
     render() {
-        const profilePictureUrl = require("./static/no-profile-picture-icon.png")
 
         return (
             <div>
                 <div id="info">
                     <div id="basic-info">
-                        <span id="username">User Name</span>
-                        <span id="description">"some personal description"</span>
+                        <span id="username">{this.state.personalInfo.username}</span>
+                        <span id="description">"{this.state.personalInfo.description}"</span>
                         <InterestsChips/>
                     </div>
-                    <img id="profile-pic" src={profilePictureUrl}/>
+                    <img id="profile-pic" src={this.state.personalInfo.profilePicture}/>
                 </div>
                 <div id="tabs">
                     <Button className="login__button" onClick={(e) => {
