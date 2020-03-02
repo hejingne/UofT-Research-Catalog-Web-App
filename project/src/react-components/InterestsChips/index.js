@@ -5,53 +5,90 @@ import Chip from "@material-ui/core/Chip";
 
 import "./styles.css";
 import {Add} from "@material-ui/icons";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Dialog from "@material-ui/core/Dialog";
+import TextField from "@material-ui/core/TextField";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 
 class InterestsChips extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.handleAddInterest = this.handleAddInterest.bind(this);
+        this.state = {
+            interests: ["interest 1", "interest 2", "interest 3"],
+            newInterest: "",
+            modalOpenState: false
+        }
+        ;
     }
 
-    handleDelete(e) {
-
+    handleDeleteInterest(e) {
+        const interest = e.target.parentElement.parentElement.innerText;
+        const updatedInterests = this.state.interests.filter((element) => element !== interest);
+        this.setState({interests: updatedInterests});
     }
 
-    handleOnClick(e) {
+    handleAddInterest() {
+        this.setState({modalOpenState: false});
+        const interest = this.state.newInterest;
+        const existInterests = this.state.interests;
+        if (interest && existInterests.filter((element) => element === interest).length === 0) {
+            existInterests.push(interest);
+            this.setState({interests: existInterests});
+            this.setState({newInterest: ""});
+        }
     }
+
 
     render() {
 
         return (
             <div id="interests">
-                <Chip
-                    className="interest"
-                    size="small"
-                    label="interest 1"
-                    onClick={this.handleOnClick}
-                    onDelete={this.handleDelete}
-                />
-                <Chip
-                    className="interest"
-                    size="small"
-                    label="interest 2"
-                    onClick={this.handleOnClick}
-                    onDelete={this.handleDelete}
-                />
-                <Chip
-                    className="interest"
-                    size="small"
-                    label="interest 3"
-                    onClick={this.handleOnClick}
-                    onDelete={this.handleDelete}
-                />
+                {this.state.interests.map((element) => {
+                    return (
+                        <Chip
+                            className="interest"
+                            size="small"
+                            label={element}
+                            onDelete={(e) => this.handleDeleteInterest(e)}
+                        />
+                    );
+                })}
                 <Chip
                     className="interest"
                     size="small"
                     icon={<Add/>}
-                    onClick={this.handleOnClick}
+                    onClick={() => this.setState({modalOpenState: true})}
                 />
+                <Dialog open={this.state.modalOpenState} onClose={() => this.setState({modalOpenState: false})}
+                        aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Please Enter Your Interest: </DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            required
+                            variant="outlined"
+                            margin="dense"
+                            label="Interest"
+                            id="name"
+                            onChange={(e) => this.setState({newInterest: e.target.value})}
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setState({modalOpenState: false})} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleAddInterest} color="primary">
+                            Add
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     }
