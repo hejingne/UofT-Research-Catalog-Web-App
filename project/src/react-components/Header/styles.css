@@ -24,10 +24,11 @@
     cursor: pointer;
 }
 
-#sign-out-btn {
-    padding: 15px;
-    color: white;
-    font-family: 'prata';
+#menu-btn {
     margin-left: auto;
     cursor: pointer;
+}
+
+#menu-btn-icon {
+    color: white;
 }

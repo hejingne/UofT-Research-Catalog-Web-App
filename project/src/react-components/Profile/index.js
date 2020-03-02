@@ -50,7 +50,6 @@ class Profile extends React.Component {
                     <img id="profile-pic" src={this.state.personalInfo.profilePicture}/>
                 </div>
                 <div id="tabs">
-
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
                     }}>DASHBOARD</Button>
