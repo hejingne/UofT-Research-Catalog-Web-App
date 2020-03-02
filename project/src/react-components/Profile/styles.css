@@ -1,16 +1,27 @@
-#info{
+#info {
     padding: 40px;
     display: flex;
     align-items: center;
 }
 
-#username {
+#basic-info {
     margin-left: 20%;
+}
+
+#username {
     font-size: 36px;
     font-weight: bold;
-    font-family: 'prata';
-    display: inline-block;
+    display: block;
+
 }
+
+#description {
+    margin-top: 10px;
+    color: darkslategrey;
+    display: block;
+
+}
+
 
 #profile-pic {
     margin-right: 20%;
@@ -21,7 +32,11 @@
     display: inline-block;
 }
 
-#prompt{
-    display: flex;
+#tabs {
+    padding: 40px;
+    margin-left: 100px;
+}
 
+#tabs .login__button {
+    width: 250px;
 }

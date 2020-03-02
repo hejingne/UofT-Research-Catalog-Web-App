@@ -1,0 +1,9 @@
+#grid-container{
+    padding: 0px 40px 40px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+#item{
+    padding: 20px;
+}

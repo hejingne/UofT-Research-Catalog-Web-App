@@ -4,16 +4,36 @@ import {Link, Redirect, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 import "./styles.css";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import Dashboard from "../Dashboard";
+import Chip from "@material-ui/core/Chip";
+import DoneIcon from '@material-ui/icons/Done';
+import InterestsChips from "../InterestsChips";
+
 
 class Profile extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        // this.handleOnClick = this.handleOnClick.bind(this);
+        // this.displayContent = this.displayContent.bind(this);
+        this.state = {
+            selectedTab: "",
+        };
     }
+
+    handleOnClick(e) {
+        this.setState({selectedTab: e.target.innerText})
+    }
+
+    displayContent() {
+        if (!this.state.selectedTab){
+            return null;
+        }
+        if (this.state.selectedTab === "DASHBOARD") {
+            return <Dashboard/>;
+        }
+    }
+
 
     render() {
         const profilePictureUrl = require("./static/no-profile-picture-icon.png")
@@ -21,21 +41,27 @@ class Profile extends React.Component {
         return (
             <div>
                 <div id="info">
-                    <span id="username">User Name</span>
+                    <div id="basic-info">
+                        <span id="username">User Name</span>
+                        <span id="description">"some personal description"</span>
+                        <InterestsChips/>
+                    </div>
                     <img id="profile-pic" src={profilePictureUrl}/>
                 </div>
-                <div id='prompt'>
-                        <li><Button className="login__button center" onClick={(e) => {
-                            this.handleOnClick(e)
-                        }}>STUDENT</Button></li>
-                        <li><Button className="login__button center" onClick={(e) => {
-                            this.handleOnClick(e)
-                        }}>RESEARCHER</Button></li>
-                        <li><Button className="login__button center" onClick={(e) => {
-                            this.handleOnClick(e)
-                        }}>ADMINISTRATOR</Button></li>
+                <div id="tabs">
+                    <Button className="login__button" onClick={(e) => {
+                        this.handleOnClick(e)
+                    }}>DASHBOARD</Button>
+                    <Button className="login__button" onClick={(e) => {
+                        this.handleOnClick(e)
+                    }}>POSTED APPLICATIONS</Button>
+                    <Button className="login__button" onClick={(e) => {
+                        this.handleOnClick(e)
+                    }}>SUBMITTED APPLICATIONS</Button>
                 </div>
-
+                <div>
+                    {this.displayContent()}
+                </div>
             </div>
         );
     }
