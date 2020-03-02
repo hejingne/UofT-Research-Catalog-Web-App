@@ -2,12 +2,10 @@ import React from "react";
 import {} from "react-bootstrap";
 import {Link, Redirect, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import Dashboard from "../Dashboard";
+import InterestsChips from "../InterestsChips";
 
 import "./styles.css";
-import Dashboard from "../Dashboard";
-import Chip from "@material-ui/core/Chip";
-import DoneIcon from '@material-ui/icons/Done';
-import InterestsChips from "../InterestsChips";
 
 
 class Profile extends React.Component {
@@ -17,6 +15,7 @@ class Profile extends React.Component {
         // this.handleOnClick = this.handleOnClick.bind(this);
         // this.displayContent = this.displayContent.bind(this);
         this.state = {
+            userType: "Student",
             personalInfo: {
                 username: "USERNAME",
                 description: "some personal description",
@@ -31,7 +30,7 @@ class Profile extends React.Component {
     }
 
     displayContent() {
-        if (!this.state.selectedTab){
+        if (!this.state.selectedTab) {
             return null;
         }
         if (this.state.selectedTab === "DASHBOARD") {
@@ -39,9 +38,7 @@ class Profile extends React.Component {
         }
     }
 
-
     render() {
-
         return (
             <div>
                 <div id="info">
@@ -53,15 +50,18 @@ class Profile extends React.Component {
                     <img id="profile-pic" src={this.state.personalInfo.profilePicture}/>
                 </div>
                 <div id="tabs">
+
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
                     }}>DASHBOARD</Button>
+                    {this.state.userType === "Researcher" &&
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
-                    }}>POSTED APPLICATIONS</Button>
+                    }}>POSTED OPPORTUNITIES</Button>}
+                    {this.state.userType === "Student" &&
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
-                    }}>SUBMITTED APPLICATIONS</Button>
+                    }}>SUBMITTED APPLICATIONS</Button>}
                 </div>
                 <div>
                     {this.displayContent()}
