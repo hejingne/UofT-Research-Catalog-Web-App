@@ -5,6 +5,8 @@
 ### Build and Run
 1. run
     > cd project
+2. use the following npm script to install required packages
+    > npm i
 2. use the following npm script to start the web app
     > npm start
 
