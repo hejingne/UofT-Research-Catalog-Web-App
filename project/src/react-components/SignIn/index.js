@@ -53,11 +53,10 @@ class SignIn extends React.Component {
 
     render() {
         const {state} = this.props.location;
-        const userType = state.role.charAt(0) + state.role.slice(1).toLowerCase();
-
         if (!state || !state.role) {
             return <Redirect to="/home"/>;
         }
+        const userType = state.role.charAt(0) + state.role.slice(1).toLowerCase();
 
         return (
             <Container id="container" component="main" maxWidth="xs">

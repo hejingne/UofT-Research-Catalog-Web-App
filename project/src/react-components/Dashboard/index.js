@@ -17,7 +17,7 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             dashboardInfo: {
-                "User Type": "Student",
+                "User Type": localStorage.getItem("userType") ? localStorage.getItem("userType") : sessionStorage.getItem("userType"),
                 "Current Employment State": "Unemployed",
                 "Current Employer": "N/A",
                 "Number of Applications Submitted": "0",

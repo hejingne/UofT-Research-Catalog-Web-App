@@ -16,7 +16,7 @@ class Profile extends React.Component {
         // this.handleOnClick = this.handleOnClick.bind(this);
         // this.displayContent = this.displayContent.bind(this);
         this.state = {
-            userType: "Student",
+            userType: localStorage.getItem("userType") ? localStorage.getItem("userType") : sessionStorage.getItem("userType"),
             personalInfo: {
                 username: "USERNAME",
                 description: "some personal description",
