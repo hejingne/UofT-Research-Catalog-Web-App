@@ -7,6 +7,7 @@ import InterestsChips from "../InterestsChips";
 
 import "./styles.css";
 import Applications from "../Applications";
+import AccountSettings from "../AccountSettings";
 
 
 class Profile extends React.Component {
@@ -46,6 +47,9 @@ class Profile extends React.Component {
         }
         if (this.state.selectedTab === "POSTED OPPORTUNITIES") {
             return <Applications/>;
+        }
+        if (this.state.selectedTab === "ACCOUNT SETTINGS") {
+            return <AccountSettings/>;
         }
     }
 
