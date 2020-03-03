@@ -27,6 +27,10 @@ class Dashboard extends React.Component {
         };
     }
 
+    handleOnClickEdit(e) {
+        // console.log(e.target.parentElement.parentElement.parentElement)
+    }
+
     render() {
         return (
             <div id="grid-container">
@@ -44,7 +48,7 @@ class Dashboard extends React.Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small">Edit</Button>
+                                        <Button size="small" onClick={(e) => this.handleOnClickEdit(e)}>Edit</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>

@@ -6,6 +6,7 @@ import Dashboard from "../Dashboard";
 import InterestsChips from "../InterestsChips";
 
 import "./styles.css";
+import Applications from "../Applications";
 
 
 class Profile extends React.Component {
@@ -35,6 +36,12 @@ class Profile extends React.Component {
         }
         if (this.state.selectedTab === "DASHBOARD") {
             return <Dashboard/>;
+        }
+        if (this.state.selectedTab === "SUBMITTED APPLICATIONS") {
+            return <Applications/>;
+        }
+        if (this.state.selectedTab === "POSTED OPPORTUNITIES") {
+            return <Applications/>;
         }
     }
 
