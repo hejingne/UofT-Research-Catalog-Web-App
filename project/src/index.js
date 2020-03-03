@@ -9,6 +9,7 @@ import SignIn from "./react-components/SignIn";
 import StudentHomePage from './react-components/StudentHomePage';
 import Profile from "./react-components/Profile"
 import SignUp from "./react-components/SignUp";
+import ApplicationForm from './react-components/ApplicationForm';
 
 const routing = (
     <Router>
@@ -19,6 +20,7 @@ const routing = (
             <Route path="/signup" component={SignUp}/>
             <Route path="/student" component={StudentHomePage}/>
             <Route path="/profile" component={Profile}/>
+            <Route path="/application" component={ApplicationForm}/>
             <Route exact path="/" render={() => (
                 <Redirect to="/home"/>
             )}/>
