@@ -27,6 +27,10 @@ class Dashboard extends React.Component {
         };
     }
 
+    componentDidMount() {
+        // connect to db to fetch and use this.setState() to update dashboardInfo
+    }
+
     handleOnClickEdit(e) {
         // console.log(e.target.parentElement.parentElement.parentElement)
     }

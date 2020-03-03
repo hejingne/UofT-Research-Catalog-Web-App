@@ -27,10 +27,16 @@ class InterestsChips extends React.Component {
         ;
     }
 
+    componentDidMount() {
+        // connect to db to fetch and use this.setState() to update interests
+    }
+
+
     handleDeleteInterest(e) {
         const interest = e.target.parentElement.parentElement.innerText;
         const updatedInterests = this.state.interests.filter((element) => element !== interest);
         this.setState({interests: updatedInterests});
+        // connect to db to update interests
     }
 
     handleAddInterest() {
@@ -42,6 +48,7 @@ class InterestsChips extends React.Component {
             this.setState({interests: existInterests});
             this.setState({newInterest: ""});
         }
+        // connect to db to update interests
     }
 
 

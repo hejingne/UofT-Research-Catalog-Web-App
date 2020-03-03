@@ -27,13 +27,16 @@ class Header extends React.Component {
 
     handleSelectMenuOption(e) {
         const selectedOption = e.target.innerText;
+        if (selectedOption === "Home") {
+            this.props.history.push("/home");
+        }
+        if (selectedOption === "My Profile") {
+            this.props.history.push("/profile");
+        }
         if (selectedOption === "Sign Out") {
             localStorage.removeItem("hasSignIn");
             sessionStorage.removeItem("hasSignIn");
             this.redirectToHome();
-        }
-        if (selectedOption === "My Profile") {
-            this.props.history.push("/profile");
         }
         this.setState({menuOpenState: false});
     }
@@ -44,7 +47,7 @@ class Header extends React.Component {
 
     render() {
         const logoUrl = require("./static/uoft-logo.png")
-        const options = ["My Profile", "Sign Out"];
+        const options = ["Home", "My Profile","Application Status", "Sign Out"];
         const hasSignIn = (localStorage.getItem("hasSignIn") === "true")
             || (sessionStorage.getItem("hasSignIn") === "true");
 

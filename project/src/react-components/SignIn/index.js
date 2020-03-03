@@ -21,15 +21,24 @@ class SignIn extends React.Component {
         super(props);
         this.handleSignIn = this.handleSignIn.bind(this);
         this.state = {
+            emailAddress: "",
+            password: "",
             rememberMe: false,
         };
     }
 
     handleSignIn() {
-        if (this.state.rememberMe) {
-            localStorage.setItem("hasSignIn", "true");
-        } else {
-            sessionStorage.setItem("hasSignIn", "true")
+        // connect to database to authenticate username and password
+        if (this.state.emailAddress === "user" && this.state.password === "user" ||
+            this.state.emailAddress === "admin" && this.state.password === "admin") {
+            if (this.state.rememberMe) {
+                localStorage.setItem("hasSignIn", "true");
+            } else {
+                sessionStorage.setItem("hasSignIn", "true");
+            }
+        }
+        else{
+            alert("Invalid credentials, Please try again");
         }
     }
 
@@ -47,7 +56,7 @@ class SignIn extends React.Component {
                         <Avatar className="">
                         </Avatar>
                         <Typography id="sign-in-title" component="h1" variant="h5">
-                            {"Sign in as " + state.role.charAt(0).toUpperCase() + state.role.slice(1)}
+                            {"Sign in as " + state.role.charAt(0) + state.role.slice(1).toLowerCase()}
                         </Typography>
                     </div>
                     <form className="form">
@@ -61,6 +70,7 @@ class SignIn extends React.Component {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={(e) => this.setState({emailAddress: e.target.value})}
                         />
                         <TextField
                             variant="outlined"
@@ -72,6 +82,7 @@ class SignIn extends React.Component {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={(e) => this.setState({password: e.target.value})}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
@@ -96,8 +107,8 @@ class SignIn extends React.Component {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                <Link to="/signup" variant="body2">
+                                    Don't have an account? Sign Up
                                 </Link>
                             </Grid>
                         </Grid>

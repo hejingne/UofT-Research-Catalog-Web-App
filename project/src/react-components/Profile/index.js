@@ -26,6 +26,10 @@ class Profile extends React.Component {
         };
     }
 
+    componentDidMount() {
+        // connect to db to fetch and use this.setState() to update info
+    }
+
     handleOnClick(e) {
         this.setState({selectedTab: e.target.innerText})
     }
@@ -68,6 +72,9 @@ class Profile extends React.Component {
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
                     }}>SUBMITTED APPLICATIONS</Button>}
+                    <Button className="login__button" onClick={(e) => {
+                        this.handleOnClick(e)
+                    }}>ACCOUNT SETTINGS</Button>
                 </div>
                 <div>
                     {this.displayContent()}
