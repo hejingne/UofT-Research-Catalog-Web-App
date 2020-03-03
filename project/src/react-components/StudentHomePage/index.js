@@ -1,7 +1,6 @@
 import React from "react";
 import {} from "react-bootstrap";
 import {withRouter} from "react-router-dom";
-import MaterialTable from 'material-table';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 

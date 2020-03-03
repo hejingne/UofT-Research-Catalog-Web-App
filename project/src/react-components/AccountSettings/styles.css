@@ -8,6 +8,11 @@
     display: block;
 }
 
-/*#reset-password-container{*/
-/*    margin-bottom: 30px;*/
-/*}*/
+#confirm {
+    background-color: transparent;
+    margin-top: 30px;
+}
+
+#reset-password-divider {
+    margin-bottom: 30px;
+}
