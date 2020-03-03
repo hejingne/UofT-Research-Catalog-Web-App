@@ -14,7 +14,7 @@ class CurrentPostList extends React.Component {
     const { posts, component } = this.props;
 
     /* iterate through the post list and make an <li> for each post*/
-    return (
+    return (  /*changed*/
       <Table className="post-list">
         <TableBody>
           <h2> Current Research Postings: </h2>
@@ -24,6 +24,7 @@ class CurrentPostList extends React.Component {
             <TableCell component="th" scope="row">Post ID</TableCell>
             <TableCell component="th" scope="row">Title</TableCell>
             <TableCell component="th" scope="row">Deadline</TableCell>
+            <TableCell component="th" scope="row"></TableCell>
           </TableRow>
 
           {posts.map(post => (
