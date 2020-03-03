@@ -2,6 +2,8 @@ import React from "react";
 import {} from "react-bootstrap";
 import {Link, Redirect, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import StudentHomePage from "../StudentHomePage"
+import SignIn from "../SignIn"
 
 import "./styles.css";
 
@@ -11,6 +13,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.handleOnClick.bind(this);
     }
 
     
@@ -26,7 +29,7 @@ class Home extends React.Component {
             <div className="center" id='prompt'>
                 Please select your user type to login:
                 <ul>
-                    <li><Button className="login__button center" onClick={(e) => {
+                    <li><Button id="student" className="login__button center" onClick={(e) => {
                         this.handleOnClick(e)
                     }}>STUDENT</Button></li>
                     <li><Button className="login__button center" onClick={(e) => {
@@ -40,10 +43,11 @@ class Home extends React.Component {
     }
 
     postSignIn() {
-        return <Redirect to="/student"/>;
+        return <StudentHomePage role="STUDENT"/>
     }
 
     render() {
+        
         const hasSignIn = (localStorage.getItem("hasSignIn") === "true")
             || (sessionStorage.getItem("hasSignIn") === "true");
 
@@ -51,7 +55,7 @@ class Home extends React.Component {
             return this.postSignIn();
         } else {
             return this.signInBox();
-        }
+        }  
     }
 }
 

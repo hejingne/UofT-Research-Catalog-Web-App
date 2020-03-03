@@ -16,26 +16,35 @@ class StudentHomePage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
-      
-        this.handleChange = this.handleChange.bind(this);
+        this.state = {role: props.role};
+        this.createNavBar = this.createNavBar.bind(this);
     }
 
-    
-    handleChange(e) {
-        this.setState({keywords: e.target.value});
-    }
-    
-    
-    render() {  
-        return (
-            <div>
-                <ul className="nav_bar">
+    createNavBar() {
+        if (this.state.role == "STUDENT") {
+            return <ul className="nav_bar">
                     <li className="nav_item"><a href="/student">Home</a></li>
                     <li className="nav_item"><a href="">Account</a></li>
                     <li className="nav_item"><a href="">Profile</a></li>
                     <li className="nav_item"><a href="">Application Status</a></li>
-                </ul>
+                   </ul>
+        } else if (this.state.role == "RESEARCHER") {
+            return <ul className="nav_bar">
+                    <li className="nav_item"><a href="/student">Home</a></li>
+                    <li className="nav_item"><a href="">Account</a></li>
+                    <li className="nav_item"><a href="">Profile</a></li>
+                    <li className="nav_item"><a href="">Posts</a></li>
+                   </ul>
+        }
+    }
+    
+    render() {  
+        
+        let navBar = this.createNavBar();
+
+        return (
+            <div>
+                {navBar}
                 
                 <Carousel infiniteLoop={true}
                           autoPlay swipeable={false}

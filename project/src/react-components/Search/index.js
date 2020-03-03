@@ -1,14 +1,13 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import {withRouter} from "react-router-dom";
-import MaterialTable from 'material-table';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import {BrowserRouter as Router, Redirect} from 'react-router-dom';
 import Link from '@material-ui/core/Link';
+import Home from "../Home"
+import {Route} from "react-router-dom";
 
 import './styles.css'
 
@@ -104,7 +103,7 @@ function ResearchInfo (props) {
                         </Grid>
                     </Grid>
                     <Grid item>
-                    <Link href="" component="button" variant="subtitle1">Apply</Link>
+                    <Link to="/home" component="button" variant="subtitle1">Apply</Link>
                     </Grid>
                 </Grid>
             </Grid>

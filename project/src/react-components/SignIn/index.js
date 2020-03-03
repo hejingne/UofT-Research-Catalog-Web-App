@@ -35,7 +35,7 @@ class SignIn extends React.Component {
 
     render() {
         const {state} = this.props.location;
-
+        
         if (!state || !state.role) {
             return <Redirect to="/home"/>;
         }
@@ -105,7 +105,7 @@ class SignIn extends React.Component {
                 </div>
                 <Box mt={8}>
                 </Box>
-            </Container>
+            </Container>   
         );
     }
 }
