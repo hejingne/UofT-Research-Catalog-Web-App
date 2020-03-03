@@ -38,9 +38,9 @@ class SignIn extends React.Component {
             userType === "Researcher" && this.state.emailAddress === "user2" && this.state.password === "user2" ||
             userType === "Administrator" && this.state.emailAddress === "admin" && this.state.password === "admin") {
             if (this.state.rememberMe) {
-                localStorage.setItem("hasSignIn", userType);
+                localStorage.setItem("userType", userType);
             } else {
-                sessionStorage.setItem("hasSignIn", userType);
+                sessionStorage.setItem("userType", userType);
             }
             this.props.history.push({
                 pathname: "/home",

@@ -48,8 +48,8 @@ class Home extends React.Component {
 
     render() {
         const userTypes = ["Student", "Researcher", "Administrator"]
-        const hasSignIn = userTypes.includes(localStorage.getItem("hasSignIn"))
-            || userTypes.includes(sessionStorage.getItem("hasSignIn"));
+        const hasSignIn = userTypes.includes(localStorage.getItem("userType"))
+            || userTypes.includes(sessionStorage.getItem("userType"));
 
         if (hasSignIn) {
             return this.postSignIn();

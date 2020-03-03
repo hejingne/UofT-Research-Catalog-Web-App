@@ -34,8 +34,8 @@ class Header extends React.Component {
             this.props.history.push("/profile");
         }
         if (selectedOption === "Sign Out") {
-            localStorage.removeItem("hasSignIn");
-            sessionStorage.removeItem("hasSignIn");
+            localStorage.removeItem("userType");
+            sessionStorage.removeItem("userType");
             this.redirectToHome();
         }
         this.setState({menuOpenState: false});
@@ -49,8 +49,8 @@ class Header extends React.Component {
         const logoUrl = require("./static/uoft-logo.png")
         const options = ["Home", "My Profile", "Application Status", "Sign Out"];
         const userTypes = ["Student", "Researcher", "Administrator"]
-        const hasSignIn = userTypes.includes(localStorage.getItem("hasSignIn"))
-            || userTypes.includes(sessionStorage.getItem("hasSignIn"));
+        const hasSignIn = userTypes.includes(localStorage.getItem("userType"))
+            || userTypes.includes(sessionStorage.getItem("userType"));
 
         return (<div id="banner">
             <img id="logo" src={logoUrl} onClick={this.redirectToHome}/>
