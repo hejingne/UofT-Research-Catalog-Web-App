@@ -47,9 +47,9 @@ class Home extends React.Component {
     }
 
     render() {
-        
-        const hasSignIn = (localStorage.getItem("hasSignIn") === "true")
-            || (sessionStorage.getItem("hasSignIn") === "true");
+        const userTypes = ["Student", "Researcher", "Administrator"]
+        const hasSignIn = userTypes.includes(localStorage.getItem("hasSignIn"))
+            || userTypes.includes(sessionStorage.getItem("hasSignIn"));
 
         if (hasSignIn) {
             return this.postSignIn();

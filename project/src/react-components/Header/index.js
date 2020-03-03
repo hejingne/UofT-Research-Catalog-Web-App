@@ -47,9 +47,10 @@ class Header extends React.Component {
 
     render() {
         const logoUrl = require("./static/uoft-logo.png")
-        const options = ["Home", "My Profile","Application Status", "Sign Out"];
-        const hasSignIn = (localStorage.getItem("hasSignIn") === "true")
-            || (sessionStorage.getItem("hasSignIn") === "true");
+        const options = ["Home", "My Profile", "Application Status", "Sign Out"];
+        const userTypes = ["Student", "Researcher", "Administrator"]
+        const hasSignIn = userTypes.includes(localStorage.getItem("hasSignIn"))
+            || userTypes.includes(sessionStorage.getItem("hasSignIn"));
 
         return (<div id="banner">
             <img id="logo" src={logoUrl} onClick={this.redirectToHome}/>
