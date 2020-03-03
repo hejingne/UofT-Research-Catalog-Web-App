@@ -36,7 +36,8 @@ class SignUp extends React.Component {
         if (emptyFields.length > 0) {
             return null;
         }
-        // push data ion this.state to database at here to create user
+        // check if there is existing account, if not
+        // push data in this.state to database at here to create user
         this.props.history.push({
             pathname: "/home",
         })

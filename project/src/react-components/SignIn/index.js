@@ -1,9 +1,7 @@
 import React from "react";
-import {} from "react-bootstrap";
 import {Link, Redirect, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -11,11 +9,11 @@ import Box from "@material-ui/core/Box";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
+import {Alert, AlertTitle} from '@material-ui/lab';
+
 
 import "./styles.css";
 
-
-/* Component for the Home page */
 class SignIn extends React.Component {
     constructor(props) {
         super(props);
@@ -24,19 +22,21 @@ class SignIn extends React.Component {
             emailAddress: "",
             password: "",
             rememberMe: false,
+            alertOpenState: false,
         };
     }
 
     handleSignIn() {
-
         const emptyFields = Object.entries(this.state).filter((info) => info[1] === "");
         if (emptyFields.length > 0) {
             return null;
         }
+        const {state} = this.props.location;
+        const userType = state.role.charAt(0) + state.role.slice(1).toLowerCase();
         // connect to database to authenticate username and password
-        if (this.state.emailAddress === "user" && this.state.password === "user" ||
-            this.state.emailAddress === "user2" && this.state.password === "user2" ||
-            this.state.emailAddress === "admin" && this.state.password === "admin") {
+        if (userType === "Student" && this.state.emailAddress === "user" && this.state.password === "user" ||
+            userType === "Researcher" && this.state.emailAddress === "user2" && this.state.password === "user2" ||
+            userType === "Administrator" && this.state.emailAddress === "admin" && this.state.password === "admin") {
             if (this.state.rememberMe) {
                 localStorage.setItem("hasSignIn", "true");
             } else {
@@ -45,15 +45,15 @@ class SignIn extends React.Component {
             this.props.history.push({
                 pathname: "/home",
             })
-        }
-        else{
-            alert("Invalid credentials, Please try again");
+        } else {
+            this.setState({alertOpenState: true});
             return null;
         }
     }
 
     render() {
         const {state} = this.props.location;
+        const userType = state.role.charAt(0) + state.role.slice(1).toLowerCase();
 
         if (!state || !state.role) {
             return <Redirect to="/home"/>;
@@ -62,14 +62,21 @@ class SignIn extends React.Component {
         return (
             <Container id="container" component="main" maxWidth="xs">
                 <div>
+                    {this.state.alertOpenState &&
+                    <Alert onClose={() => {
+                        this.setState({alertOpenState: false})
+                    }} id="error-alert" severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        You have entered an invalid email address or password, please try again.
+                    </Alert>}
                     <div id="sign-in-title-box">
                         <Avatar className="">
                         </Avatar>
                         <Typography id="sign-in-title" component="h1" variant="h5">
-                            {"Sign in as " + state.role.charAt(0) + state.role.slice(1).toLowerCase()}
+                            {"Sign in as " + userType}
                         </Typography>
                     </div>
-                    <form className="form" onSubmit={(e)=>e.preventDefault()}>
+                    <form className="form" onSubmit={(e) => e.preventDefault()}>
                         <TextField
                             variant="outlined"
                             margin="normal"
