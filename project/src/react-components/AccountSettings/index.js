@@ -31,72 +31,51 @@ class AccountSettings extends React.Component {
         };
     }
 
-    handleOnClickResetPassword() {
-        this.setState(prevState => ({
-            resetPassword: {
-                ...prevState.resetPassword,
-                textFieldOpenState: !prevState.resetPassword.textFieldOpenState,
-            }
-        }));
+    setStateResetPassword(state) {
+        this.setState({
+            resetPassword: {...this.state.resetPassword, ...state}
+        });
     }
 
-    handleSignOut(){
+    handleSignOut() {
         localStorage.removeItem("userType");
         sessionStorage.removeItem("userType");
         this.props.history.push("/home");
     }
 
     handleConfirmResetPassword() {
-        this.setState(prevState => ({
-            resetPassword: {...prevState.resetPassword, successAlertOpenState: false, alertOpenState: false,}
-        }));
+        this.setStateResetPassword({successAlertOpenState: false, alertOpenState: false});
         const emptyFields = Object.entries(this.state.resetPassword).filter((entry) => entry[1] === "");
         if (emptyFields.length > 0) {
             return null;
         }
         if (this.state.resetPassword.newPassword !== this.state.resetPassword.newPasswordConfirm) {
-            this.setState(prevState => ({
-                resetPassword: {...prevState.resetPassword, alertOpenState: true,}
-            }));
+            this.setStateResetPassword({alertOpenState: true});
         } else {
             // update backend to change password
-            this.setState(prevState => ({
-                resetPassword: {...prevState.resetPassword, successAlertOpenState: true,}
-            }));
+            this.setStateResetPassword({successAlertOpenState: true})
             setTimeout(() =>
-                this.setState(prevState => ({
-                    resetPassword: {
-                        ...prevState.resetPassword,
-                        successAlertOpenState: false,
-                        textFieldOpenState: false,
-                    }
-                })), 1000);
+                this.setStateResetPassword({successAlertOpenState: false, textFieldOpenState: false}), 2000);
         }
     }
 
     render() {
         return (
             <div id="account-settings-container">
-                <Button id="student" className="login__button center" onClick={(e) => {
-                    this.handleOnClickResetPassword(e)
-                }}>RESET PASSWORD</Button>
+                <Button id="student" className="login__button center" onClick={() =>
+                    this.setStateResetPassword({textFieldOpenState: !this.state.resetPassword.textFieldOpenState})
+                }>RESET PASSWORD</Button>
                 {this.state.resetPassword.textFieldOpenState &&
                 <Container maxWidth="xs" id="reset-password-container">
                     <form className="form" onSubmit={(e) => e.preventDefault()}>
                         {this.state.resetPassword.alertOpenState &&
-                        <Alert onClose={() => {
-                            this.setState(prevState => ({
-                                resetPassword: {...prevState.resetPassword, alertOpenState: false,}
-                            }))
-                        }} severity="error">
+                        <Alert onClose={() => this.setStateResetPassword({alertOpenState: false})} severity="error">
                             <AlertTitle>Error</AlertTitle>
                             The passwords you entered does not match, please try again.
                         </Alert>}
                         {this.state.resetPassword.successAlertOpenState &&
                         <Alert onClose={() => {
-                            this.setState(prevState => ({
-                                resetPassword: {...prevState.resetPassword, successAlertOpenState: false,}
-                            }))
+                            this.setStateResetPassword({successAlertOpenState: false})
                         }} severity="success">
                             <AlertTitle>Success</AlertTitle>
                             Password updated successfully.
@@ -111,12 +90,7 @@ class AccountSettings extends React.Component {
                             type="password"
                             id="currentPassword"
                             autoComplete="current-password"
-                            onChange={(e) => this.setState({
-                                resetPassword: {
-                                    ...this.state.resetPassword,
-                                    currentPassword: e.target.value
-                                }
-                            })}/>
+                            onChange={(e) => this.setStateResetPassword({currentPassword: e.target.value})}/>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -127,12 +101,7 @@ class AccountSettings extends React.Component {
                             type="password"
                             id="newPassword1"
                             autoComplete="current-password"
-                            onChange={(e) => this.setState({
-                                resetPassword: {
-                                    ...this.state.resetPassword,
-                                    newPassword: e.target.value
-                                }
-                            })}/>
+                            onChange={(e) => this.setStateResetPassword({newPassword: e.target.value})}/>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -143,12 +112,7 @@ class AccountSettings extends React.Component {
                             type="password"
                             id="newPassword2"
                             autoComplete="current-password"
-                            onChange={(e) => this.setState({
-                                resetPassword: {
-                                    ...this.state.resetPassword,
-                                    newPasswordConfirm: e.target.value
-                                }
-                            })}/>
+                            onChange={(e) => this.setStateResetPassword({newPasswordConfirm: e.target.value})}/>
                         <Button
                             id="confirm"
                             type="submit"
@@ -162,7 +126,6 @@ class AccountSettings extends React.Component {
                     <Divider id="reset-password-divider"/>
                 </Container>
                 }
-
                 <Button className="login__button center" onClick={this.handleSignOut}>SIGN OUT</Button>
             </div>
         );
