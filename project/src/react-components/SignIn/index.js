@@ -28,21 +28,27 @@ class SignIn extends React.Component {
     }
 
     handleSignIn() {
+
         const emptyFields = Object.entries(this.state).filter((info) => info[1] === "");
-        if (emptyFields) {
+        if (emptyFields.length > 0) {
             return null;
         }
         // connect to database to authenticate username and password
         if (this.state.emailAddress === "user" && this.state.password === "user" ||
+            this.state.emailAddress === "user2" && this.state.password === "user2" ||
             this.state.emailAddress === "admin" && this.state.password === "admin") {
             if (this.state.rememberMe) {
                 localStorage.setItem("hasSignIn", "true");
             } else {
                 sessionStorage.setItem("hasSignIn", "true");
             }
+            this.props.history.push({
+                pathname: "/home",
+            })
         }
         else{
             alert("Invalid credentials, Please try again");
+            return null;
         }
     }
 
@@ -63,7 +69,7 @@ class SignIn extends React.Component {
                             {"Sign in as " + state.role.charAt(0) + state.role.slice(1).toLowerCase()}
                         </Typography>
                     </div>
-                    <form className="form">
+                    <form className="form" onSubmit={(e)=>e.preventDefault()}>
                         <TextField
                             variant="outlined"
                             margin="normal"

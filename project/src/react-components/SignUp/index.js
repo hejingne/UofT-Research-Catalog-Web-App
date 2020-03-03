@@ -27,12 +27,13 @@ class SignUp extends React.Component {
             emailAddress: "",
             password: "",
             userType: "",
+            agreementCheckBox: "",
         };
     }
 
     handleSignUp() {
         const emptyFields = Object.entries(this.state).filter((info) => info[1] === "");
-        if (emptyFields) {
+        if (emptyFields.length > 0) {
             return null;
         }
         // push data ion this.state to database at here to create user
@@ -52,7 +53,7 @@ class SignUp extends React.Component {
                             {"Sign up for new user "}
                         </Typography>
                     </div>
-                    <form className="form">
+                    <form className="form" onSubmit={(e) => e.preventDefault()}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -91,7 +92,6 @@ class SignUp extends React.Component {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-                            autoFocus
                             onChange={(e) => this.setState({emailAddress: e.target.value})}
                         />
                         <TextField
@@ -122,9 +122,10 @@ class SignUp extends React.Component {
                                 <option value={2}>Researcher</option>
                             </Select>
                         </FormControl>
-                        <FormControlLabel
-                            control={<Checkbox required value="remember" color="primary"/>}
-                            label="Check here to indicate that you have read and agree to the terms of the U of T Research Catalogue"
+                        <FormControlLabel required
+                                          control={<Checkbox required value="remember" color="primary"
+                                                             onChange={() => this.setState({agreementCheckBox: "checked"})}/>}
+                                          label="Check here to indicate that you have read and agree to the terms of the U of T Research Catalogue"
                         />
                         <Button
                             id="submit"
