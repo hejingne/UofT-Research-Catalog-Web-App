@@ -17,35 +17,14 @@ class StudentHomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {role: props.role};
-        this.createNavBar = this.createNavBar.bind(this);
     }
 
-    createNavBar() {
-        if (this.state.role == "STUDENT") {
-            return <ul className="nav_bar">
-                    <li className="nav_item"><a href="/student">Home</a></li>
-                    <li className="nav_item"><a href="">Account</a></li>
-                    <li className="nav_item"><a href="">Profile</a></li>
-                    <li className="nav_item"><a href="">Application Status</a></li>
-                   </ul>
-        } else if (this.state.role == "RESEARCHER") {
-            return <ul className="nav_bar">
-                    <li className="nav_item"><a href="/student">Home</a></li>
-                    <li className="nav_item"><a href="">Account</a></li>
-                    <li className="nav_item"><a href="">Profile</a></li>
-                    <li className="nav_item"><a href="">Posts</a></li>
-                   </ul>
-        }
-    }
     
     render() {  
-        
-        let navBar = this.createNavBar();
+    
 
         return (
             <div>
-                {navBar}
-                
                 <Carousel infiniteLoop={true}
                           autoPlay swipeable={false}
                           showThumbs={false}
@@ -83,6 +62,6 @@ export default withRouter(StudentHomePage);
   
 function Footer (props) {
     return (
-        <div style={{height: 300}}/>
+        <div style={{height: 300, color: "#263238"}}/>
     );
 }

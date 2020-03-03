@@ -3,11 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
+import {Typography, ButtonBase, TextField, Button}  from '@material-ui/core';
 import Link from '@material-ui/core/Link';
-import Home from "../Home"
-import {Route} from "react-router-dom";
+import ApplicationForm from "../ApplicationForm"
+import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
+
 
 import './styles.css'
 
@@ -19,37 +19,48 @@ class Search extends React.Component {
         this.state = {
             keywords: '',
             /** Hardcoding some researches */
-            researchList: [{title: 'Computational Genomics', researcher: 'James Charles', term: '2020 Fall - 2021 Winter', deadline: '2020.06.30'},{title: 'The Effect of Global Warming', researcher: 'Sally Tomkins', term: '2020 summer', deadline: '2020.03.01'},{title: 'Quantitative Transportation Geography and Spatial Analysis', researcher: 'Steven Farber', term: '2020 Fall - 2021 Winter', deadline: '2020.07.30'}]
+            researchList: [{title: 'Computational Genomics', researcher: 'James Charles', term: '2020 Fall - 2021 Winter', deadline: '2020.06.30'},{title: 'The Effect of Global Warming', researcher: 'Sally Tomkins', term: '2020 summer', deadline: '2020.03.01'},{title: 'Quantitative Transportation Geography and Spatial Analysis', researcher: 'Steven Farber', term: '2020 Fall - 2021 Winter', deadline: '2020.07.30'}],
         };
 
     }
-   
-    handleKeywords(e) {
-        this.setState({keywords: e.target.value});
-    }
+    
     
     render() {  
-    
+      
         let filteredList = this.state.researchList.filter(
             (research) => {
                 return research.title.toLowerCase().indexOf(this.state.keywords.toLowerCase()) !== -1 || research.researcher.toLowerCase().indexOf(this.state.keywords.toLowerCase()) !== -1;
             }
         )
 
+        if (this.state.toApplication === true) {
+            return <Redirect to="/application"/>;
+        } 
+
         return (
+            
             <div>
-                <div id="filter-container">
-                <input type="text"
-                       className="keyword-filter" 
-                       name="search" 
-                       placeholder="Search Keywords: research area, researcher..."
-                       onChange={(e)=>this.setState({keywords: e.target.value})}
-                       />
-                </div>
+                <Grid id="filter-container" item justify="center">
+                <Grid item xs={7} container spacing={2}>
+                <TextField label="Search Keywords: research area, researcher, (e.g., global warming)..."
+                           onChange={(e)=>this.setState({keywords: e.target.value})}
+                           className="search-keyword"
+                           fullWidth
+                />
+                </Grid>
+                </Grid>
                 <ul>
                     {filteredList.map((research) => {
-                        return <li class="research-info-container">
-                                <ResearchInfo research={research}/>
+                        return <li class="research-info-container" style={{flexGrow: 1}}>
+                                <Grid container spacing={1} justify="center"
+                                alignItems="center">
+                                <Grid item xs={7}>
+                                <ResearchInfo research={research}/> 
+                                </Grid>
+                                <Grid item>
+                                <Button onClick={()=>this.setState({toApplication: true})} className="login__button">Apply</Button>
+                                </Grid>
+                                </Grid>
                                </li>
                     })}
                 </ul>    
@@ -67,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     paper: {
       padding: theme.spacing(5),
       margin: 'auto',
-      maxWidth: 700,
+      maxWidth: 650,
       backgroundColor: '#eeeeee'
     }
 }));
@@ -80,7 +91,7 @@ function ResearchInfo (props) {
     return (
         <div className={classes.root}>   
         <Paper className={classes.paper}>
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
                 <Grid item xs={12} sm container>
                     <Grid item xs container direction="column" spacing={2}>
                         <Grid item xs>
@@ -103,7 +114,6 @@ function ResearchInfo (props) {
                         </Grid>
                     </Grid>
                     <Grid item>
-                    <Link to="/home" component="button" variant="subtitle1">Apply</Link>
                     </Grid>
                 </Grid>
             </Grid>

@@ -7,6 +7,7 @@ import Header from "./react-components/Header";
 import Home from './react-components/Home/index';
 import SignIn from "./react-components/SignIn";
 import StudentHomePage from './react-components/StudentHomePage';
+import ApplicationForm from './react-components/ApplicationForm';
 
 const routing = (
     <Router>
@@ -15,6 +16,7 @@ const routing = (
             <Route path="/home" component={Home}/>
             <Route path="/signin" component={SignIn}/>
             <Route path="/student" component={StudentHomePage}/>
+            <Route path="/application" component={ApplicationForm}/>
             <Route exact path="/" render={() => (
                 <Redirect to="/home"/>
             )}/>

@@ -3,24 +3,8 @@
     margin-left: 500px;
 }
 
-.keyword-filter {
-    width: 150px;
-    height: 20px;
-    box-sizing: round-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    padding: 10px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-    font-style: italic;
-}
-  
-.keyword-filter:focus {
-    width: 40%;
-}
 
 li.research-info-container {
     margin-bottom: 30px;
 }
+
