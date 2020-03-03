@@ -28,6 +28,10 @@ class SignIn extends React.Component {
     }
 
     handleSignIn() {
+        const emptyFields = Object.entries(this.state).filter((info) => info[1] === "");
+        if (emptyFields) {
+            return null;
+        }
         // connect to database to authenticate username and password
         if (this.state.emailAddress === "user" && this.state.password === "user" ||
             this.state.emailAddress === "admin" && this.state.password === "admin") {

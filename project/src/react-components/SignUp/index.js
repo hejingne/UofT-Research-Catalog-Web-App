@@ -31,6 +31,10 @@ class SignUp extends React.Component {
     }
 
     handleSignUp() {
+        const emptyFields = Object.entries(this.state).filter((info) => info[1] === "");
+        if (emptyFields) {
+            return null;
+        }
         // push data ion this.state to database at here to create user
         this.props.history.push({
             pathname: "/home",
@@ -48,36 +52,36 @@ class SignUp extends React.Component {
                             {"Sign up for new user "}
                         </Typography>
                     </div>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstName"
-                                label="First Name"
-                                autoFocus
-                                onChange={(e) => this.setState({firstName: e.target.value})}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
-                                onChange={(e) => this.setState({lastName: e.target.value})}
-                            />
-                        </Grid>
-                    </Grid>
                     <form className="form">
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    autoComplete="fname"
+                                    name="firstName"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="firstName"
+                                    label="First Name"
+                                    autoFocus
+                                    onChange={(e) => this.setState({firstName: e.target.value})}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="lastName"
+                                    label="Last Name"
+                                    name="lastName"
+                                    autoComplete="lname"
+                                    onChange={(e) => this.setState({lastName: e.target.value})}
+                                />
+                            </Grid>
+                        </Grid>
                         <TextField
                             variant="outlined"
                             margin="normal"
