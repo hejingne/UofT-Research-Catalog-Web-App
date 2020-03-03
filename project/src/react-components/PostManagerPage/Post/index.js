@@ -9,24 +9,26 @@ import "./styles.css";
 class Post extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {id: 2000};
+    this.state = {id: 20000};
     this.idGenerator = this.idGenerator.bind(this);
   }
 
-  idGenerator() {this.setState({randomId: (this.state.id-1)*9})}
+  idGenerator() {this.setState({id: this.state.id-1})}
 
   render() {
     const { post, component } = this.props;
 
-    return (
+    return (  
       <TableRow className="post" key={post.title}>
-        <TableCell component="th" scope="row">{post.areaOfStudy}</TableCell>
+        <TableCell component="th" scope="row">{post.area}</TableCell>
         <TableCell component="th" scope="row">2020-2021</TableCell>
         <TableCell component="th" scope="row">{this.state.id}</TableCell>
+        <TableCell component="th" scope="row">{post.title}</TableCell>
+        <TableCell component="th" scope="row">{this.state.deadline}</TableCell>
         <TableCell component="th" scope="row">
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             onClick={removePost.bind(this, component, post)}>remove
           </Button>
         </TableCell>
