@@ -2,7 +2,7 @@ import React from "react";
 import {} from "react-bootstrap";
 import {Link, Redirect, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import StudentHomePage from "../StudentHomePage"
+import HomePage from "../HomePage"
 import SignIn from "../SignIn"
 
 import "./styles.css";
@@ -42,8 +42,8 @@ class Home extends React.Component {
             </div>);
     }
 
-    postSignIn() {
-        return <StudentHomePage role="STUDENT"/>
+    postSignIn(userType) {
+        return <HomePage userType={userType}/>
     }
 
     render() {
@@ -52,7 +52,13 @@ class Home extends React.Component {
             || userTypes.includes(sessionStorage.getItem("userType"));
 
         if (hasSignIn) {
-            return this.postSignIn();
+            let userType;
+            if (userTypes.includes(localStorage.getItem("userType"))) {
+                userType = localStorage.getItem("userType");
+            } else {
+                userType = sessionStorage.getItem("userType");
+            }
+            return this.postSignIn(userType);
         } else {
             return this.signInBox();
         }  

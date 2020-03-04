@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {Typography, ButtonBase, TextField, Button}  from '@material-ui/core';
 import Link from '@material-ui/core/Link';
-import ApplicationForm from "../ApplicationForm"
 import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 
 
@@ -20,13 +19,11 @@ class Search extends React.Component {
             keywords: '',
             /** Hardcoding some researches */
             researchList: [{title: 'Computational Genomics', researcher: 'James Charles', term: '2020 Fall - 2021 Winter', deadline: '2020.06.30'},{title: 'The Effect of Global Warming', researcher: 'Sally Tomkins', term: '2020 summer', deadline: '2020.03.01'},{title: 'Quantitative Transportation Geography and Spatial Analysis', researcher: 'Steven Farber', term: '2020 Fall - 2021 Winter', deadline: '2020.07.30'}],
+            toApplication: false
         };
-
     }
     
-    
-    render() {  
-      
+    render() {
         let filteredList = this.state.researchList.filter(
             (research) => {
                 return research.title.toLowerCase().indexOf(this.state.keywords.toLowerCase()) !== -1 || research.researcher.toLowerCase().indexOf(this.state.keywords.toLowerCase()) !== -1;
@@ -37,8 +34,8 @@ class Search extends React.Component {
             return <Redirect to="/application"/>;
         } 
 
+        let role = this.props.userType;
         return (
-            
             <div>
                 <Grid id="filter-container" item justify="center">
                 <Grid item xs={7} container spacing={2}>
@@ -52,6 +49,7 @@ class Search extends React.Component {
                 <ul>
                     {filteredList.map((research) => {
                         return <li class="research-info-container" style={{flexGrow: 1}}>
+                                {role === "Student" &&
                                 <Grid container spacing={1} justify="center"
                                 alignItems="center">
                                 <Grid item xs={7}>
@@ -60,7 +58,36 @@ class Search extends React.Component {
                                 <Grid item>
                                 <Button onClick={()=>this.setState({toApplication: true})} className="login__button">Apply</Button>
                                 </Grid>
+                                </Grid>}
+                                {role === "Researcher" &&
+                                <Grid container spacing={1} justify="center"
+                                alignItems="center">
+                                <Grid item xs={9}>
+                                <ResearchInfo research={research}/> 
                                 </Grid>
+                                </Grid>
+                                }
+                                {role === "Administrator" && 
+                                <Grid container spacing={1} justify="center"
+                                alignItems="center">
+                                <Grid item xs={7}>
+                                <ResearchInfo research={research}/> 
+                                </Grid>
+                                <Grid>
+                                <Grid container direction="column" justify="center">
+                                <Button onClick={()=>this.setState({toApplication: true})} className="login__button">Apply</Button>
+                                <Button onClick={()=>{for (let i = 0; i < this.state.researchList.length; i++) {
+                                    if (research.title === this.state.researchList[i].title) {
+                                        this.state.researchList.splice(i, 1);
+                                        this.setState({researchList: this.state.researchList});
+                                        return ;
+                                    }
+                                }}} className="login__button">Remove</Button>
+                                </Grid>
+                                </Grid>
+                                </Grid>
+                                }
+                                
                                </li>
                     })}
                 </ul>    
