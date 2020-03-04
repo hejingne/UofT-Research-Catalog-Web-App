@@ -1,7 +1,6 @@
 import React from "react";
 import {} from "react-bootstrap";
 import {withRouter} from "react-router-dom";
-import MaterialTable from 'material-table';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 
@@ -12,11 +11,11 @@ import Search from "../Search"
 import './styles.css'
 
 
-class StudentHomePage extends React.Component {
+class HomePage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {role: props.role};
+        this.state = {};
     }
 
     
@@ -48,7 +47,7 @@ class StudentHomePage extends React.Component {
                     </div>
                 </Carousel>
                 <br></br>
-                <div id="search-box"><Search/></div>
+                <div id="search-box"><Search userType={this.props.userType}/></div>
                 
                 <Footer/>
 
@@ -57,7 +56,7 @@ class StudentHomePage extends React.Component {
       }
 }
 
-export default withRouter(StudentHomePage);
+export default withRouter(HomePage);
 
   
 function Footer (props) {

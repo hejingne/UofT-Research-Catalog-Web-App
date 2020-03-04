@@ -1,0 +1,22 @@
+#account-settings-container {
+    display: block;
+}
+
+#account-settings-container .login__button {
+    width: 300px;
+    height: 50px;
+    display: block;
+}
+
+#confirm {
+    background-color: transparent;
+    margin-top: 30px;
+}
+
+#reset-password-divider {
+    margin-bottom: 30px;
+}
+
+#upload-profile-pic-btn{
+    display: none;
+}

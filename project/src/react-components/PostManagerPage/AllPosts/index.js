@@ -1,5 +1,5 @@
 import React from "react";
-import CurrentPostList from "./../CurrentPostList";
+import CurrentPostList from "./../CurrentPostsList";
 import PostForm from "./../PostForm";
 
 import { addPost } from "./../action/PostModification";

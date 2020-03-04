@@ -7,6 +7,8 @@ import InterestsChips from "../InterestsChips";
 
 import "./styles.css";
 import Applications from "../Applications";
+import AccountSettings from "../AccountSettings";
+import Divider from "@material-ui/core/Divider";
 
 
 class Profile extends React.Component {
@@ -18,7 +20,8 @@ class Profile extends React.Component {
         this.state = {
             userType: localStorage.getItem("userType") ? localStorage.getItem("userType") : sessionStorage.getItem("userType"),
             personalInfo: {
-                username: "USERNAME",
+                firstName: "Mike",
+                lastName: "Oreo",
                 description: "some personal description",
                 profilePicture: require("./static/no-profile-picture-icon.png"),
             },
@@ -42,10 +45,13 @@ class Profile extends React.Component {
             return <Dashboard/>;
         }
         if (this.state.selectedTab === "SUBMITTED APPLICATIONS") {
-            return <Applications/>;
+            return <Applications userType={"Student"}/>;
         }
-        if (this.state.selectedTab === "POSTED OPPORTUNITIES") {
-            return <Applications/>;
+        if (this.state.selectedTab === "MANAGE POSTING") {
+            this.props.history.push("/manage-posting");
+        }
+        if (this.state.selectedTab === "ACCOUNT SETTINGS") {
+            return <AccountSettings/>;
         }
     }
 
@@ -54,7 +60,7 @@ class Profile extends React.Component {
             <div>
                 <div id="info">
                     <div id="basic-info">
-                        <span id="username">{this.state.personalInfo.username}</span>
+                        <span id="username">{this.state.personalInfo.firstName+" "+this.state.personalInfo.lastName}</span>
                         <span id="description">"{this.state.personalInfo.description}"</span>
                         <InterestsChips/>
                     </div>
@@ -67,7 +73,7 @@ class Profile extends React.Component {
                     {this.state.userType === "Researcher" &&
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
-                    }}>POSTED OPPORTUNITIES</Button>}
+                    }}>MANAGE POSTING</Button>}
                     {this.state.userType === "Student" &&
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
@@ -75,6 +81,7 @@ class Profile extends React.Component {
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
                     }}>ACCOUNT SETTINGS</Button>
+                    <Divider />
                 </div>
                 <div>
                     {this.displayContent()}

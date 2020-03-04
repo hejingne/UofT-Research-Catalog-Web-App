@@ -33,10 +33,16 @@ class Header extends React.Component {
         if (selectedOption === "My Profile") {
             this.props.history.push("/profile");
         }
+        if (selectedOption === "Application Status") {
+            this.props.history.push("/manage-posting");
+        }
         if (selectedOption === "Sign Out") {
             localStorage.removeItem("userType");
             sessionStorage.removeItem("userType");
             this.redirectToHome();
+        }
+        if (selectedOption === "Manage Users") {
+            this.props.history.push("/user-manage");
         }
         this.setState({menuOpenState: false});
     }
@@ -47,10 +53,20 @@ class Header extends React.Component {
 
     render() {
         const logoUrl = require("./static/uoft-logo.png")
-        const options = ["Home", "My Profile", "Application Status", "Sign Out"];
+        const options = ["Home", "My Profile", "Sign Out"];
+        const adminOptions = ["Home", "My Profile", "Manage Users", "Sign Out"];
         const userTypes = ["Student", "Researcher", "Administrator"]
         const hasSignIn = userTypes.includes(localStorage.getItem("userType"))
             || userTypes.includes(sessionStorage.getItem("userType"));
+
+        let userType;
+        if (userTypes.includes(localStorage.getItem("userType"))) {
+            userType = localStorage.getItem("userType");
+        } else {
+            userType = sessionStorage.getItem("userType");
+        }
+
+        let menuOptions = (userType ==="Administrator") ? adminOptions : options
 
         return (<div id="banner">
             <img id="logo" src={logoUrl} onClick={this.redirectToHome}/>
@@ -77,7 +93,7 @@ class Header extends React.Component {
                         },
                     }}
                 >
-                    {options.map((option) =>
+                    {menuOptions.map((option) =>
                         <MenuItem key={option} selected={option === "Pyxis"} onClick={(e) => {
                             this.handleSelectMenuOption(e)
                         }}>{option} </MenuItem>
