@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {Typography, ButtonBase, TextField, Button}  from '@material-ui/core';
 import Link from '@material-ui/core/Link';
-import ApplicationForm from "../ApplicationForm"
 import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 
 
@@ -24,8 +23,7 @@ class Search extends React.Component {
         };
     }
     
-    render() {  
-      
+    render() {
         let filteredList = this.state.researchList.filter(
             (research) => {
                 return research.title.toLowerCase().indexOf(this.state.keywords.toLowerCase()) !== -1 || research.researcher.toLowerCase().indexOf(this.state.keywords.toLowerCase()) !== -1;
@@ -75,15 +73,17 @@ class Search extends React.Component {
                                 <Grid item xs={7}>
                                 <ResearchInfo research={research}/> 
                                 </Grid>
-                                <Grid item>
+                                <Grid>
+                                <Grid container direction="column" justify="center">
+                                <Button onClick={()=>this.setState({toApplication: true})} className="login__button">Apply</Button>
                                 <Button onClick={()=>{for (let i = 0; i < this.state.researchList.length; i++) {
                                     if (research.title === this.state.researchList[i].title) {
                                         this.state.researchList.splice(i, 1);
                                         this.setState({researchList: this.state.researchList});
-                                        console.log(this.state.researchList)
                                         return ;
                                     }
                                 }}} className="login__button">Remove</Button>
+                                </Grid>
                                 </Grid>
                                 </Grid>
                                 }
