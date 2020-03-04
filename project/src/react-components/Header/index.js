@@ -33,6 +33,9 @@ class Header extends React.Component {
         if (selectedOption === "My Profile") {
             this.props.history.push("/profile");
         }
+        if (selectedOption === "Application Status") {
+            this.props.history.push("/manage-posting");
+        }
         if (selectedOption === "Sign Out") {
             localStorage.removeItem("userType");
             sessionStorage.removeItem("userType");
