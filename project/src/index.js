@@ -6,6 +6,8 @@ import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 import Header from "./react-components/Header";
 import Home from './react-components/Home/index';
 import SignIn from "./react-components/SignIn";
+import PostManagerPage from './react-components/PostManagerPage/AllPosts';
+
 import Profile from "./react-components/Profile"
 import SignUp from "./react-components/SignUp";
 import ApplicationForm from './react-components/ApplicationForm';
@@ -25,6 +27,7 @@ const routing = (
             <Route path="/signin" component={() => getSignInState() ? <Redirect to="/home"/> : <SignIn/>}/>
             <Route path="/signup" component={() => getSignInState() ? <Redirect to="/home"/> : <SignUp/>}/>
             <Route path="/profile" component={() => getSignInState() ? <Profile/> : <Redirect to="/home"/>}/>
+            <Route path="/manage-posting" component={() => getSignInState() ? <PostManagerPage/> : <Redirect to="/home"/>}/>
             <Route path="/application" component={() => getSignInState() ? <ApplicationForm/> : <Redirect to="/home"/>}/>
             <Route exact path="/" render={() => <Redirect to="/home"/>}/>
         </div>

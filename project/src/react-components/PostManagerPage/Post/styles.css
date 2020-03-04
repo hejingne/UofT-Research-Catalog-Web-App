@@ -1,0 +1,10 @@
+
+.post {
+  margin-bottom: 5px;
+  font-size: 120%;
+}
+
+.post .MuiTableCell-root {
+  font-size: 0.75em;
+  color: darkslategray;
+}
