@@ -79,8 +79,7 @@ This section is the same as that of **Student** except there is an additional `R
 options are provided by the menu:
   * `Home` - Go back to user home page
   * `My Profile` - Visit profile page
-  * `User Requests` - Handle user requests (e.g., changing password)
-  * `User List` - View the list of users; Can remove a user if needed
+  * `Manage Users` - View the list of users; Can remove a user if needed; Handle user requests (e.g., changing password)
   * `Sign out`
 
 #### 4. Manage Profile
