@@ -1,6 +1,7 @@
 import React from "react";
-// import DateFnsUtils from "@date-io/date-fns"; //lib
-import DatePicker from "react-datepicker";
+// import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+// import DateFnsUtils from "@date-io/date-fns";
+// import MomentUtils from "@date-io/moment";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
@@ -13,15 +14,15 @@ class PostForm extends React.Component {
   render() {
     const {
       title,
+      positions,
       areaOfStudy,
       deadline,
       handleChange,
-      handleDateChange,
       addPost
     } = this.props;
 
     return (
-      <Grid className="post-form" container spacing={4}>
+      <Grid className="post-form" container spacing={2}>
         <Input
           name="title"
           value={title}
@@ -36,10 +37,18 @@ class PostForm extends React.Component {
           label="Area Of Study"
         />
 
-        <DatePicker
-          selected={deadline}
-          onChange={handleDateChange}
+        <Input
+          name="number of positions"
+          value={positions}
+          onChange={handleChange}
+          label="Number Of Positions"
         />
+          <Input
+            name="deadline"
+            value={deadline}
+            onChange={handleChange}
+            label = "deadline (MM/DD/YY)"
+          />
 
         <Grid
           className="post-form__button-grid"
