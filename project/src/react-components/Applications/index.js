@@ -40,6 +40,7 @@ class Applications extends React.Component {
     }
 
     render() {
+        console.log(this.props.userType)
         return (
             <List id="research-container">
                 {this.state.researchList.map((research) => {

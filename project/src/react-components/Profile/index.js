@@ -47,8 +47,8 @@ class Profile extends React.Component {
         if (this.state.selectedTab === "SUBMITTED APPLICATIONS") {
             return <Applications userType={"Student"}/>;
         }
-        if (this.state.selectedTab === "POSTED OPPORTUNITIES") {
-            return <Applications userType={"Researcher"}/>;
+        if (this.state.selectedTab === "MANAGE POSTING") {
+            this.props.history.push("/manage-posting");
         }
         if (this.state.selectedTab === "ACCOUNT SETTINGS") {
             return <AccountSettings/>;
@@ -73,7 +73,7 @@ class Profile extends React.Component {
                     {this.state.userType === "Researcher" &&
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)
-                    }}>POSTED OPPORTUNITIES</Button>}
+                    }}>MANAGE POSTING</Button>}
                     {this.state.userType === "Student" &&
                     <Button className="login__button" onClick={(e) => {
                         this.handleOnClick(e)

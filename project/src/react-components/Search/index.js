@@ -41,6 +41,18 @@ class Search extends React.Component {
                 researcher: 'Steven Farber',
                 term: '2020 Fall - 2021 Winter',
                 deadline: '2020.07.30'
+            }, {
+                title: "Computational Analytics", 
+                description: 'This is some details of this research. Thus is some more details of this research.',
+                researcher: 'Mike Oreo',
+                term: '2020 Fall - 2021 Winter',
+                deadline: "May 28, 2020" 
+            }, {
+                title: "Geophysical Research Studies", 
+                description: 'This is some details of this research. Thus is some more details of this research.',
+                researcher: 'Mike Oreo',
+                term: '2020 Fall - 2021 Winter',
+                deadline: "June 01, 2020" 
             }],
         };
     }
