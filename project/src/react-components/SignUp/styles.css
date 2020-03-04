@@ -7,15 +7,17 @@
     margin-top: 30px;
 }
 
-#sign-in-title-box {
+#sign-up-title-box {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 }
 
-#sign-in-title {
+#sign-up-title {
     margin-left: 20px;
 }
 
-#error-alert {
-    margin-bottom: 30px;
+#usertype-dropdown{
+    margin-top: 15px;
+    margin-bottom: 15px;
 }

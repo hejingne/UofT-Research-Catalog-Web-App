@@ -6,20 +6,30 @@ import {Route, BrowserRouter as Router, Redirect} from 'react-router-dom';
 import Header from "./react-components/Header";
 import Home from './react-components/Home/index';
 import SignIn from "./react-components/SignIn";
-import StudentHomePage from './react-components/StudentHomePage';
 import PostManagerPage from './react-components/PostManagerPage/AllPosts';
+
+import Profile from "./react-components/Profile"
+import SignUp from "./react-components/SignUp";
+import ApplicationForm from './react-components/ApplicationForm';
+
+function getSignInState() {
+    const userTypes = ["Student", "Researcher", "Administrator"]
+    const hasSignIn = userTypes.includes(localStorage.getItem("userType"))
+        || userTypes.includes(sessionStorage.getItem("userType"));
+    return hasSignIn;
+}
 
 const routing = (
     <Router>
         <Header/>
         <div>
             <Route path="/home" component={Home}/>
-            <Route path="/signin" component={SignIn}/>
-            <Route path="/student" component={StudentHomePage}/>
-            <Route path="/manage-posting" component={PostManagerPage}/>
-            <Route exact path="/" render={() => (
-                <Redirect to="/home"/>
-            )}/>
+            <Route path="/signin" component={() => getSignInState() ? <Redirect to="/home"/> : <SignIn/>}/>
+            <Route path="/signup" component={() => getSignInState() ? <Redirect to="/home"/> : <SignUp/>}/>
+            <Route path="/profile" component={() => getSignInState() ? <Profile/> : <Redirect to="/home"/>}/>
+            <Route path="/manage-posting" component={() => getSignInState() ? <PostManagerPage/> : <Redirect to="/home"/>}/>
+            <Route path="/application" component={() => getSignInState() ? <ApplicationForm/> : <Redirect to="/home"/>}/>
+            <Route exact path="/" render={() => <Redirect to="/home"/>}/>
         </div>
     </Router>
 )
