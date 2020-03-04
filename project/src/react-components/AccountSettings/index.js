@@ -13,7 +13,9 @@ class AccountSettings extends React.Component {
 
     constructor(props) {
         super(props);
+        this.profilePicture = React.createRef();
         this.handleConfirmResetPassword = this.handleConfirmResetPassword.bind(this);
+        this.handleChangeProfilePicture = this.handleChangeProfilePicture.bind(this);
         this.handleSignOut = this.handleSignOut.bind(this);
         this.state = {
             accountSettingsInfo: {
@@ -57,6 +59,10 @@ class AccountSettings extends React.Component {
             setTimeout(() =>
                 this.setStateResetPassword({successAlertOpenState: false, textFieldOpenState: false}), 2000);
         }
+    }
+
+    handleChangeProfilePicture(){
+        document.getElementById("upload-profile-pic-btn").click();
     }
 
     render() {
@@ -126,6 +132,10 @@ class AccountSettings extends React.Component {
                     <Divider id="reset-password-divider"/>
                 </Container>
                 }
+                <Button className="login__button center"
+                        onClick={this.handleChangeProfilePicture}>CHANGE PROFILE PICTURE
+                    <input id="upload-profile-pic-btn" type="file" ref={this.profilePicture}/>
+                </Button>
                 <Button className="login__button center" onClick={this.handleSignOut}>SIGN OUT</Button>
             </div>
         );
