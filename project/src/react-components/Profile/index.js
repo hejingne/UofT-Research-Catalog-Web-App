@@ -45,10 +45,10 @@ class Profile extends React.Component {
             return <Dashboard/>;
         }
         if (this.state.selectedTab === "SUBMITTED APPLICATIONS") {
-            return <Applications/>;
+            return <Applications userType={"Student"}/>;
         }
         if (this.state.selectedTab === "POSTED OPPORTUNITIES") {
-            return <Applications/>;
+            return <Applications userType={"Researcher"}/>;
         }
         if (this.state.selectedTab === "ACCOUNT SETTINGS") {
             return <AccountSettings/>;
