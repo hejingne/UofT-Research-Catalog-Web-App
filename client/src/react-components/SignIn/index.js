@@ -10,6 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import {Alert, AlertTitle} from '@material-ui/lab';
+import api from "../../api";
 
 
 import "./styles.css";
@@ -26,7 +27,8 @@ class SignIn extends React.Component {
         };
     }
 
-    handleSignIn() {
+
+    async handleSignIn() {
         const emptyFields = Object.entries(this.state).filter((info) => info[1] === "");
         if (emptyFields.length > 0) {
             return null;
@@ -34,21 +36,24 @@ class SignIn extends React.Component {
         const {state} = this.props.location;
         const userType = state.role.charAt(0) + state.role.slice(1).toLowerCase();
         // connect to database to authenticate username and password
-        if (userType === "Student" && this.state.emailAddress === "user" && this.state.password === "user" ||
-            userType === "Researcher" && this.state.emailAddress === "user2" && this.state.password === "user2" ||
-            userType === "Administrator" && this.state.emailAddress === "admin" && this.state.password === "admin") {
-            if (this.state.rememberMe) {
-                localStorage.setItem("userType", userType);
-            } else {
-                sessionStorage.setItem("userType", userType);
+        await api.validateUser({
+            emailAddress: this.state.emailAddress,
+            password: this.state.password,
+            userType: userType
+        }).then((data) => {
+                if (this.state.rememberMe) {
+                    localStorage.setItem("userType", userType);
+                } else {
+                    sessionStorage.setItem("userType", userType);
+                }
+                this.props.history.push({
+                    pathname: "/home",
+                })
             }
-            this.props.history.push({
-                pathname: "/home",
-            })
-        } else {
+        ).catch((error) => {
             this.setState({alertOpenState: true});
             return null;
-        }
+        });
     }
 
     render() {
@@ -132,7 +137,7 @@ class SignIn extends React.Component {
                 </div>
                 <Box mt={8}>
                 </Box>
-            </Container>   
+            </Container>
         );
     }
 }
