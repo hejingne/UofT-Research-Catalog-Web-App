@@ -32,7 +32,7 @@ createUser = (req, res) => {
         });
 };
 
-getUserByEmailAddress = async (req, res) => {
+validateUser = async (req, res) => {
     const body = req.body;
 
     if (!body) {
@@ -56,14 +56,21 @@ getUserByEmailAddress = async (req, res) => {
             if (!collection.length) {
                 return res
                     .status(404)
-                    .json({ success: false, error: `user not found` });
+                    .json({ success: false, error: "user not found" });
             }
-            return res.status(200).json({ success: true, data: collection });
+            if (collection[0].emailAddress !== user.emailAddress ||
+                collection[0].password !== user.password ||
+                collection[0].userType !== user.userType) {
+                return res
+                    .status(401)
+                    .json({ success: false, error: "user unauthorized" });
+            }
+            return res.status(200).json({ success: true, message: "user authorized" });
         })
         .catch(err => console.log(err));
 };
 
 module.exports = {
     createUser,
-    getUserByEmailAddress
+    validateUser
 };
