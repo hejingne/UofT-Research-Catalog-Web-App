@@ -40,15 +40,19 @@ class SignIn extends React.Component {
             emailAddress: this.state.emailAddress,
             password: this.state.password,
             userType: userType
-        }).then((data) => {
-                if (this.state.rememberMe) {
-                    localStorage.setItem("userType", userType);
+        }).then((response) => {
+                if (response.data.success) {
+                    if (this.state.rememberMe) {
+                        localStorage.setItem("userType", userType);
+                    } else {
+                        sessionStorage.setItem("userType", userType);
+                    }
+                    this.props.history.push({
+                        pathname: "/home",
+                    })
                 } else {
-                    sessionStorage.setItem("userType", userType);
+                    throw new Error();
                 }
-                this.props.history.push({
-                    pathname: "/home",
-                })
             }
         ).catch((error) => {
             this.setState({alertOpenState: true});
