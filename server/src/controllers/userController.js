@@ -1,4 +1,4 @@
-const userSchema = require("../models/userSchema");
+const schema = require("../models/schema");
 
 createUser = (req, res) => {
     const body = req.body;
@@ -10,7 +10,7 @@ createUser = (req, res) => {
         });
     }
 
-    const user = new userSchema(body);
+    const user = new schema.user(body);
 
     if (!user) {
         return res.status(400).json({ success: false, error: err });
@@ -42,13 +42,13 @@ validateUser = async (req, res) => {
         });
     }
 
-    const user = new userSchema(body);
+    const user = new schema.user(body);
 
     if (!user) {
         return res.status(400).json({ success: false, error: err });
     }
 
-    await userSchema
+    await schema.user
         .find({ emailAddress: user.emailAddress }, (err, collection) => {
             if (err) {
                 return res.status(400).json({ success: false, error: err });
