@@ -96,6 +96,8 @@ authenticateUser = async (req, res) => {
                         req.session.user = user._id;
                         req.session.emailAddress = user.emailAddress;
                         req.session.userType = user.userType;
+                        req.session.save();
+
                         return res.status(200).json({
                             success: true,
                             message: "user authorized"
@@ -191,9 +193,24 @@ signOutUser = (req, res) => {
     });
 };
 
+getSession = (req, res) => {
+    if (req.session.user) {
+        res.status(200).json({
+            success: true,
+            user: {
+                emailAddress: req.session.emailAddress,
+                userType: req.session.userType
+            }
+        });
+    } else {
+        res.status(401).json({ success: false, message: "user unauthorized" });
+    }
+};
+
 module.exports = {
     createUser,
     authenticateUser,
     updatePassword,
-    signOutUser
+    signOutUser,
+    getSession
 };
