@@ -1,4 +1,5 @@
-const schema = require("../models/schema");
+const User = require("../models/user");
+const Profile = require("../models/profile");
 const bcrypt = require("bcryptjs");
 
 createUser = (req, res) => {
@@ -10,12 +11,12 @@ createUser = (req, res) => {
         });
     }
 
-    const user = new schema.user({
+    const user = new User({
         emailAddress: body.emailAddress,
         password: body.password,
         userType: body.userType
     });
-    const profile = new schema.profile({
+    const profile = new Profile({
         emailAddress: body.emailAddress,
         userType: body.userType,
         firstName: body.firstName,
@@ -70,13 +71,12 @@ authenticateUser = async (req, res) => {
         });
     }
 
-    const user = new schema.user(body);
+    const user = new User(body);
     if (!user) {
         return res.status(400).json({ success: false, error: err });
     }
 
-    await schema.user
-        .findOne({ emailAddress: user.emailAddress })
+    await User.findOne({ emailAddress: user.emailAddress })
         .then((existingUser) => {
             if (!existingUser) {
                 return res
@@ -135,8 +135,7 @@ updatePassword = async (req, res) => {
         });
     }
 
-    await schema.user
-        .findOne({ emailAddress: body.emailAddress })
+    await User.findOne({ emailAddress: body.emailAddress })
         .then((existingUser) => {
             if (!existingUser) {
                 return res
