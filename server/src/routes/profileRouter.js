@@ -7,6 +7,6 @@ const router = express.Router();
 // router.put('/movie/:id', MovieCtrl.updateMovie)
 // router.delete('/movie/:id', MovieCtrl.deleteMovie)
 // router.get('/movie/:id', MovieCtrl.getMovieById)
-router.get("/profiles", profileController.getProfile);
+router.get("/:emailAddress", profileController.getProfileByEmail);
 
 module.exports = router;

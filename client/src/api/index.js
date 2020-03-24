@@ -1,13 +1,22 @@
 import axios from "axios";
 
-const api = axios.create({
+const userApi = axios.create({
     baseURL: "http://localhost:3001/user"
 });
 
-export const createUser = (payload) => api.post("/create", payload);
-export const authenticateUser = (payload) => api.post("/authenticate", payload);
-export const updatePassword = (payload) => api.put("/updatePassword", payload);
-export const signOutUser = () => api.get("/signOut");
+const profileApi = axios.create({
+    baseURL: "http://localhost:3001/profile"
+});
+
+export const createUser = (payload) => userApi.post("/create", payload);
+export const authenticateUser = (payload) =>
+    userApi.post("/authenticate", payload);
+export const updatePassword = (payload) =>
+    userApi.put("/updatePassword", payload);
+export const signOutUser = () => userApi.get("/signOut");
+
+export const getProfileByEmail = (emailAddress) =>
+    profileApi.get(`/${emailAddress}`);
 
 const apis = {
     createUser,

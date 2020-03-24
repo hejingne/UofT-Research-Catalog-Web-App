@@ -33,20 +33,26 @@ const Profile = require("../models/profile");
 //         });
 // };
 
-getProfile = async (req, res) => {
-    await Profile.find({}, (err, collection) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err });
+getProfileByEmail = async (req, res) => {
+    await Profile.findOne(
+        { emailAddress: req.params.emailAddress },
+        (error, profile) => {
+            if (error) {
+                return res.status(400).json({ success: false, error: error });
+            }
+
+            if (!profile) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "profile not found" });
+            }
+            return res.status(200).json({ success: true, data: profile });
         }
-        if (!collection.length) {
-            return res
-                .status(404)
-                .json({ success: false, error: `profile not found` });
-        }
-        return res.status(200).json({ success: true, data: collection });
-    }).catch((err) => console.log(err));
+    ).catch((error) => {
+        return res.status(404).json({ success: false, error: error });
+    });
 };
 
 module.exports = {
-    getProfile
+    getProfileByEmail
 };
