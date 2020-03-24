@@ -70,10 +70,8 @@ authenticateUser = async (req, res) => {
                         existingUser.userType === user.userType
                     ) {
                         req.session.user = user._id;
-                        req.session.email = user.emailAddress;
+                        req.session.emailAddress = user.emailAddress;
                         req.session.userType = user.userType;
-
-                        console.log(req.session);
                         return res.status(200).json({
                             success: true,
                             message: "user authorized"
@@ -96,7 +94,74 @@ authenticateUser = async (req, res) => {
         });
 };
 
+updatePassword = async (req, res) => {
+    // check session first
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "user unauthorized"
+        });
+    }
+
+    const body = req.body;
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: "you must provide email and password"
+        });
+    }
+
+    await schema.user
+        .findOne({ emailAddress: body.emailAddress })
+        .then((existingUser) => {
+            if (!existingUser) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "user not found" });
+            }
+
+            existingUser.password = body.password;
+
+            bcrypt.hash(existingUser.password, 10, (err, hash) => {
+                existingUser.password = hash;
+                existingUser
+                    .save()
+                    .then(() => {
+                        return res.status(200).json({
+                            success: true,
+                            id: existingUser._id,
+                            message: "user's password updated"
+                        });
+                    })
+                    .catch((error) => {
+                        return res.status(404).json({
+                            success: false,
+                            error,
+                            message: "user's password not updated"
+                        });
+                    });
+            });
+        })
+        .catch((error) => {
+            return res.status(404).json({
+                success: false,
+                error,
+                message: "user's password not updated"
+            });
+        });
+};
+
+signOutUser = (req, res) => {
+    req.session.destroy((error) => {
+        if (error) {
+            res.status(500).send(error);
+        }
+    });
+};
+
 module.exports = {
     createUser,
-    authenticateUser
+    authenticateUser,
+    updatePassword,
+    signOutUser
 };
