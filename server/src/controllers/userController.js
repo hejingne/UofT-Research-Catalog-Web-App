@@ -154,7 +154,16 @@ updatePassword = async (req, res) => {
 signOutUser = (req, res) => {
     req.session.destroy((error) => {
         if (error) {
-            res.status(500).send(error);
+            return res.status(500).json({
+                success: false,
+                error,
+                message: "user not signed out"
+            });
+        } else {
+            return res.status(200).json({
+                success: true,
+                message: "user signed out"
+            });
         }
     });
 };
