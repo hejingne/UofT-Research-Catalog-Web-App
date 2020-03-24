@@ -3,28 +3,52 @@ const bcrypt = require("bcryptjs");
 
 createUser = (req, res) => {
     const body = req.body;
-
     if (!body) {
         return res.status(400).json({
             success: false,
-            error: "you must provide email and password"
+            error: "you must provide all required information"
         });
     }
 
-    const user = new schema.user(body);
-    if (!user) {
+    const user = new schema.user({
+        emailAddress: body.emailAddress,
+        password: body.password,
+        userType: body.userType
+    });
+    const profile = new schema.profile({
+        emailAddress: body.emailAddress,
+        userType: body.userType,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        description: body.description,
+        interests: body.interests
+    });
+
+    if (!user || !profile) {
         return res.status(400).json({ success: false, error: err });
     }
-
+    // save user to users db
     bcrypt.hash(user.password, 10, (err, hash) => {
         user.password = hash;
         user.save()
             .then(() => {
-                return res.status(201).json({
-                    success: true,
-                    id: user._id,
-                    message: "user created"
-                });
+                // save profile to profiles db
+                profile
+                    .save()
+                    .then(() => {
+                        return res.status(201).json({
+                            success: true,
+                            id: user._id,
+                            message: "user created"
+                        });
+                    })
+                    .catch((error) => {
+                        return res.status(400).json({
+                            success: false,
+                            error,
+                            message: "user not created"
+                        });
+                    });
             })
             .catch((error) => {
                 return res.status(400).json({
