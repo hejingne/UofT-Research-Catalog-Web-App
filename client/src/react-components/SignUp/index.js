@@ -1,6 +1,6 @@
 import React from "react";
 import {} from "react-bootstrap";
-import {Link, Redirect, withRouter} from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Avatar from "@material-ui/core/Avatar";
@@ -15,7 +15,7 @@ import "./styles.css";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-
+import api from "../../api";
 
 class SignUp extends React.Component {
     constructor(props) {
@@ -27,20 +27,39 @@ class SignUp extends React.Component {
             emailAddress: "",
             password: "",
             userType: "",
-            agreementCheckBox: "",
+            agreementCheckBox: ""
         };
     }
 
     handleSignUp() {
-        const emptyFields = Object.entries(this.state).filter((info) => info[1] === "");
+        const emptyFields = Object.entries(this.state).filter(
+            (info) => info[1] === ""
+        );
         if (emptyFields.length > 0) {
             return null;
         }
         // check if there is existing account, if not
         // push data in this.state to database at here to create user
-        this.props.history.push({
-            pathname: "/home",
+        api.createUser({
+            emailAddress: this.state.emailAddress,
+            password: this.state.password,
+            userType: this.state.userType,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName
         })
+            .then((response) => {
+                if (response.data.success) {
+                    this.props.history.push({
+                        pathname: "/home"
+                    });
+                } else {
+                    console.log(response);
+                    throw new Error();
+                }
+            })
+            .catch((error) => {
+                return null;
+            });
     }
 
     render() {
@@ -48,9 +67,12 @@ class SignUp extends React.Component {
             <Container id="container" component="main" maxWidth="xs">
                 <div>
                     <div id="sign-up-title-box">
-                        <Avatar className="">
-                        </Avatar>
-                        <Typography id="sign-up-title" component="h1" variant="h5">
+                        <Avatar className=""></Avatar>
+                        <Typography
+                            id="sign-up-title"
+                            component="h1"
+                            variant="h5"
+                        >
                             {"Sign up for new user "}
                         </Typography>
                     </div>
@@ -67,7 +89,11 @@ class SignUp extends React.Component {
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
-                                    onChange={(e) => this.setState({firstName: e.target.value})}
+                                    onChange={(e) =>
+                                        this.setState({
+                                            firstName: e.target.value
+                                        })
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -80,7 +106,11 @@ class SignUp extends React.Component {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="lname"
-                                    onChange={(e) => this.setState({lastName: e.target.value})}
+                                    onChange={(e) =>
+                                        this.setState({
+                                            lastName: e.target.value
+                                        })
+                                    }
                                 />
                             </Grid>
                         </Grid>
@@ -93,7 +123,9 @@ class SignUp extends React.Component {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-                            onChange={(e) => this.setState({emailAddress: e.target.value})}
+                            onChange={(e) =>
+                                this.setState({ emailAddress: e.target.value })
+                            }
                         />
                         <TextField
                             variant="outlined"
@@ -105,28 +137,47 @@ class SignUp extends React.Component {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            onChange={(e) => this.setState({password: e.target.value})}
+                            onChange={(e) =>
+                                this.setState({ password: e.target.value })
+                            }
                         />
-                        <FormControl id="usertype-dropdown" variant="outlined" fullWidth required>
-                            <InputLabel>
-                                User Type
-                            </InputLabel>
+                        <FormControl
+                            id="usertype-dropdown"
+                            variant="outlined"
+                            fullWidth
+                            required
+                        >
+                            <InputLabel>User Type</InputLabel>
                             <Select
                                 native
                                 value={this.state.userType}
                                 onChange={(e) =>
-                                    this.setState({userType: e.target.value})}
+                                    this.setState({
+                                        userType: e.target.value
+                                    })
+                                }
                                 fullWidth
                             >
-                                <option value=""/>
-                                <option value={1}>Student</option>
-                                <option value={2}>Researcher</option>
+                                <option value="" />
+                                <option value="Student">Student</option>
+                                <option value="Researcher">Researcher</option>
                             </Select>
                         </FormControl>
-                        <FormControlLabel required
-                                          control={<Checkbox required value="remember" color="primary"
-                                                             onChange={() => this.setState({agreementCheckBox: "checked"})}/>}
-                                          label="Check here to indicate that you have read and agree to the terms of the U of T Research Catalogue"
+                        <FormControlLabel
+                            required
+                            control={
+                                <Checkbox
+                                    required
+                                    value="remember"
+                                    color="primary"
+                                    onChange={() =>
+                                        this.setState({
+                                            agreementCheckBox: "checked"
+                                        })
+                                    }
+                                />
+                            }
+                            label="Check here to indicate that you have read and agree to the terms of the U of T Research Catalogue"
                         />
                         <Button
                             id="submit"
@@ -146,8 +197,7 @@ class SignUp extends React.Component {
                         </Grid>
                     </form>
                 </div>
-                <Box mt={8}>
-                </Box>
+                <Box mt={8}></Box>
             </Container>
         );
     }

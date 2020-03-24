@@ -21,8 +21,8 @@ createUser = (req, res) => {
         userType: body.userType,
         firstName: body.firstName,
         lastName: body.lastName,
-        description: body.description,
-        interests: body.interests
+        description: body.description ? body.description : "",
+        interests: body.interests ? body.interests : []
     });
 
     if (!user || !profile) {
