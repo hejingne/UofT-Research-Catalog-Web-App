@@ -36,7 +36,7 @@ createUser = (req, res) => {
     });
 };
 
-validateUser = async (req, res) => {
+authenticateUser = async (req, res) => {
     const body = req.body;
 
     if (!body) {
@@ -98,5 +98,5 @@ validateUser = async (req, res) => {
 
 module.exports = {
     createUser,
-    validateUser
+    authenticateUser
 };
