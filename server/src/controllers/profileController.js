@@ -1,4 +1,4 @@
-const Profile = require("../models/profile-model");
+const Profile = require("../models/profile");
 
 // createProfile = (req, res) => {
 //     const body = req.body;

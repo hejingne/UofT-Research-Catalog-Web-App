@@ -4,7 +4,7 @@ const cors = require("cors");
 const session = require("express-session");
 
 const db = require("./database");
-const profileRouter = require("./routes/profile-router");
+const profileRouter = require("./routes/profileRouter");
 const userRouter = require("./routes/userRouter");
 
 const app = express();
