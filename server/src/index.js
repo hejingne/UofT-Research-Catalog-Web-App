@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const session = require("express-session");
 
 const db = require("./database");
 const profileRouter = require("./routes/profile-router");
@@ -13,7 +14,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.json());
 
-db.on("error", error =>
+app.use(
+    session({
+        secret: "oursecret",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            expires: 60000,
+            httpOnly: true
+        }
+    })
+);
+
+db.on("error", (error) =>
     console.error("MongoDB connection error: " + error.message)
 );
 db.once("open", () => console.log("Connected to database"));
