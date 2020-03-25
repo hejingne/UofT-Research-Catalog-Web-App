@@ -75,7 +75,7 @@ class AccountSettings extends React.Component {
                         password: this.state.resetPassword.newPassword,
                         userType: response.data.user.userType
                     }).then((res) => {
-                        if (response.data.success) {
+                        if (res.data.success) {
                             this.setStateResetPassword({
                                 successAlertOpenState: true
                             });
