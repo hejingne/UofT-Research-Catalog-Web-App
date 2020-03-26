@@ -10,6 +10,7 @@ const userRouter = require("./routes/userRouter");
 const app = express();
 const apiPort = 3001;
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     cors({
@@ -18,7 +19,6 @@ app.use(
         credentials: true // enable set cookie
     })
 );
-app.use(bodyParser.json());
 
 app.use(
     session({

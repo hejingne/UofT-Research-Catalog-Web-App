@@ -9,5 +9,6 @@ const router = express.Router();
 // router.get('/movie/:id', MovieCtrl.getMovieById)
 router.get("/:emailAddress", profileController.getProfileByEmail);
 router.put("/updateInterests", profileController.updateInterests);
+router.put("/updateProfilePicture", profileController.updateProfilePicture);
 
 module.exports = router;

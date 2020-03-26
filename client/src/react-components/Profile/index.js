@@ -24,7 +24,7 @@ class Profile extends React.Component {
                 firstName: "",
                 lastName: "",
                 description: "",
-                profilePicture: require("./static/no-profile-picture-icon.png")
+                profilePicture: null
             },
             selectedTab: ""
         };
@@ -37,11 +37,23 @@ class Profile extends React.Component {
                 api.getProfileByEmail(response.data.user.emailAddress).then(
                     (res) => {
                         if (res.data.success) {
+                            let imagePath = require("./static/no-profile-picture-icon.png");
+                            if (res.data.data.profilePicture) {
+                                const image = btoa(
+                                    String.fromCharCode.apply(
+                                        null,
+                                        res.data.data.profilePicture.data.data
+                                    )
+                                );
+                                imagePath = "data:image/png;base64," + image;
+                            }
+
                             this.setState({
                                 personalInfo: {
                                     firstName: res.data.data.firstName,
                                     lastName: res.data.data.lastName,
-                                    description: res.data.data.description
+                                    description: res.data.data.description,
+                                    profilePicture: imagePath
                                 }
                             });
                         }

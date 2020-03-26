@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import { Container } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import Divider from "@material-ui/core/Divider";
+// import fs from "fs";
 import api from "../../api";
 
 import "./styles.css";
@@ -47,6 +48,7 @@ class AccountSettings extends React.Component {
     handleSignOut() {
         localStorage.removeItem("userType");
         sessionStorage.removeItem("userType");
+        api.signOutUser();
         this.props.history.push("/home");
     }
 
@@ -100,8 +102,18 @@ class AccountSettings extends React.Component {
         }
     }
 
-    handleChangeProfilePicture() {
-        document.getElementById("upload-profile-pic-btn").click();
+    handleChangeProfilePicture(e) {
+        const file = e.target.files[0];
+
+        const data = new FormData();
+        data.append("profilePicture", file);
+
+        api.getSession().then((response) => {
+            if (response.data.success) {
+                data.append("emailAddress", response.data.user.emailAddress);
+                api.updateProfilePicture(data);
+            }
+        });
     }
 
     render() {
@@ -215,12 +227,17 @@ class AccountSettings extends React.Component {
                 )}
                 <Button
                     className="login__button center"
-                    onClick={this.handleChangeProfilePicture}
+                    onClick={() => {
+                        document
+                            .getElementById("upload-profile-pic-btn")
+                            .click();
+                    }}
                 >
                     CHANGE PROFILE PICTURE
                     <input
                         id="upload-profile-pic-btn"
                         type="file"
+                        onChange={(e) => this.handleChangeProfilePicture(e)}
                         ref={this.profilePicture}
                     />
                 </Button>
