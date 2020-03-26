@@ -18,6 +18,8 @@ export const getSession = () => userApi.get("/session");
 
 export const getProfileByEmail = (emailAddress) =>
     profileApi.get(`/${emailAddress}`);
+export const updateInterests = (payload) =>
+    profileApi.put("/updateInterests", payload);
 
 const apis = {
     createUser,
@@ -25,7 +27,8 @@ const apis = {
     updatePassword,
     signOutUser,
     getSession,
-    getProfileByEmail
+    getProfileByEmail,
+    updateInterests
 };
 
 export default apis;

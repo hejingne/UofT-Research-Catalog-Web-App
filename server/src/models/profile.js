@@ -7,7 +7,8 @@ const profileSchema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     description: { type: String },
-    interests: { type: [String] }
+    interests: { type: [String] },
+    profilePicture: { data: Buffer, contentType: String }
 });
 
 const Profile = mongoose.model("Profile", profileSchema, "profiles");

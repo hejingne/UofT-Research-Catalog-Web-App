@@ -53,6 +53,52 @@ getProfileByEmail = async (req, res) => {
     });
 };
 
+updateInterests = async (req, res) => {
+    const body = req.body;
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: "data not found"
+        });
+    }
+
+    await Profile.findOne({ emailAddress: body.emailAddress })
+        .then((existingProfile) => {
+            if (!existingProfile) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "profile not found" });
+            }
+
+            existingProfile.interests = body.interests;
+
+            existingProfile
+                .save()
+                .then(() => {
+                    return res.status(200).json({
+                        success: true,
+                        id: existingProfile._id,
+                        message: "profile's interests updated"
+                    });
+                })
+                .catch((error) => {
+                    return res.status(404).json({
+                        success: false,
+                        error,
+                        message: "profile's interests not updated"
+                    });
+                });
+        })
+        .catch((error) => {
+            return res.status(404).json({
+                success: false,
+                error,
+                message: "profile's interests not updated"
+            });
+        });
+};
+
 module.exports = {
-    getProfileByEmail
+    getProfileByEmail,
+    updateInterests
 };
