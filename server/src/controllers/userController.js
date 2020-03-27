@@ -124,6 +124,28 @@ authenticateUser = async (req, res) => {
         });
 };
 
+getUsers = async (req, res) => {
+    if (!req.session.user) {
+        return res
+            .status(401)
+            .json({ success: false, message: "user unauthorized" });
+    }
+    await User.find({}, (error, users) => {
+        if (error) {
+            return res.status(400).json({ success: false, error: error });
+        }
+
+        if (!users) {
+            return res
+                .status(404)
+                .json({ success: false, error: "users not found" });
+        }
+        return res.status(200).json({ success: true, data: users });
+    }).catch((error) => {
+        return res.status(404).json({ success: false, error: error });
+    });
+};
+
 updatePassword = async (req, res) => {
     // check session first
     if (!req.session.user) {
@@ -180,6 +202,100 @@ updatePassword = async (req, res) => {
         });
 };
 
+updateEmailAddressAndUserType = async (req, res) => {
+    // check session first
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "user unauthorized"
+        });
+    }
+
+    const body = req.body;
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: "you must provide email and password"
+        });
+    }
+
+    await User.findOne({ emailAddress: body.emailAddress })
+        .then((existingUser) => {
+            if (!existingUser) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "user not found" });
+            }
+
+            existingUser.emailAddress = body.emailAddress;
+            existingUser.userType = body.userType;
+
+            existingUser
+                .save()
+                .then(() => {
+                    return res.status(200).json({
+                        success: true,
+                        id: existingUser._id,
+                        message: "user's email address and user type updated"
+                    });
+                })
+                .catch((error) => {
+                    return res.status(404).json({
+                        success: false,
+                        error,
+                        message:
+                            "user's email address and user type not updated"
+                    });
+                });
+        })
+        .catch((error) => {
+            return res.status(404).json({
+                success: false,
+                error,
+                message: "user's email address and user type not updated"
+            });
+        });
+};
+
+deleteUserAndProfile = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "user unauthorized"
+        });
+    }
+    await User.findOneAndDelete(
+        { emailAddress: req.params.emailAddress },
+        async (err) => {
+            if (err) {
+                return res.status(400).json({ success: false, error: err });
+            }
+
+            await Profile.findOneAndDelete(
+                { emailAddress: req.params.emailAddress },
+                (err) => {
+                    if (err) {
+                        return res
+                            .status(400)
+                            .json({ success: false, error: err });
+                    }
+                    return res.status(200).json({ success: true });
+                }
+            ).catch((error) => {
+                return res.status(404).json({
+                    success: false,
+                    error
+                });
+            });
+        }
+    ).catch((err) => {
+        return res.status(404).json({
+            success: false,
+            error
+        });
+    });
+};
+
 signOutUser = (req, res) => {
     req.session.destroy((error) => {
         if (error) {
@@ -214,7 +330,10 @@ getSession = (req, res) => {
 module.exports = {
     createUser,
     authenticateUser,
+    getUsers,
     updatePassword,
     signOutUser,
-    getSession
+    getSession,
+    deleteUserAndProfile,
+    updateEmailAddressAndUserType
 };
