@@ -38,7 +38,7 @@ class PostForm extends React.Component {
         />
 
         <Input
-          name="number of positions"
+          name="positions"
           value={positions}
           onChange={handleChange}
           label="Number Of Positions"
