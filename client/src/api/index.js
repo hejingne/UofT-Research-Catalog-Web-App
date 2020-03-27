@@ -16,7 +16,7 @@ export const updatePassword = (payload) =>
 export const updateEmailAddressAndUserType = (payload) =>
     userApi.put("/updateEmailAddressAndUserType", payload);
 export const signOutUser = () => userApi.get("/signOut");
-export const getSession = () => userApi.get("/session");
+export const getSession = (sessionId) => userApi.get(`/session/${sessionId}`);
 export const getUsers = () => userApi.get("/users");
 export const deleteUserAndProfile = (emailAddress) =>
     userApi.delete(`/delete/${emailAddress}`);

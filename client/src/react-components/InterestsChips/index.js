@@ -24,19 +24,24 @@ class InterestsChips extends React.Component {
     }
 
     componentDidMount() {
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+
         // connect to db to fetch and use this.setState() to update interests
-        api.getSession().then((response) => {
-            if (response.data.success) {
-                api.getProfileByEmail(response.data.user.emailAddress).then(
-                    (res) => {
-                        if (res.data.success) {
-                            this.setState({
-                                interests: res.data.data.interests
-                            });
-                        }
-                    }
-                );
+        api.getSession(sessionId).then((response) => {
+            if (!response.data.success) {
+                return this.props.history.push("/signOut");
             }
+            api.getProfileByEmail(response.data.user.emailAddress).then(
+                (res) => {
+                    if (res.data.success) {
+                        this.setState({
+                            interests: res.data.data.interests
+                        });
+                    }
+                }
+            );
         });
     }
 
@@ -47,13 +52,17 @@ class InterestsChips extends React.Component {
         );
         this.setState({ interests: updatedInterests });
         // connect to db to update interests
-        api.getSession().then((response) => {
-            if (response.data.success) {
-                api.updateInterests({
-                    emailAddress: response.data.user.emailAddress,
-                    interests: this.state.interests
-                });
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        api.getSession(sessionId).then((response) => {
+            if (!response.data.success) {
+                return this.props.history.push("/signOut");
             }
+            api.updateInterests({
+                emailAddress: response.data.user.emailAddress,
+                interests: this.state.interests
+            });
         });
     }
 
@@ -71,13 +80,17 @@ class InterestsChips extends React.Component {
             this.setState({ interests: existInterests });
             this.setState({ newInterest: "" });
             // connect to db to update interests
-            api.getSession().then((response) => {
-                if (response.data.success) {
-                    api.updateInterests({
-                        emailAddress: response.data.user.emailAddress,
-                        interests: this.state.interests
-                    });
+            const sessionId = localStorage.getItem("sessionId")
+                ? localStorage.getItem("sessionId")
+                : sessionStorage.getItem("sessionId");
+            api.getSession(sessionId).then((response) => {
+                if (!response.data.success) {
+                    return this.props.history.push("/signOut");
                 }
+                api.updateInterests({
+                    emailAddress: response.data.user.emailAddress,
+                    interests: this.state.interests
+                });
             });
         }
     }

@@ -23,11 +23,6 @@ class AccountSettings extends React.Component {
         );
         this.handleSignOut = this.handleSignOut.bind(this);
         this.state = {
-            accountSettingsInfo: {
-                "User Type": localStorage.getItem("userType")
-                    ? localStorage.getItem("userType")
-                    : sessionStorage.getItem("userType")
-            },
             resetPassword: {
                 textFieldOpenState: false,
                 alertOpenState: false,
@@ -46,10 +41,7 @@ class AccountSettings extends React.Component {
     }
 
     handleSignOut() {
-        localStorage.removeItem("userType");
-        sessionStorage.removeItem("userType");
-        api.signOutUser();
-        this.props.history.push("/home");
+        this.props.history.push("/signOut");
     }
 
     handleConfirmResetPassword() {
@@ -70,7 +62,10 @@ class AccountSettings extends React.Component {
             this.setStateResetPassword({ alertOpenState: true });
         } else {
             // update backend to change password
-            api.getSession().then((response) => {
+            const sessionId = localStorage.getItem("sessionId")
+                ? localStorage.getItem("sessionId")
+                : sessionStorage.getItem("sessionId");
+            api.getSession(sessionId).then((response) => {
                 if (response.data.success) {
                     api.updatePassword({
                         emailAddress: response.data.user.emailAddress,
@@ -96,7 +91,7 @@ class AccountSettings extends React.Component {
                         }
                     });
                 } else {
-                    this.setStateResetPassword({ alertOpenState: true });
+                    return this.props.history.push("/signOut");
                 }
             });
         }
@@ -107,12 +102,15 @@ class AccountSettings extends React.Component {
 
         const data = new FormData();
         data.append("profilePicture", file);
-
-        api.getSession().then((response) => {
-            if (response.data.success) {
-                data.append("emailAddress", response.data.user.emailAddress);
-                api.updateProfilePicture(data);
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        api.getSession(sessionId).then((response) => {
+            if (!response.data.success) {
+                return this.props.history.push("/signOut");
             }
+            data.append("emailAddress", response.data.user.emailAddress);
+            api.updateProfilePicture(data);
         });
     }
 

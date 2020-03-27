@@ -53,7 +53,6 @@ class SignUp extends React.Component {
                         pathname: "/home"
                     });
                 } else {
-                    console.log(response);
                     throw new Error();
                 }
             })

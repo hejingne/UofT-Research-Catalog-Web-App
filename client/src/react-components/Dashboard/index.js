@@ -36,35 +36,39 @@ class Dashboard extends React.Component {
 
     componentDidMount() {
         // connect to db to fetch and use this.setState() to update dashboardInfo
-        api.getSession().then((response) => {
-            if (response.data.success) {
-                api.getProfileByEmail(response.data.user.emailAddress).then(
-                    (res) => {
-                        if (res.data.success) {
-                            const currentEmploymentState =
-                                !res.data.data.currentEmployer ||
-                                res.data.data.currentEmployer === "N/A"
-                                    ? "Unemployed"
-                                    : "Employed";
-
-                            this.setState({
-                                dashboardInfo: {
-                                    "User Type": res.data.data.userType,
-                                    "Number of Applications Submitted":
-                                        "to be implemented",
-                                    "Number of Opportunities Posted":
-                                        "to be implemented",
-                                    "Current Employment State": currentEmploymentState,
-                                    "Current Employer":
-                                        res.data.data.currentEmployer,
-                                    "Current Position":
-                                        res.data.data.currentPosition
-                                }
-                            });
-                        }
-                    }
-                );
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        api.getSession(sessionId).then((response) => {
+            if (!response.data.success) {
+                return this.props.history.push("/signOut");
             }
+            api.getProfileByEmail(response.data.user.emailAddress).then(
+                (res) => {
+                    if (res.data.success) {
+                        const currentEmploymentState =
+                            !res.data.data.currentEmployer ||
+                            res.data.data.currentEmployer === "N/A"
+                                ? "Unemployed"
+                                : "Employed";
+
+                        this.setState({
+                            dashboardInfo: {
+                                "User Type": res.data.data.userType,
+                                "Number of Applications Submitted":
+                                    "to be implemented",
+                                "Number of Opportunities Posted":
+                                    "to be implemented",
+                                "Current Employment State": currentEmploymentState,
+                                "Current Employer":
+                                    res.data.data.currentEmployer,
+                                "Current Position":
+                                    res.data.data.currentPosition
+                            }
+                        });
+                    }
+                }
+            );
         });
     }
 
@@ -91,18 +95,18 @@ class Dashboard extends React.Component {
         dashboardInfo[selectedCard] = selectedCardText;
         this.setState({ modalOpenState: false, dashboardInfo: dashboardInfo });
         // update server and database
-        api.getSession().then((response) => {
-            if (response.data.success) {
-                api.updateEmploymentInfo({
-                    emailAddress: response.data.user.emailAddress,
-                    currentEmployer: this.state.dashboardInfo[
-                        "Current Employer"
-                    ],
-                    currentPosition: this.state.dashboardInfo[
-                        "Current Position"
-                    ]
-                });
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        api.getSession(sessionId).then((response) => {
+            if (!response.data.success) {
+                return this.props.history.push("/signOut");
             }
+            api.updateEmploymentInfo({
+                emailAddress: response.data.user.emailAddress,
+                currentEmployer: this.state.dashboardInfo["Current Employer"],
+                currentPosition: this.state.dashboardInfo["Current Position"]
+            });
         });
     }
 

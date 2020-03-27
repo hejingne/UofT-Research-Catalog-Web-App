@@ -21,9 +21,7 @@ class Profile extends React.Component {
             this
         );
         this.state = {
-            userType: localStorage.getItem("userType")
-                ? localStorage.getItem("userType")
-                : sessionStorage.getItem("userType"),
+            userType: "",
             personalInfo: {
                 firstName: "",
                 lastName: "",
@@ -38,7 +36,10 @@ class Profile extends React.Component {
 
     componentDidMount() {
         // connect to db to fetch and use this.setState() to update info
-        api.getSession().then((response) => {
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        api.getSession(sessionId).then((response) => {
             if (response.data.success) {
                 api.getProfileByEmail(response.data.user.emailAddress).then(
                     (res) => {
@@ -62,9 +63,12 @@ class Profile extends React.Component {
                                     profilePicture: imagePath
                                 }
                             });
+                            this.setState({ userType: res.data.data.userType });
                         }
                     }
                 );
+            } else {
+                return this.props.history.push("/signOut");
             }
         });
     }
@@ -86,12 +90,17 @@ class Profile extends React.Component {
             });
 
             // call server to update description
-            api.getSession().then((response) => {
+            const sessionId = localStorage.getItem("sessionId")
+                ? localStorage.getItem("sessionId")
+                : sessionStorage.getItem("sessionId");
+            api.getSession(sessionId).then((response) => {
                 if (response.data.success) {
                     api.updateDescription({
                         emailAddress: response.data.user.emailAddress,
                         description: this.state.personalInfo.description
                     });
+                } else {
+                    return this.props.history.push("/signOut");
                 }
             });
         }

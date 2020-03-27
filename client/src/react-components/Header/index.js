@@ -16,8 +16,21 @@ class Header extends React.Component {
         this.redirectToHome = this.redirectToHome.bind(this);
         this.state = {
             menuOpenState: false,
-            anchorEl: null
+            anchorEl: null,
+            userType: ""
         };
+    }
+
+    componentDidMount() {
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        api.getSession(sessionId).then((res) => {
+            if (!res.data.success) {
+                return this.props.history.push("/signOut");
+            }
+            this.setState({ userType: res.data.user.userType });
+        });
     }
 
     handleOnClickMenuIcon(e) {
@@ -37,10 +50,7 @@ class Header extends React.Component {
             this.props.history.push("/manage-posting");
         }
         if (selectedOption === "Sign Out") {
-            localStorage.removeItem("userType");
-            sessionStorage.removeItem("userType");
-            api.signOutUser();
-            this.redirectToHome();
+            this.props.history.push("/signout");
         }
         if (selectedOption === "Manage Users") {
             this.props.history.push("/user-manage");
@@ -56,19 +66,12 @@ class Header extends React.Component {
         const logoUrl = require("./static/uoft-logo.png");
         const options = ["Home", "My Profile", "Sign Out"];
         const adminOptions = ["Home", "My Profile", "Manage Users", "Sign Out"];
-        const userTypes = ["Student", "Researcher", "Administrator"];
         const hasSignIn =
-            userTypes.includes(localStorage.getItem("userType")) ||
-            userTypes.includes(sessionStorage.getItem("userType"));
+            localStorage.getItem("sessionId") ||
+            sessionStorage.getItem("sessionId");
 
-        let userType;
-        if (userTypes.includes(localStorage.getItem("userType"))) {
-            userType = localStorage.getItem("userType");
-        } else {
-            userType = sessionStorage.getItem("userType");
-        }
-
-        let menuOptions = userType === "Administrator" ? adminOptions : options;
+        let menuOptions =
+            this.state.userType === "Administrator" ? adminOptions : options;
 
         return (
             <div id="banner">

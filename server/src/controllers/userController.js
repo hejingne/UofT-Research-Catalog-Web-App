@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Profile = require("../models/profile");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 createUser = (req, res) => {
     const body = req.body;
@@ -97,13 +98,21 @@ authenticateUser = async (req, res) => {
                         existingUser.emailAddress === user.emailAddress &&
                         existingUser.userType === user.userType
                     ) {
+                        const sessionId = crypto
+                            .randomBytes(30)
+                            .toString("base64")
+                            .replace(/\//g, "_")
+                            .replace(/\+/g, "-");
+
                         req.session.user = user._id;
                         req.session.emailAddress = user.emailAddress;
                         req.session.userType = user.userType;
+                        req.session.sessionId = sessionId;
                         req.session.save();
 
                         return res.status(200).json({
                             success: true,
+                            sessionId: sessionId,
                             message: "user authorized"
                         });
                     } else {
@@ -314,7 +323,8 @@ signOutUser = (req, res) => {
 };
 
 getSession = (req, res) => {
-    if (req.session.user) {
+    const sessionId = req.params.sessionId;
+    if (req.session.sessionId === sessionId) {
         res.status(200).json({
             success: true,
             user: {
@@ -323,7 +333,9 @@ getSession = (req, res) => {
             }
         });
     } else {
-        res.status(401).json({ success: false, message: "user unauthorized" });
+        res.status(200).json({
+            success: false
+        });
     }
 };
 
