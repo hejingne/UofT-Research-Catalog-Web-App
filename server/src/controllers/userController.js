@@ -16,13 +16,17 @@ createUser = (req, res) => {
         password: body.password,
         userType: body.userType
     });
+
+    // some has default value
     const profile = new Profile({
         emailAddress: body.emailAddress,
         userType: body.userType,
         firstName: body.firstName,
         lastName: body.lastName,
         description: body.description ? body.description : "",
-        interests: body.interests ? body.interests : []
+        interests: body.interests ? body.interests : [],
+        currentEmployer: body.currentEmployer ? body.currentEmployer : "N/A",
+        currentPosition: body.currentPosition ? body.currentPosition : "N/A"
     });
 
     if (!user || !profile) {

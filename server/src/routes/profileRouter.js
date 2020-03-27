@@ -11,5 +11,6 @@ router.get("/:emailAddress", profileController.getProfileByEmail);
 router.put("/updateInterests", profileController.updateInterests);
 router.put("/updateProfilePicture", profileController.updateProfilePicture);
 router.put("/updateDescription", profileController.updateDescription);
+router.put("/updateEmploymentInfo", profileController.updateEmploymentInfo);
 
 module.exports = router;
