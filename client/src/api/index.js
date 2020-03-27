@@ -16,6 +16,8 @@ export const updatePassword = (payload) =>
 export const signOutUser = () => userApi.get("/signOut");
 export const getSession = () => userApi.get("/session");
 export const getUsers = () => userApi.get("/users");
+export const deleteUserAndProfile = (emailAddress) =>
+    userApi.delete(`/delete/${emailAddress}`);
 
 export const getProfileByEmail = (emailAddress) =>
     profileApi.get(`/${emailAddress}`);
@@ -39,7 +41,8 @@ const apis = {
     updateProfilePicture,
     updateDescription,
     updateEmploymentInfo,
-    getUsers
+    getUsers,
+    deleteUserAndProfile
 };
 
 export default apis;

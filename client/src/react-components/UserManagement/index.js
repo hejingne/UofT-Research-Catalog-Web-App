@@ -88,6 +88,9 @@ class UserManagement extends React.Component {
                                 new Promise((resolve) => {
                                     setTimeout(() => {
                                         resolve();
+                                        apis.deleteUserAndProfile(
+                                            oldData.emailAddress
+                                        );
                                         setState((prevState) => {
                                             const data = [...prevState.data];
                                             data.splice(

@@ -202,6 +202,45 @@ updatePassword = async (req, res) => {
         });
 };
 
+deleteUserAndProfile = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "user unauthorized"
+        });
+    }
+    await User.findOneAndDelete(
+        { emailAddress: req.params.emailAddress },
+        async (err) => {
+            if (err) {
+                return res.status(400).json({ success: false, error: err });
+            }
+
+            await Profile.findOneAndDelete(
+                { emailAddress: req.params.emailAddress },
+                (err) => {
+                    if (err) {
+                        return res
+                            .status(400)
+                            .json({ success: false, error: err });
+                    }
+                    return res.status(200).json({ success: true });
+                }
+            ).catch((error) => {
+                return res.status(404).json({
+                    success: false,
+                    error
+                });
+            });
+        }
+    ).catch((err) => {
+        return res.status(404).json({
+            success: false,
+            error
+        });
+    });
+};
+
 signOutUser = (req, res) => {
     req.session.destroy((error) => {
         if (error) {
@@ -239,5 +278,6 @@ module.exports = {
     getUsers,
     updatePassword,
     signOutUser,
-    getSession
+    getSession,
+    deleteUserAndProfile
 };
