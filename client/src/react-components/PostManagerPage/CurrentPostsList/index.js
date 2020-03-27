@@ -23,6 +23,7 @@ class CurrentPostList extends React.Component {
             <TableCell component="th" scope="row">Term</TableCell>
             <TableCell component="th" scope="row">Post ID</TableCell>
             <TableCell component="th" scope="row">Title</TableCell>
+            <TableCell component="th" scope="row">Available Positions</TableCell>
             <TableCell component="th" scope="row">Deadline</TableCell>
             <TableCell component="th" scope="row"></TableCell>
           </TableRow>
