@@ -38,7 +38,7 @@ class SignIn extends React.Component {
             state.role.charAt(0) + state.role.slice(1).toLowerCase();
         // connect to database to authenticate username and password
         await api
-            .validateUser({
+            .authenticateUser({
                 emailAddress: this.state.emailAddress,
                 password: this.state.password,
                 userType: userType
