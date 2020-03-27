@@ -202,6 +202,61 @@ updatePassword = async (req, res) => {
         });
 };
 
+updateEmailAddressAndUserType = async (req, res) => {
+    // check session first
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "user unauthorized"
+        });
+    }
+
+    const body = req.body;
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: "you must provide email and password"
+        });
+    }
+
+    await User.findOne({ emailAddress: body.emailAddress })
+        .then((existingUser) => {
+            if (!existingUser) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "user not found" });
+            }
+
+            existingUser.emailAddress = body.emailAddress;
+            existingUser.userType = body.userType;
+
+            existingUser
+                .save()
+                .then(() => {
+                    return res.status(200).json({
+                        success: true,
+                        id: existingUser._id,
+                        message: "user's email address and user type updated"
+                    });
+                })
+                .catch((error) => {
+                    return res.status(404).json({
+                        success: false,
+                        error,
+                        message:
+                            "user's email address and user type not updated"
+                    });
+                });
+        })
+        .catch((error) => {
+            return res.status(404).json({
+                success: false,
+                error,
+                message: "user's email address and user type not updated"
+            });
+        });
+};
+
 deleteUserAndProfile = async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({
@@ -279,5 +334,6 @@ module.exports = {
     updatePassword,
     signOutUser,
     getSession,
-    deleteUserAndProfile
+    deleteUserAndProfile,
+    updateEmailAddressAndUserType
 };

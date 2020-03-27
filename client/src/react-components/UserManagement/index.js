@@ -72,14 +72,27 @@ class UserManagement extends React.Component {
                                     setTimeout(() => {
                                         resolve();
                                         if (oldData) {
-                                            setState((prevState) => {
-                                                const data = [
-                                                    ...prevState.data
-                                                ];
-                                                data[
-                                                    data.indexOf(oldData)
-                                                ] = newData;
-                                                return { ...prevState, data };
+                                            apis.updateEmailAddressAndUserType({
+                                                emailAddress:
+                                                    newData.emailAddress,
+                                                userType: newData.userType
+                                            }).then((res) => {
+                                                if (res.data.success) {
+                                                    setState((prevState) => {
+                                                        const data = [
+                                                            ...prevState.data
+                                                        ];
+                                                        data[
+                                                            data.indexOf(
+                                                                oldData
+                                                            )
+                                                        ] = newData;
+                                                        return {
+                                                            ...prevState,
+                                                            data
+                                                        };
+                                                    });
+                                                }
                                             });
                                         }
                                     }, 600);
@@ -90,14 +103,22 @@ class UserManagement extends React.Component {
                                         resolve();
                                         apis.deleteUserAndProfile(
                                             oldData.emailAddress
-                                        );
-                                        setState((prevState) => {
-                                            const data = [...prevState.data];
-                                            data.splice(
-                                                data.indexOf(oldData),
-                                                1
-                                            );
-                                            return { ...prevState, data };
+                                        ).then((res) => {
+                                            if (res.data.success) {
+                                                setState((prevState) => {
+                                                    const data = [
+                                                        ...prevState.data
+                                                    ];
+                                                    data.splice(
+                                                        data.indexOf(oldData),
+                                                        1
+                                                    );
+                                                    return {
+                                                        ...prevState,
+                                                        data
+                                                    };
+                                                });
+                                            }
                                         });
                                     }, 600);
                                 })
