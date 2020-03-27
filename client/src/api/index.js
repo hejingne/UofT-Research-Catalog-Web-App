@@ -22,6 +22,8 @@ export const updateInterests = (payload) =>
     profileApi.put("/updateInterests", payload);
 export const updateProfilePicture = (payload) =>
     profileApi.put("/updateProfilePicture", payload);
+export const updateDescription = (payload) =>
+    profileApi.put("/updateDescription", payload);
 
 const apis = {
     createUser,
@@ -31,7 +33,8 @@ const apis = {
     getSession,
     getProfileByEmail,
     updateInterests,
-    updateProfilePicture
+    updateProfilePicture,
+    updateDescription
 };
 
 export default apis;

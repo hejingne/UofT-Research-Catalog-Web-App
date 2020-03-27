@@ -100,6 +100,51 @@ updateInterests = async (req, res) => {
         });
 };
 
+updateDescription = async (req, res) => {
+    const body = req.body;
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: "data not found"
+        });
+    }
+
+    await Profile.findOne({ emailAddress: body.emailAddress })
+        .then((existingProfile) => {
+            if (!existingProfile) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "profile not found" });
+            }
+
+            existingProfile.description = body.description;
+
+            existingProfile
+                .save()
+                .then(() => {
+                    return res.status(200).json({
+                        success: true,
+                        id: existingProfile._id,
+                        message: "profile's description updated"
+                    });
+                })
+                .catch((error) => {
+                    return res.status(404).json({
+                        success: false,
+                        error,
+                        message: "profile's description not updated"
+                    });
+                });
+        })
+        .catch((error) => {
+            return res.status(404).json({
+                success: false,
+                error,
+                message: "profile's description not updated"
+            });
+        });
+};
+
 updateProfilePicture = async (req, res) => {
     const form = new multiparty.Form();
 
@@ -162,5 +207,6 @@ updateProfilePicture = async (req, res) => {
 module.exports = {
     getProfileByEmail,
     updateInterests,
-    updateProfilePicture
+    updateProfilePicture,
+    updateDescription
 };
