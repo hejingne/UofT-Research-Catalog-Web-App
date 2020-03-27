@@ -5,6 +5,7 @@ const postSchema = new Schema({
     title: { type: String, required: true },
     introduction: { type: String, required: true },
     researcher: { type: String, required: true },
+    availablePosition: { type: Number, required: true },
     deadline: { type: String, required: true },
     duration: { type: String, required: true },
     areaOfStudy: { type: String, required: true },
