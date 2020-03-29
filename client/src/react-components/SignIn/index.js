@@ -46,13 +46,21 @@ class SignIn extends React.Component {
             .then((response) => {
                 if (response.data.success) {
                     if (this.state.rememberMe) {
-                        localStorage.setItem("userType", userType);
+                        localStorage.setItem(
+                            "sessionId",
+                            response.data.sessionId
+                        );
                     } else {
-                        sessionStorage.setItem("userType", userType);
+                        sessionStorage.setItem(
+                            "sessionId",
+                            response.data.sessionId
+                        );
                     }
                     this.props.history.push({
                         pathname: "/home"
                     });
+                    // because we want to remount header for admin to show manager user tab
+                    window.location.reload();
                 } else {
                     throw new Error();
                 }

@@ -8,6 +8,10 @@ const profileApi = axios.create({
     baseURL: "http://localhost:3001/profile"
 });
 
+const applicationApi = axios.create({
+    baseURL: "http://localhost:3001/application"
+});
+
 export const createUser = (payload) => userApi.post("/create", payload);
 export const authenticateUser = (payload) =>
     userApi.post("/authenticate", payload);
@@ -16,7 +20,7 @@ export const updatePassword = (payload) =>
 export const updateEmailAddressAndUserType = (payload) =>
     userApi.put("/updateEmailAddressAndUserType", payload);
 export const signOutUser = () => userApi.get("/signOut");
-export const getSession = () => userApi.get("/session");
+export const getSession = (sessionId) => userApi.get(`/session/${sessionId}`);
 export const getUsers = () => userApi.get("/users");
 export const deleteUserAndProfile = (emailAddress) =>
     userApi.delete(`/delete/${emailAddress}`);
@@ -32,6 +36,12 @@ export const updateDescription = (payload) =>
 export const updateEmploymentInfo = (payload) =>
     profileApi.put("/updateEmploymentInfo", payload);
 
+export const getApplications = () => applicationApi.get("/applications");
+export const createApplications = (payload) =>
+    applicationApi.post("/create", payload);
+export const deleteApplicationById = (id) =>
+    applicationApi.delete(`/delete/${id}`);
+
 const apis = {
     createUser,
     authenticateUser,
@@ -45,7 +55,10 @@ const apis = {
     updateEmploymentInfo,
     getUsers,
     deleteUserAndProfile,
-    updateEmailAddressAndUserType
+    updateEmailAddressAndUserType,
+    getApplications,
+    createApplications,
+    deleteApplicationById
 };
 
 export default apis;

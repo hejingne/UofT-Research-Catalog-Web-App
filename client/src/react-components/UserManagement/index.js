@@ -17,7 +17,14 @@ class UserManagement extends React.Component {
                 { title: "Email", field: "emailAddress" },
                 { title: "User Type", field: "userType" }
             ],
-            userList: []
+            userList: [],
+            applicationListColumns: [
+                { title: "Application Id", field: "applicationId" },
+                { title: "Applicant Name", field: "applicantName" },
+                { title: "Applicant Email", field: "applicantEmailAddress" },
+                { title: "Applied Research", field: "appliedResearch" }
+            ],
+            applicationList: []
         };
     }
 
@@ -32,6 +39,21 @@ class UserManagement extends React.Component {
                         userType: user.userType
                     });
                     this.setState({ userList: data });
+                });
+            }
+        });
+
+        apis.getApplications().then((response) => {
+            if (response.data.success) {
+                response.data.data.forEach((application) => {
+                    let data = this.state.applicationList;
+                    data.push({
+                        applicationId: application._id,
+                        applicantName: application.applicantName,
+                        applicantEmailAddress: application.emailAddress,
+                        appliedResearch: application.research
+                    });
+                    this.setState({ applicationList: data });
                 });
             }
         });
@@ -128,23 +150,11 @@ class UserManagement extends React.Component {
             );
         }
 
-        function UserRequest(props) {
+        function ApplicationList(props) {
             const [state, setState] = React.useState({
                 /** Hardcoding user requests */
-                columns: [
-                    { title: "User Name", field: "username" },
-                    { title: "Email", field: "email" },
-                    { title: "User Type", field: "usertype" },
-                    { title: "request", field: "request" }
-                ],
-                data: [
-                    {
-                        username: "Mike Oreo",
-                        email: "user",
-                        usertype: "Student",
-                        request: "Change Password"
-                    }
-                ]
+                columns: props.columns,
+                data: props.data
             });
 
             return (
@@ -159,13 +169,24 @@ class UserManagement extends React.Component {
                                 new Promise((resolve) => {
                                     setTimeout(() => {
                                         resolve();
-                                        setState((prevState) => {
-                                            const data = [...prevState.data];
-                                            data.splice(
-                                                data.indexOf(oldData),
-                                                1
-                                            );
-                                            return { ...prevState, data };
+                                        apis.deleteApplicationById(
+                                            oldData.applicationId
+                                        ).then((res) => {
+                                            if (res.data.success) {
+                                                setState((prevState) => {
+                                                    const data = [
+                                                        ...prevState.data
+                                                    ];
+                                                    data.splice(
+                                                        data.indexOf(oldData),
+                                                        1
+                                                    );
+                                                    return {
+                                                        ...prevState,
+                                                        data
+                                                    };
+                                                });
+                                            }
                                         });
                                     }, 600);
                                 })
@@ -206,9 +227,9 @@ class UserManagement extends React.Component {
                         />
                     )}
                     {this.state.selectedTab === "USER REQUESTS" && (
-                        <UserRequest
-                            columns={this.state.userRequestColumns}
-                            data={this.state.userRequestList}
+                        <ApplicationList
+                            columns={this.state.applicationListColumns}
+                            data={this.state.applicationList}
                         />
                     )}
                 </div>

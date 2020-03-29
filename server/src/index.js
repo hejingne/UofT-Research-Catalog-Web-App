@@ -6,6 +6,7 @@ const session = require("express-session");
 const db = require("./database");
 const profileRouter = require("./routes/profileRouter");
 const userRouter = require("./routes/userRouter");
+const applicationRouter = require("./routes/applicationRouter");
 
 const app = express();
 const apiPort = 3001;
@@ -26,7 +27,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            expires: 60000,
+            expires: false,
             httpOnly: true
         }
     })
@@ -43,5 +44,6 @@ app.get("/", (req, res) => {
 
 app.use("/profile", profileRouter);
 app.use("/user", userRouter);
+app.use("/application", applicationRouter);
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
