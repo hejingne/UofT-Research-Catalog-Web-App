@@ -28,38 +28,44 @@ class UserManagement extends React.Component {
         };
     }
 
-    componentDidMount() {
+    fetchData() {
         // connect to db to fetch and use this.setState() to update info
         apis.getUsers().then((response) => {
             if (response.data.success) {
+                let data = [];
                 response.data.data.forEach((user) => {
-                    let data = this.state.userList;
                     data.push({
                         emailAddress: user.emailAddress,
                         userType: user.userType
                     });
-                    this.setState({ userList: data });
                 });
+                this.setState({ userList: data });
             }
         });
 
         apis.getApplications().then((response) => {
             if (response.data.success) {
+                let data = [];
                 response.data.data.forEach((application) => {
-                    let data = this.state.applicationList;
                     data.push({
                         applicationId: application._id,
                         applicantName: application.applicantName,
                         applicantEmailAddress: application.emailAddress,
                         appliedResearch: application.research
                     });
-                    this.setState({ applicationList: data });
                 });
+                this.setState({ applicationList: data });
             }
         });
     }
 
+    componentDidMount() {
+        this.fetchData();
+    }
+
     handleOnClick(e) {
+        // because each list has their own state, they dont update this.state locally
+        this.fetchData();
         this.setState({ selectedTab: e.target.innerText });
     }
 
@@ -214,7 +220,7 @@ class UserManagement extends React.Component {
                                 this.handleOnClick(e);
                             }}
                         >
-                            USER REQUESTS
+                            APPLICATION LIST
                         </Button>
                     </Grid>
                     <Divider />
