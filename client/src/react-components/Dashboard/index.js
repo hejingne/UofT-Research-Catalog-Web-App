@@ -14,6 +14,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import api from "../../api";
+import apis from "../../api";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -43,6 +44,15 @@ class Dashboard extends React.Component {
             if (!response.data.success) {
                 return this.props.history.push("/signOut");
             }
+            let numOfApplicationSubmitted = 0;
+            apis.getApplicationsByEmail(response.data.user.emailAddress).then(
+                (res) => {
+                    if (res.data.success) {
+                        numOfApplicationSubmitted = res.data.data.length;
+                    }
+                }
+            );
+
             api.getProfileByEmail(response.data.user.emailAddress).then(
                 (res) => {
                     if (res.data.success) {
@@ -55,8 +65,7 @@ class Dashboard extends React.Component {
                         this.setState({
                             dashboardInfo: {
                                 "User Type": res.data.data.userType,
-                                "Number of Applications Submitted":
-                                    "to be implemented",
+                                "Number of Applications Submitted": numOfApplicationSubmitted,
                                 "Number of Opportunities Posted":
                                     "to be implemented",
                                 "Current Employment State": currentEmploymentState,
