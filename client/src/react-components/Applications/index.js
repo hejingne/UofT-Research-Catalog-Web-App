@@ -1,18 +1,13 @@
 import React from "react";
-import {} from "react-bootstrap";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import CardActions from "@material-ui/core/CardActions";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import ButtonBase from "@material-ui/core/ButtonBase";
-
-import "./styles.css";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
+
+import "./styles.css";
 import apis from "../../api";
 
 class Applications extends React.Component {
@@ -36,11 +31,33 @@ class Applications extends React.Component {
                     if (response.data.success) {
                         let data = [];
                         response.data.data.forEach((application) => {
+                            let resumeBytes = new Uint8Array(
+                                application.resume.data.data
+                            );
+                            let resumeBlob = new Blob([resumeBytes], {
+                                type: "application/pdf"
+                            });
+                            let resumeDownloadUrl = URL.createObjectURL(
+                                resumeBlob
+                            );
+
+                            let transcriptBytes = new Uint8Array(
+                                application.transcript.data.data
+                            );
+                            let transcriptBlob = new Blob([transcriptBytes], {
+                                type: "application/pdf"
+                            });
+                            let transcriptDownloadUrl = URL.createObjectURL(
+                                transcriptBlob
+                            );
+
                             data.push({
                                 id: application._id,
                                 researchTitle: application.researchTitle,
                                 researchId: application.researchId,
-                                status: application.status
+                                status: application.status,
+                                resume: resumeDownloadUrl,
+                                transcript: transcriptDownloadUrl
                             });
                         });
                         this.setState({ applicationList: data });
@@ -96,6 +113,26 @@ class Applications extends React.Component {
                                         color="textSecondary"
                                     >
                                         Status: {application.status}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        Submitted Documents:{" "}
+                                        <a
+                                            style={{ color: "#01579b" }}
+                                            href={application.resume}
+                                            download="Resume"
+                                        >
+                                            RESUME
+                                        </a>{" "}
+                                        <a
+                                            style={{ color: "#01579b" }}
+                                            href={application.transcript}
+                                            download="Transcript"
+                                        >
+                                            TRANSCRIPT
+                                        </a>
                                     </Typography>
                                 </div>
                                 {application.status === "offered" && (

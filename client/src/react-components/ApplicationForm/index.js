@@ -1,12 +1,11 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import { Typography, ButtonBase, TextField, Button } from "@material-ui/core";
+import { Typography, TextField, Button } from "@material-ui/core";
 
 import "./styles.css";
-import api from "../../api";
 import apis from "../../api";
 
 class ApplicationForm extends React.Component {
@@ -22,7 +21,6 @@ class ApplicationForm extends React.Component {
             question3: "",
             question4: ""
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.cv = React.createRef();
         this.transcript = React.createRef();
     }
@@ -31,12 +29,12 @@ class ApplicationForm extends React.Component {
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");
-        api.getSession(sessionId).then((response) => {
+        apis.getSession(sessionId).then((response) => {
             if (!response.data.success) {
                 return this.props.history.push("/signOut");
             }
 
-            api.getProfileByEmail(response.data.user.emailAddress).then(
+            apis.getProfileByEmail(response.data.user.emailAddress).then(
                 (res) => {
                     if (res.data.success) {
                         this.setState({
@@ -59,9 +57,11 @@ class ApplicationForm extends React.Component {
 
         if (
             !(resume && transcript) ||
-            this.state.filter((state) => state === "").length > 0
+            Object.entries(this.state).filter(
+                (state) => this.state[state] === ""
+            ).length > 0
         ) {
-            console.log("Requested files are not there.");
+            alert("Requested fields are not completed or files are not there.");
             return;
         }
 
@@ -79,13 +79,12 @@ class ApplicationForm extends React.Component {
         data.append("emailAddress", this.state.emailAddress);
         data.append("phoneNumber", this.state.phoneNumber);
         data.append("areaOfStudy", this.state.areaOfStudy);
-        apis.createApplications(data);
-
-        // alert(
-        //     `Successfully applied. Selected files - ${this.cv.current.files[0].name}, ${this.transcript.current.files[0].name}`
-        // );
-
-        return this.props.history.push("/home");
+        apis.createApplications(data).then((res) => {
+            if (res.data.success) {
+                alert("Successfully applied");
+                this.props.history.push("/home");
+            }
+        });
     }
 
     render() {
@@ -298,15 +297,25 @@ class ApplicationForm extends React.Component {
                                 spacing={3}
                             >
                                 <Typography gutterBottom variant="h5">
-                                    Please attach the following documents:
+                                    Please attach the following documents (in
+                                    pdf format):
                                 </Typography>
                                 <Typography gutterBottom variant="h6">
-                                    1. CV <input type="file" ref={this.cv} />
+                                    1. CV{" "}
+                                    <input
+                                        type="file"
+                                        accept=".pdf"
+                                        ref={this.cv}
+                                    />
                                 </Typography>
                                 <br />
                                 <Typography gutterBottom variant="h6">
                                     2. Unofficial Transcript{" "}
-                                    <input type="file" ref={this.transcript} />
+                                    <input
+                                        type="file"
+                                        accept=".pdf"
+                                        ref={this.transcript}
+                                    />
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -322,7 +331,9 @@ class ApplicationForm extends React.Component {
                             <Button
                                 className="login__button"
                                 type="submit"
-                                onClick={this.handleSubmit}
+                                onClick={(e) => {
+                                    this.handleSubmit(e);
+                                }}
                             >
                                 Submit
                             </Button>
@@ -335,4 +346,4 @@ class ApplicationForm extends React.Component {
     }
 }
 
-export default ApplicationForm;
+export default withRouter(ApplicationForm);

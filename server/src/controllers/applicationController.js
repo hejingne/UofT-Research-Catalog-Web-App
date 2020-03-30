@@ -96,11 +96,11 @@ createApplications = async (req, res) => {
             },
             resume: {
                 data: fs.readFileSync(body.resume.path),
-                contentType: "document"
+                contentType: "application/pdf"
             },
             transcript: {
                 data: fs.readFileSync(body.transcript.path),
-                contentType: "document"
+                contentType: "application/pdf"
             },
             status: body.status
         });
