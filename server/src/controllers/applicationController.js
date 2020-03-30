@@ -1,5 +1,7 @@
 const Application = require("../models/application");
 const { ObjectID } = require("mongodb");
+const multiparty = require("multiparty");
+const fs = require("fs");
 
 getApplications = async (req, res) => {
     if (!req.session.user) {
@@ -48,50 +50,78 @@ getApplicationsByEmail = async (req, res) => {
     });
 };
 
-createApplications = (req, res) => {
+createApplications = async (req, res) => {
     if (!req.session.user) {
         return res
             .status(401)
             .json({ success: false, message: "user unauthorized" });
     }
 
-    const body = req.body;
-    if (!body) {
-        return res.status(400).json({
-            success: false,
-            error: "you must provide all required information"
-        });
-    }
-
-    const application = new Application({
-        researchId: body.researchId,
-        researchTitle: body.researchTitle,
-        emailAddress: body.emailAddress,
-        applicantName: body.applicantName,
-        phoneNumber: body.phoneNumber,
-        areaOfStudy: body.areaOfStudy,
-        answers: body.answers,
-        resume: body.resume,
-        transcript: body.transcript,
-        status: body.status
-    });
-
-    application
-        .save()
-        .then(() => {
-            return res.status(201).json({
-                success: true,
-                id: application._id,
-                message: "application created"
-            });
-        })
-        .catch((error) => {
+    const form = new multiparty.Form();
+    await form.parse(req, async (err, fields, files) => {
+        if (!fields || !files || fields.length === 0 || files.length === 0) {
             return res.status(400).json({
                 success: false,
-                error,
-                message: "application not created"
+                error: "data not found"
             });
+        }
+
+        const body = {};
+        Object.keys(fields).forEach(function(name) {
+            body[name] = fields[name][0];
         });
+        Object.keys(files).forEach(function(name) {
+            body[name] = files[name][0];
+        });
+
+        if (!body) {
+            return res.status(400).json({
+                success: false,
+                error: "you must provide all required information"
+            });
+        }
+
+        const application = new Application({
+            researchId: body.researchId,
+            researchTitle: body.researchTitle,
+            emailAddress: body.emailAddress,
+            applicantName: body.applicantName,
+            phoneNumber: body.phoneNumber,
+            areaOfStudy: body.areaOfStudy,
+            answers: {
+                questionOne: body.questionOne,
+                questionTwo: body.questionTwo,
+                questionThree: body.questionThree,
+                questionFour: body.questionFour
+            },
+            resume: {
+                data: fs.readFileSync(body.resume.path),
+                contentType: "document"
+            },
+            transcript: {
+                data: fs.readFileSync(body.transcript.path),
+                contentType: "document"
+            },
+            status: body.status
+        });
+
+        application
+            .save()
+            .then(() => {
+                return res.status(201).json({
+                    success: true,
+                    id: application._id,
+                    message: "application created"
+                });
+            })
+            .catch((error) => {
+                return res.status(400).json({
+                    success: false,
+                    error,
+                    message: "application not created"
+                });
+            });
+    });
 };
 
 acceptApplication = async (req, res) => {

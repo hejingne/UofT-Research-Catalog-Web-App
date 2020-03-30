@@ -82,7 +82,6 @@ class Home extends React.Component {
     }
 
     postSignIn() {
-        console.log(this.state.userType);
         return <HomePage userType={this.state.userType} />;
     }
 
