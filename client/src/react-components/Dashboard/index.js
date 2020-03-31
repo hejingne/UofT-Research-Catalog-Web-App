@@ -6,14 +6,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardActions from "@material-ui/core/CardActions";
 import Grid from "@material-ui/core/Grid";
-
-import "./styles.css";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
-import api from "../../api";
+
+import "./styles.css";
 import apis from "../../api";
 
 class Dashboard extends React.Component {
@@ -40,7 +39,7 @@ class Dashboard extends React.Component {
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");
-        api.getSession(sessionId).then((response) => {
+        apis.getSession(sessionId).then((response) => {
             if (!response.data.success) {
                 return this.props.history.push("/signOut");
             }
@@ -53,7 +52,7 @@ class Dashboard extends React.Component {
                 }
             );
 
-            api.getProfileByEmail(response.data.user.emailAddress).then(
+            apis.getProfileByEmail(response.data.user.emailAddress).then(
                 (res) => {
                     if (res.data.success) {
                         const currentEmploymentState =
@@ -107,11 +106,11 @@ class Dashboard extends React.Component {
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");
-        api.getSession(sessionId).then((response) => {
+        apis.getSession(sessionId).then((response) => {
             if (!response.data.success) {
                 return this.props.history.push("/signOut");
             }
-            api.updateEmploymentInfo({
+            apis.updateEmploymentInfo({
                 emailAddress: response.data.user.emailAddress,
                 currentEmployer: this.state.dashboardInfo["Current Employer"],
                 currentPosition: this.state.dashboardInfo["Current Position"]

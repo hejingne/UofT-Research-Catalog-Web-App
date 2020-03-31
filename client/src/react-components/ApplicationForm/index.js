@@ -4,9 +4,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { Typography, TextField, Button } from "@material-ui/core";
-
-import "./styles.css";
-import apis from "../../api";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -16,6 +13,9 @@ import FormControl from "@material-ui/core/FormControl";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
+
+import "./styles.css";
+import apis from "../../api";
 
 class ApplicationForm extends React.Component {
     constructor(props) {
