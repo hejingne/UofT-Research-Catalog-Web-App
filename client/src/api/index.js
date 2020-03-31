@@ -43,6 +43,8 @@ export const deleteApplicationById = (id) =>
     applicationApi.delete(`/delete/${id}`);
 export const getApplicationsByEmail = (emailAddress) =>
     applicationApi.get(`/applications/${emailAddress}`);
+export const getApplicationsByEmailAndResearchId = (emailAddress, researchId) =>
+    applicationApi.get(`/applications/${emailAddress}/${researchId}`);
 export const acceptApplication = (id) => applicationApi.patch(`/accept/${id}`);
 
 const apis = {
@@ -63,6 +65,7 @@ const apis = {
     createApplications,
     deleteApplicationById,
     getApplicationsByEmail,
+    getApplicationsByEmailAndResearchId,
     acceptApplication
 };
 

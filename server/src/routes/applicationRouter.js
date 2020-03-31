@@ -10,6 +10,11 @@ router.get(
     "/applications/:emailAddress",
     applicationController.getApplicationsByEmail
 );
+router.get(
+    "/applications/:emailAddress/:researchId",
+    applicationController.getApplicationsByEmailAndResearchId
+);
+
 router.patch("/accept/:id", applicationController.acceptApplication);
 
 module.exports = router;

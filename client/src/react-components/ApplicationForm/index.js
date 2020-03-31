@@ -7,11 +7,19 @@ import { Typography, TextField, Button } from "@material-ui/core";
 
 import "./styles.css";
 import apis from "../../api";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 
 class ApplicationForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            alreadyApplied: false,
+            researchId: "",
+            researchTitle: "",
             applicantName: "",
             emailAddress: "",
             phoneNumber: "",
@@ -26,6 +34,8 @@ class ApplicationForm extends React.Component {
     }
 
     componentDidMount() {
+        // hardcode for now
+        this.setState({ researchId: "id", researchTitle: "title" });
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");
@@ -33,6 +43,27 @@ class ApplicationForm extends React.Component {
             if (!response.data.success) {
                 return this.props.history.push("/signOut");
             }
+
+            apis.getApplicationsByEmail(response.data.user.emailAddress).then(
+                (res) => {
+                    if (res.data.success) {
+                        const applications = res.data.data;
+                        applications.forEach((application) => {
+                            if (
+                                application.researchId === this.state.researchId
+                            ) {
+                                this.setState({ alreadyApplied: true });
+                            }
+                        });
+                        const mostRecentApplication =
+                            applications[applications.length - 1];
+                        this.setState({
+                            phoneNumber: mostRecentApplication.phoneNumber,
+                            areaOfStudy: mostRecentApplication.areaOfStudy
+                        });
+                    }
+                }
+            );
 
             apis.getProfileByEmail(response.data.user.emailAddress).then(
                 (res) => {
@@ -55,6 +86,10 @@ class ApplicationForm extends React.Component {
         const resume = this.cv.current.files[0];
         const transcript = this.transcript.current.files[0];
 
+        if (this.state.alreadyApplied) {
+            alert("You Have Already Applied This Research");
+            return;
+        }
         if (
             !(resume && transcript) ||
             Object.entries(this.state).filter(
@@ -69,8 +104,8 @@ class ApplicationForm extends React.Component {
         data.append("resume", resume);
         data.append("transcript", transcript);
         data.append("status", "submitted");
-        data.append("researchId", "id");
-        data.append("researchTitle", "title");
+        data.append("researchId", this.state.researchId);
+        data.append("researchTitle", this.state.researchTitle);
         data.append("questionOne", this.state.question1);
         data.append("questionTwo", this.state.question2);
         data.append("questionThree", this.state.question3);
@@ -90,6 +125,32 @@ class ApplicationForm extends React.Component {
     render() {
         return (
             <div id="application-container">
+                <Dialog
+                    open={this.state.alreadyApplied}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"You Have Already Applied This Research"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            You have already applied this research. You can not
+                            submit multiple applications to one research.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={() => {
+                                this.props.history.push("/home");
+                            }}
+                            color="primary"
+                            autoFocus
+                        >
+                            BACK TO HOME PAGE
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 <div
                     style={{ flexGrow: 1 }}
                     spacing={5}
@@ -165,6 +226,7 @@ class ApplicationForm extends React.Component {
                                     label="Phone Number"
                                     name="phone-number"
                                     autoComplete="phone-number"
+                                    value={this.state.phoneNumber}
                                     onChange={(e) =>
                                         this.setState({
                                             phoneNumber: e.target.value
@@ -181,6 +243,7 @@ class ApplicationForm extends React.Component {
                                     label="Major"
                                     name="major"
                                     autoComplete="major"
+                                    value={this.state.areaOfStudy}
                                     onChange={(e) =>
                                         this.setState({
                                             areaOfStudy: e.target.value

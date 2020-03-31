@@ -41,7 +41,35 @@ getApplicationsByEmail = async (req, res) => {
             if (!applications) {
                 return res
                     .status(404)
-                    .json({ success: false, error: "users not found" });
+                    .json({ success: false, error: "application not found" });
+            }
+            return res.status(200).json({ success: true, data: applications });
+        }
+    ).catch((error) => {
+        return res.status(404).json({ success: false, error: error });
+    });
+};
+
+getApplicationsByEmailAndResearchId = async (req, res) => {
+    if (!req.session.user) {
+        return res
+            .status(401)
+            .json({ success: false, message: "user unauthorized" });
+    }
+    await Application.findOne(
+        {
+            emailAddress: req.params.emailAddress,
+            researchId: req.params.researchId
+        },
+        (error, applications) => {
+            if (error) {
+                return res.status(400).json({ success: false, error: error });
+            }
+
+            if (!applications) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "application not found" });
             }
             return res.status(200).json({ success: true, data: applications });
         }
@@ -185,6 +213,7 @@ deleteApplicationById = async (req, res) => {
 module.exports = {
     getApplications,
     getApplicationsByEmail,
+    getApplicationsByEmailAndResearchId,
     createApplications,
     deleteApplicationById,
     acceptApplication
