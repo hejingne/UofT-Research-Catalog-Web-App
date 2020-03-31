@@ -122,14 +122,18 @@ createApplications = async (req, res) => {
                 questionThree: body.questionThree,
                 questionFour: body.questionFour
             },
-            resume: {
-                data: fs.readFileSync(body.resume.path),
-                contentType: "application/pdf"
-            },
-            transcript: {
-                data: fs.readFileSync(body.transcript.path),
-                contentType: "application/pdf"
-            },
+            resume: body.existingResume
+                ? JSON.parse(body.existingResume)
+                : {
+                      data: fs.readFileSync(body.resume.path),
+                      contentType: "application/pdf"
+                  },
+            transcript: body.existingTranscript
+                ? JSON.parse(body.existingTranscript)
+                : {
+                      data: fs.readFileSync(body.transcript.path),
+                      contentType: "application/pdf"
+                  },
             status: body.status
         });
 

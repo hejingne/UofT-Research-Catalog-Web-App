@@ -12,12 +12,19 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import FormControl from "@material-ui/core/FormControl";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
 
 class ApplicationForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             alreadyApplied: false,
+            uploadNewDocument: false,
+            existingResume: {},
+            existingTranscript: {},
             researchId: "",
             researchTitle: "",
             applicantName: "",
@@ -59,7 +66,9 @@ class ApplicationForm extends React.Component {
                             applications[applications.length - 1];
                         this.setState({
                             phoneNumber: mostRecentApplication.phoneNumber,
-                            areaOfStudy: mostRecentApplication.areaOfStudy
+                            areaOfStudy: mostRecentApplication.areaOfStudy,
+                            existingResume: mostRecentApplication.resume,
+                            existingTranscript: mostRecentApplication.transcript
                         });
                     }
                 }
@@ -83,26 +92,47 @@ class ApplicationForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const resume = this.cv.current.files[0];
-        const transcript = this.transcript.current.files[0];
 
         if (this.state.alreadyApplied) {
             alert("You Have Already Applied This Research");
             return;
         }
+
         if (
-            !(resume && transcript) ||
-            Object.entries(this.state).filter(
-                (state) => this.state[state] === ""
-            ).length > 0
+            !(
+                this.cv.current &&
+                this.transcript.current &&
+                this.cv.current.files[0] &&
+                this.transcript.current.files[0]
+            ) &&
+            this.state.uploadNewDocument
+        ) {
+            alert("Requested fields are not completed or files are not there.");
+            return;
+        }
+
+        if (
+            Object.entries(this.state).filter((state) => state[1] === "")
+                .length > 0
         ) {
             alert("Requested fields are not completed or files are not there.");
             return;
         }
 
         const data = new FormData();
-        data.append("resume", resume);
-        data.append("transcript", transcript);
+        if (this.state.uploadNewDocument) {
+            data.append("resume", this.cv.current.files[0]);
+            data.append("transcript", this.transcript.current.files[0]);
+        } else {
+            data.append(
+                "existingResume",
+                JSON.stringify(this.state.existingResume)
+            );
+            data.append(
+                "existingTranscript",
+                JSON.stringify(this.state.existingTranscript)
+            );
+        }
         data.append("status", "submitted");
         data.append("researchId", this.state.researchId);
         data.append("researchTitle", this.state.researchTitle);
@@ -363,23 +393,71 @@ class ApplicationForm extends React.Component {
                                     Please attach the following documents (in
                                     pdf format):
                                 </Typography>
-                                <Typography gutterBottom variant="h6">
-                                    1. CV{" "}
-                                    <input
-                                        type="file"
-                                        accept=".pdf"
-                                        ref={this.cv}
-                                    />
-                                </Typography>
-                                <br />
-                                <Typography gutterBottom variant="h6">
-                                    2. Unofficial Transcript{" "}
-                                    <input
-                                        type="file"
-                                        accept=".pdf"
-                                        ref={this.transcript}
-                                    />
-                                </Typography>
+                                <form>
+                                    <FormControl component="fieldset">
+                                        <RadioGroup
+                                            aria-label="quiz"
+                                            name="quiz"
+                                        >
+                                            <FormControlLabel
+                                                value="best"
+                                                control={
+                                                    <Radio
+                                                        color="default"
+                                                        onChange={() => {
+                                                            this.setState({
+                                                                uploadNewDocument: false
+                                                            });
+                                                        }}
+                                                    />
+                                                }
+                                                label="Use existing CV and Transcript (from the most recent submitted application)"
+                                            />
+                                            <FormControlLabel
+                                                value="worst"
+                                                control={
+                                                    <Radio
+                                                        color="default"
+                                                        onChange={() => {
+                                                            this.setState({
+                                                                uploadNewDocument: true
+                                                            });
+                                                        }}
+                                                    />
+                                                }
+                                                label="Upload new CV and Transcript"
+                                            />
+                                            {this.state.uploadNewDocument && (
+                                                <div>
+                                                    <Typography
+                                                        gutterBottom
+                                                        variant="h6"
+                                                    >
+                                                        1. CV{" "}
+                                                        <input
+                                                            type="file"
+                                                            accept=".pdf"
+                                                            ref={this.cv}
+                                                        />
+                                                    </Typography>
+                                                    <Typography
+                                                        gutterBottom
+                                                        variant="h6"
+                                                    >
+                                                        2. Unofficial Transcript{" "}
+                                                        <input
+                                                            type="file"
+                                                            accept=".pdf"
+                                                            ref={
+                                                                this.transcript
+                                                            }
+                                                        />
+                                                    </Typography>
+                                                </div>
+                                            )}
+                                        </RadioGroup>
+                                    </FormControl>
+                                </form>
                             </Grid>
                         </Grid>
                         <Grid
