@@ -235,6 +235,7 @@ class AccountSettings extends React.Component {
                     <input
                         id="upload-profile-pic-btn"
                         type="file"
+                        accept="image/*"
                         onChange={(e) => this.handleChangeProfilePicture(e)}
                         ref={this.profilePicture}
                     />

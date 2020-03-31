@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import {} from "react-bootstrap";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import React from "react";
+import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
@@ -22,7 +21,8 @@ class UserManagement extends React.Component {
                 { title: "Application Id", field: "applicationId" },
                 { title: "Applicant Name", field: "applicantName" },
                 { title: "Applicant Email", field: "applicantEmailAddress" },
-                { title: "Applied Research", field: "appliedResearch" }
+                { title: "Applied Research", field: "appliedResearch" },
+                { title: "Status", field: "status" }
             ],
             applicationList: []
         };
@@ -51,7 +51,8 @@ class UserManagement extends React.Component {
                         applicationId: application._id,
                         applicantName: application.applicantName,
                         applicantEmailAddress: application.emailAddress,
-                        appliedResearch: application.research
+                        appliedResearch: application.researchTitle,
+                        status: application.status
                     });
                 });
                 this.setState({ applicationList: data });
@@ -232,7 +233,7 @@ class UserManagement extends React.Component {
                             data={this.state.userList}
                         />
                     )}
-                    {this.state.selectedTab === "USER REQUESTS" && (
+                    {this.state.selectedTab === "APPLICATION LIST" && (
                         <ApplicationList
                             columns={this.state.applicationListColumns}
                             data={this.state.applicationList}

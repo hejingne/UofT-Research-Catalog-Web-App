@@ -1,9 +1,8 @@
 import React from "react";
-import {} from "react-bootstrap";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import HomePage from "../HomePage";
-import SignIn from "../SignIn";
+import apis from "../../api";
 
 import "./styles.css";
 
@@ -11,14 +10,33 @@ import "./styles.css";
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            userType: ""
+        };
         this.handleOnClick.bind(this);
     }
 
+    componentDidMount() {
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        if (sessionId) {
+            apis.getSession(sessionId).then((response) => {
+                if (!response.data.success) {
+                    return this.props.history.push("/signOut");
+                }
+                this.setState({ userType: response.data.user.userType });
+            });
+        }
+    }
+
     handleOnClick(e) {
+        const role = e.target.innerText;
         this.props.history.push({
             pathname: "/signin",
-            state: { role: e.target.innerText }
+            state: {
+                role: role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()
+            }
         });
     }
 
@@ -63,8 +81,8 @@ class Home extends React.Component {
         );
     }
 
-    postSignIn(userType) {
-        return <HomePage userType={this.state.role} />;
+    postSignIn() {
+        return <HomePage userType={this.state.userType} />;
     }
 
     render() {

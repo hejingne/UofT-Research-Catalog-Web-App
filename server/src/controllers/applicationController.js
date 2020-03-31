@@ -1,4 +1,7 @@
 const Application = require("../models/application");
+const { ObjectID } = require("mongodb");
+const multiparty = require("multiparty");
+const fs = require("fs");
 
 getApplications = async (req, res) => {
     if (!req.session.user) {
@@ -22,47 +25,166 @@ getApplications = async (req, res) => {
     });
 };
 
-createApplications = (req, res) => {
+getApplicationsByEmail = async (req, res) => {
+    if (!req.session.user) {
+        return res
+            .status(401)
+            .json({ success: false, message: "user unauthorized" });
+    }
+    await Application.find(
+        { emailAddress: req.params.emailAddress },
+        (error, applications) => {
+            if (error) {
+                return res.status(400).json({ success: false, error: error });
+            }
+
+            if (!applications) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "application not found" });
+            }
+            return res.status(200).json({ success: true, data: applications });
+        }
+    ).catch((error) => {
+        return res.status(404).json({ success: false, error: error });
+    });
+};
+
+getApplicationsByEmailAndResearchId = async (req, res) => {
+    if (!req.session.user) {
+        return res
+            .status(401)
+            .json({ success: false, message: "user unauthorized" });
+    }
+    await Application.findOne(
+        {
+            emailAddress: req.params.emailAddress,
+            researchId: req.params.researchId
+        },
+        (error, applications) => {
+            if (error) {
+                return res.status(400).json({ success: false, error: error });
+            }
+
+            if (!applications) {
+                return res
+                    .status(404)
+                    .json({ success: false, error: "application not found" });
+            }
+            return res.status(200).json({ success: true, data: applications });
+        }
+    ).catch((error) => {
+        return res.status(404).json({ success: false, error: error });
+    });
+};
+
+createApplications = async (req, res) => {
     if (!req.session.user) {
         return res
             .status(401)
             .json({ success: false, message: "user unauthorized" });
     }
 
-    const body = req.body;
-    if (!body) {
-        return res.status(400).json({
+    const form = new multiparty.Form();
+    await form.parse(req, async (err, fields, files) => {
+        if (!fields || !files || fields.length === 0 || files.length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: "data not found"
+            });
+        }
+
+        const body = {};
+        Object.keys(fields).forEach(function(name) {
+            body[name] = fields[name][0];
+        });
+        Object.keys(files).forEach(function(name) {
+            body[name] = files[name][0];
+        });
+
+        if (!body) {
+            return res.status(400).json({
+                success: false,
+                error: "you must provide all required information"
+            });
+        }
+
+        const application = new Application({
+            researchId: body.researchId,
+            researchTitle: body.researchTitle,
+            emailAddress: body.emailAddress,
+            applicantName: body.applicantName,
+            phoneNumber: body.phoneNumber,
+            areaOfStudy: body.areaOfStudy,
+            answers: {
+                questionOne: body.questionOne,
+                questionTwo: body.questionTwo,
+                questionThree: body.questionThree,
+                questionFour: body.questionFour
+            },
+            resume: body.existingResume
+                ? JSON.parse(body.existingResume)
+                : {
+                      data: fs.readFileSync(body.resume.path),
+                      contentType: "application/pdf"
+                  },
+            transcript: body.existingTranscript
+                ? JSON.parse(body.existingTranscript)
+                : {
+                      data: fs.readFileSync(body.transcript.path),
+                      contentType: "application/pdf"
+                  },
+            status: body.status
+        });
+
+        application
+            .save()
+            .then(() => {
+                return res.status(201).json({
+                    success: true,
+                    id: application._id,
+                    message: "application created"
+                });
+            })
+            .catch((error) => {
+                return res.status(400).json({
+                    success: false,
+                    error,
+                    message: "application not created"
+                });
+            });
+    });
+};
+
+acceptApplication = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({
             success: false,
-            error: "you must provide all required information"
+            message: "user unauthorized"
         });
     }
 
-    const application = new Application({
-        research: body.research,
-        emailAddress: body.emailAddress,
-        applicantName: body.applicantName,
-        phoneNumber: body.phoneNumber,
-        areaOfStudy: body.areaOfStudy,
-        answers: body.answers,
-        resume: body.resume,
-        transcript: body.transcript
-    });
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
 
-    application
-        .save()
-        .then(() => {
-            return res.status(201).json({
-                success: true,
-                id: application._id,
-                message: "application created"
-            });
+    await Application.findOneAndUpdate(
+        { _id: id },
+        { $set: { status: "accepted" } },
+        { new: true }
+    )
+        .then((restaurant) => {
+            if (!restaurant) {
+                res.status(404).send();
+            } else {
+                res.status(200).json({
+                    success: true
+                });
+            }
         })
         .catch((error) => {
-            return res.status(400).json({
-                success: false,
-                error,
-                message: "application not created"
-            });
+            res.status(400).send();
         });
 };
 
@@ -73,7 +195,13 @@ deleteApplicationById = async (req, res) => {
             message: "user unauthorized"
         });
     }
-    await Application.findOneAndDelete({ _id: req.params.id }, (err) => {
+
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    await Application.findOneAndDelete({ _id: id }, (err) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }
@@ -88,6 +216,9 @@ deleteApplicationById = async (req, res) => {
 
 module.exports = {
     getApplications,
+    getApplicationsByEmail,
+    getApplicationsByEmailAndResearchId,
     createApplications,
-    deleteApplicationById
+    deleteApplicationById,
+    acceptApplication
 };

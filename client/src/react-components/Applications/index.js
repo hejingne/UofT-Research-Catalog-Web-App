@@ -1,70 +1,154 @@
 import React from "react";
-import {} from "react-bootstrap";
-import {Link, Redirect, withRouter} from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import CardActions from "@material-ui/core/CardActions";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import ButtonBase from "@material-ui/core/ButtonBase";
-
-import "./styles.css";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 
+import "./styles.css";
+import apis from "../../api";
 
 class Applications extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            researchList: [{
-                title: 'Computational Genomics',
-                researcher: 'James Charles',
-                term: '2020 Fall - 2021 Winter',
-                deadline: '2020.06.30'
-            }, {
-                title: 'The Effect of Global Warming',
-                researcher: 'Sally Tomkins',
-                term: '2020 summer',
-                deadline: '2020.03.01'
-            }, {
-                title: 'Quantitative Transportation Geography and Spatial Analysis',
-                researcher: 'Steven Farber',
-                term: '2020 Fall - 2021 Winter',
-                deadline: '2020.07.30'
-            }]
+            applicationList: []
         };
     }
 
+    componentDidMount() {
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        apis.getSession(sessionId).then((res) => {
+            if (!res.data.success) {
+                return this.props.history.push("/signOut");
+            }
+            apis.getApplicationsByEmail(res.data.user.emailAddress).then(
+                (response) => {
+                    if (response.data.success) {
+                        let data = [];
+                        response.data.data.forEach((application) => {
+                            let resumeBytes = new Uint8Array(
+                                application.resume.data.data
+                            );
+                            let resumeBlob = new Blob([resumeBytes], {
+                                type: "application/pdf"
+                            });
+                            let resumeDownloadUrl = URL.createObjectURL(
+                                resumeBlob
+                            );
+
+                            let transcriptBytes = new Uint8Array(
+                                application.transcript.data.data
+                            );
+                            let transcriptBlob = new Blob([transcriptBytes], {
+                                type: "application/pdf"
+                            });
+                            let transcriptDownloadUrl = URL.createObjectURL(
+                                transcriptBlob
+                            );
+
+                            data.push({
+                                id: application._id,
+                                researchTitle: application.researchTitle,
+                                researchId: application.researchId,
+                                status: application.status,
+                                resume: resumeDownloadUrl,
+                                transcript: transcriptDownloadUrl
+                            });
+                        });
+                        this.setState({ applicationList: data });
+                    }
+                }
+            );
+        });
+    }
+
+    handleOnClick(id) {
+        apis.acceptApplication(id).then((res) => {
+            if (res.data.success) {
+                const data = this.state.applicationList;
+                data.forEach((application) => {
+                    if (application.id === id) {
+                        application.status = "accepted";
+                    }
+                });
+                this.setState({ applicationList: data });
+            }
+        });
+    }
+
     render() {
-        console.log(this.props.userType)
         return (
             <List id="research-container">
-                {this.state.researchList.map((research) => {
+                {this.state.applicationList.map((application) => {
                     return (
-                        <Grid id="research-item" item xs>
-                            <ButtonBase>
-                                <Typography gutterBottom variant="h6">
-                                    <Link style={{color: '#01579b'}} href="">
-                                        {research.title}
-                                    </Link>
-                                </Typography>
-                            </ButtonBase>
-                            <Typography variant="subtitle1" gutterBottom>
-                                Introduction
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                Researcher: {research.researcher}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                Deadline: {research.deadline}  Duration: {research.term}
-                            </Typography>
+                        <div>
+                            <Grid id="research-item" item xs>
+                                <div>
+                                    <ButtonBase>
+                                        <Typography gutterBottom variant="h6">
+                                            <Link
+                                                style={{ color: "#01579b" }}
+                                                href=""
+                                            >
+                                                {application.researchTitle}
+                                            </Link>
+                                        </Typography>
+                                    </ButtonBase>
+                                    {/*<Typography variant="subtitle1" gutterBottom>*/}
+                                    {/*    Introduction*/}
+                                    {/*</Typography>*/}
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        Research Id: {application.researchId}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        Status: {application.status}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        Submitted Documents:{" "}
+                                        <a
+                                            style={{ color: "#01579b" }}
+                                            href={application.resume}
+                                            download="Resume"
+                                        >
+                                            RESUME
+                                        </a>{" "}
+                                        <a
+                                            style={{ color: "#01579b" }}
+                                            href={application.transcript}
+                                            download="Transcript"
+                                        >
+                                            TRANSCRIPT
+                                        </a>
+                                    </Typography>
+                                </div>
+                                {application.status === "offered" && (
+                                    <Button
+                                        id="accept-btn"
+                                        className="login__button"
+                                        onClick={() => {
+                                            this.handleOnClick(application.id);
+                                        }}
+                                    >
+                                        ACCEPT OFFER
+                                    </Button>
+                                )}
+                            </Grid>
                             <Divider />
-                        </Grid>
-
+                        </div>
                     );
                 })}
             </List>
