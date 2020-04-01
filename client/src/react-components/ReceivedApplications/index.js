@@ -10,7 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import "./styles.css";
 import apis from "../../api";
 
-class Applications extends React.Component {
+class ReceivedApplications extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -183,4 +183,4 @@ class Applications extends React.Component {
     }
 }
 
-export default withRouter(Applications);
+export default withRouter(ReceivedApplications);

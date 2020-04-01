@@ -3,7 +3,8 @@ import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dashboard from "../Dashboard";
 import InterestsChips from "../InterestsChips";
-import Applications from "../Applications";
+import SubmittedApplications from "../SubmittedApplications";
+import ReceivedApplications from "../ReceivedApplications";
 import AccountSettings from "../AccountSettings";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
@@ -114,10 +115,10 @@ class Profile extends React.Component {
             return <Dashboard />;
         }
         if (this.state.selectedTab === "SUBMITTED APPLICATIONS") {
-            return <Applications />;
+            return <SubmittedApplications />;
         }
         if (this.state.selectedTab === "RECEIVED APPLICATIONS") {
-            return <Applications />;
+            return <ReceivedApplications />;
         }
         if (this.state.selectedTab === "MANAGE POSTING") {
             this.props.history.push("/manage-posting");
