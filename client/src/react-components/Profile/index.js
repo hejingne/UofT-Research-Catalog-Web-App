@@ -114,7 +114,10 @@ class Profile extends React.Component {
             return <Dashboard />;
         }
         if (this.state.selectedTab === "SUBMITTED APPLICATIONS") {
-            return <Applications userType={"Student"} />;
+            return <Applications />;
+        }
+        if (this.state.selectedTab === "RECEIVED APPLICATIONS") {
+            return <Applications />;
         }
         if (this.state.selectedTab === "MANAGE POSTING") {
             this.props.history.push("/manage-posting");
@@ -201,6 +204,16 @@ class Profile extends React.Component {
                             }}
                         >
                             MANAGE POSTING
+                        </Button>
+                    )}
+                    {this.state.userType === "Researcher" && (
+                        <Button
+                            className="login__button"
+                            onClick={(e) => {
+                                this.handleOnClick(e);
+                            }}
+                        >
+                            RECEIVED APPLICATIONS
                         </Button>
                     )}
                     {this.state.userType === "Student" && (

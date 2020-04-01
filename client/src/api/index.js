@@ -46,6 +46,7 @@ export const getApplicationsByEmail = (emailAddress) =>
 export const getApplicationsByEmailAndResearchId = (emailAddress, researchId) =>
     applicationApi.get(`/applications/${emailAddress}/${researchId}`);
 export const acceptApplication = (id) => applicationApi.patch(`/accept/${id}`);
+export const rejectApplication = (id) => applicationApi.patch(`/reject/${id}`);
 
 const apis = {
     createUser,
@@ -66,7 +67,8 @@ const apis = {
     deleteApplicationById,
     getApplicationsByEmail,
     getApplicationsByEmailAndResearchId,
-    acceptApplication
+    acceptApplication,
+    rejectApplication
 };
 
 export default apis;

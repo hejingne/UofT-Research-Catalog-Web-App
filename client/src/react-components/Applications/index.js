@@ -67,13 +67,27 @@ class Applications extends React.Component {
         });
     }
 
-    handleOnClick(id) {
+    handleAcceptOffer(id) {
         apis.acceptApplication(id).then((res) => {
             if (res.data.success) {
                 const data = this.state.applicationList;
                 data.forEach((application) => {
                     if (application.id === id) {
                         application.status = "accepted";
+                    }
+                });
+                this.setState({ applicationList: data });
+            }
+        });
+    }
+
+    handleRejectOffer(id) {
+        apis.rejectApplication(id).then((res) => {
+            if (res.data.success) {
+                const data = this.state.applicationList;
+                data.forEach((application) => {
+                    if (application.id === id) {
+                        application.status = "rejected";
                     }
                 });
                 this.setState({ applicationList: data });
@@ -136,15 +150,28 @@ class Applications extends React.Component {
                                     </Typography>
                                 </div>
                                 {application.status === "offered" && (
-                                    <Button
-                                        id="accept-btn"
-                                        className="login__button"
-                                        onClick={() => {
-                                            this.handleOnClick(application.id);
-                                        }}
-                                    >
-                                        ACCEPT OFFER
-                                    </Button>
+                                    <div id="action-btn">
+                                        <Button
+                                            className="login__button"
+                                            onClick={() => {
+                                                this.handleAcceptOffer(
+                                                    application.id
+                                                );
+                                            }}
+                                        >
+                                            ACCEPT OFFER
+                                        </Button>
+                                        <Button
+                                            className="login__button"
+                                            onClick={() => {
+                                                this.handleRejectOffer(
+                                                    application.id
+                                                );
+                                            }}
+                                        >
+                                            REJECT OFFER
+                                        </Button>
+                                    </div>
                                 )}
                             </Grid>
                             <Divider />

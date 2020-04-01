@@ -14,7 +14,7 @@ router.get(
     "/applications/:emailAddress/:researchId",
     applicationController.getApplicationsByEmailAndResearchId
 );
-
 router.patch("/accept/:id", applicationController.acceptApplication);
+router.patch("/reject/:id", applicationController.rejectApplication);
 
 module.exports = router;
