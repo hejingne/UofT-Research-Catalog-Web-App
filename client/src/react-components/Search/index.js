@@ -108,7 +108,7 @@ class Search extends React.Component {
                     Researcher: {research.researcher}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                    Deadline: {research.deadline}
+                    Deadline: {research.deadline}{" "}
                     Duration: {research.term}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
@@ -119,11 +119,11 @@ class Search extends React.Component {
     }
 
     listGenerator(list) {
-        for (let i = 0; i < list.length; i++) {
+        return list.map((research) => {
             return (<Paper style={{ height: 200, width: 1000 }} variant="outlined" square>
                 <Grid container spacing={2} justify="center" style={{ marginTop: 25,marginLeft: 25 }}
                     alignItems="center">
-                    {this.researchInfo(list[i])}
+                    {this.researchInfo(research)}
                         {this.userType === "Student" &&
                             <Grid item>
                             <Button onClick={() => this.setState({ toApplication: true })}className="search__button">Apply</Button>
@@ -140,7 +140,7 @@ class Search extends React.Component {
                 </Grid>
                 </Paper>
             );
-        }
+        })
     }
 
     applyFilters(list) {
@@ -221,7 +221,6 @@ class Search extends React.Component {
         } else if (this.state.isFiltered) {
             return this.listGenerator(this.state.filtered);
         } else {
-            console.log(this.state.list)
             return this.listGenerator(this.state.list);
         }
     }
