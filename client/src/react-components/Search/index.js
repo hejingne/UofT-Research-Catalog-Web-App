@@ -37,44 +37,6 @@ class Search extends React.Component {
                 deadline: {},
                 duration: []
             },
-            /** Hardcoding some researches */
-            researchList: [{
-                title: 'Computational Genomics',
-                description: 'This is some details of this research. Thus is some more details of this research.',
-                researcher: 'James Charles',
-                duration: '2020 Fall - 2021 Winter',
-                deadline: date.parse('2020/06/30', 'YYYY/MM/DD'),
-                category: 'Medical Biophysics'
-
-            }, {
-                title: 'Conservation, Ecology, and Evolution',
-                description: 'This is some details of this research. Thus is some more details of this research.',
-                researcher: 'Sally Tomkins',
-                duration: '2020 summer',
-                deadline: date.parse('2020/03/01', 'YYYY/MM/DD'),
-                category: 'Biology'
-            }, {
-                title: 'Quantitative Transportation Geography and Spatial Analysis',
-                description: 'This is some details of this research. Thus is some more details of this research.',
-                researcher: 'Steven Farber',
-                duration: '2020 Fall - 2021 Winter',
-                deadline: date.parse('2020/07/30', 'YYYY/MM/DD'),
-                category: 'Geography'
-            }, {
-                title: "Computational Analytics",
-                description: 'This is some details of this research. Thus is some more details of this research.',
-                researcher: 'Mike Oreo',
-                duration: '2020 Fall - 2021 Winter',
-                deadline: date.parse('2020/05/28', 'YYYY/MM/DD'),
-                category: 'Data Science'
-            }, {
-                title: "Geophysical Research Studies",
-                description: 'This is some details of this research. Thus is some more details of this research.',
-                researcher: 'Mike Oreo',
-                duration: '2020 Fall - 2021 Winter',
-                deadline: date.parse('2020/06/01', 'YYYY/MM/DD'),
-                category: 'Geophysics'
-            }],
         };
         this.listGenerator.bind(this);
         this.applyFilters.bind(this);
@@ -82,6 +44,29 @@ class Search extends React.Component {
         this.getTermOptions.bind(this);
         this.researchInfo.bind(this);
         this.displayList.bind(this);
+        this.parseResearches.bind(this);
+    }
+
+    // Parse researches obtained from databse.
+    parseResearches(list) {
+        const result = [];
+        for (let i = 0; i < list.length; i++) {
+            const name = list[i].firstName.concat(" ", list[i].lastName);
+            for (let j = 0; j < list[i].postings.length; j++) {
+                const research = list[i].postings[j];
+                const parsedResearch = {
+                    title: research.title,
+                    description: research.description,
+                    researcher: name,
+                    duration: research.term,
+                    deadline: research.deadline,
+                    category: research.areaOfStudy,
+                    positions: research.positions
+                };
+                result.push(parsedResearch);
+            }
+        }
+        return result;
     }
 
     componentDidMount() {
@@ -95,8 +80,9 @@ class Search extends React.Component {
             api.getAllResearches().then(
                 (res) => {
                     if (res.data.success) {
+                        const allResearches = this.parseResearches(res.data.data);
                         this.setState({
-                            list: res.data.data
+                            list: allResearches
                         });
                     }
                 }
@@ -125,51 +111,40 @@ class Search extends React.Component {
                     Deadline: {research.deadline}
                     Duration: {research.term}
                 </Typography>
+                <Typography variant="body2" color="textSecondary">
+                    Positions: {research.positions}
+                </Typography>
             </Grid>
         )
     }
 
     listGenerator(list) {
-        return (
-            list.map((research) => {
-                return <Paper style={{ height: 200, width: 1000 }} variant="outlined" square>
-                    <Grid container spacing={2} justify="center" style={{ marginTop: 25, marginLeft: 25 }}
-                        alignItems="center">
-                        {this.researchInfo(research)}
-
+        for (let i = 0; i < list.length; i++) {
+            return (<Paper style={{ height: 200, width: 1000 }} variant="outlined" square>
+                <Grid container spacing={2} justify="center" style={{ marginTop: 25,marginLeft: 25 }}
+                    alignItems="center">
+                    {this.researchInfo(list[i])}
                         {this.userType === "Student" &&
                             <Grid item>
-                                <Button onClick={() => this.setState({ toApplication: true })} className="search__button">Apply</Button>
+                            <Button onClick={() => this.setState({ toApplication: true })}className="search__button">Apply</Button>
                             </Grid>
                         }
-                        {this.userType === "Administrator" &&
-                            <Grid item>
-                                <Grid container direction="column" justify="center">
-                                    <Button onClick={() => this.setState({ toApplication: true })} className="search__button">Apply</Button>
-                                    <div style={{ height: 10 }}></div>
-                                    <Button onClick={() => {
-                                        for (let i = 0; i < this.state.researchList.length; i++) {
-                                            if (research.title === this.state.researchList[i].title) {
-                                                this.state.researchList.splice(i, 1);
-                                                this.setState({ researchList: this.state.researchList });
-                                                return;
-                                            }
-                                        }
-                                    }} className="search__button">Remove</Button>
-                                </Grid>
+                    {this.userType === "Administrator" &&
+                        <Grid item>
+                            <Grid container direction="column" justify="center">
+                                <div style={{ height: 10 }}></div>
+                                <Button className="search__button">Remove</Button>
                             </Grid>
-                        }
-                    </Grid>
+                        </Grid>
+                    }
+                </Grid>
                 </Paper>
-            })
-        );
+            );
+        }
     }
-
-
 
     applyFilters(list) {
         const filters = this.state.filters;
-        console.log(filters)
         let filteredList = list.filter(
             (research) => {
                 let matchTitle, matchResearcher, matchKeywords,
@@ -214,7 +189,10 @@ class Search extends React.Component {
     }
 
     getTermOptions() {
-        const terms = this.state.researchList.map(
+        if (this.state.list === undefined) {
+            return [];
+        }
+        const terms = this.state.list.map(
             (research) => research.duration
         ).reduce((unique, item) => {
             return unique.includes(item) ?
@@ -224,7 +202,10 @@ class Search extends React.Component {
     }
 
     getCategoryOptions() {
-        let categories = this.state.researchList.map(
+        if (this.state.list === undefined) {
+            return [];
+        }
+        let categories = this.state.list.map(
             (research) => research.category
         ).reduce((unique, item) => {
             return unique.includes(item) ?
@@ -236,10 +217,11 @@ class Search extends React.Component {
 
     displayList() {
         if (this.state.list === undefined) {
-            //
+            //display loading image
         } else if (this.state.isFiltered) {
             return this.listGenerator(this.state.filtered);
         } else {
+            console.log(this.state.list)
             return this.listGenerator(this.state.list);
         }
     }
@@ -386,7 +368,11 @@ class Search extends React.Component {
                         <Grid container justify="space-between">
                             <Grid item xs={4} style={{ margin: 15 }}>
                                 <Typography style={{ color: '#01579b', flex: 1 }}>Showing{" "}
-                                {this.state.researchList.length}{" "}
+                                {this.state.list === undefined ? 0 : (
+                                    this.state.isFiltered ? 
+                                    this.state.filtered.length : 
+                                    this.state.list.length
+                                )}{" "}
                                 opportunities</Typography>
                             </Grid>
 
@@ -402,10 +388,8 @@ class Search extends React.Component {
                             </Grid>
                         </Grid>
                     </Paper>
-
+                    {this.displayList()}
                 </Grid>
-
-                {this.displayList()}
             </div>
         );
     }
