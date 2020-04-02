@@ -145,11 +145,12 @@ class Search extends React.Component {
 
     applyFilters(list) {
         const filters = this.state.filters;
+        console.log(filters)
         let filteredList = list.filter(
             (research) => {
                 let matchTitle, matchResearcher, matchKeywords, 
-                matchCategory, matchDuration, matchDeadline, matchType;
-                if (filters.keywords === '') {
+                matchCategory, matchDuration, matchDeadline;
+                if (filters.keywords.localeCompare('') === 0) {
                     matchKeywords = true;
                 } else {
                     matchTitle = research.title.toLowerCase().indexOf(filters.keywords.toLowerCase()) !== -1;
@@ -157,8 +158,7 @@ class Search extends React.Component {
                     matchKeywords = matchTitle || matchResearcher;
                 }
                 matchCategory = filters.category.length === 0 ? true : (filters.category.includes(research.category));
-                console.log(research.category)
-                console.log(filters.category)
+
                 matchDuration = filters.duration.length === 0 ? true : (filters.duration.includes(research.duration));
                 let matchAfter, matchBefore;
                 if (filters.deadline.after === undefined) {
@@ -178,6 +178,11 @@ class Search extends React.Component {
                     matchBefore = date.subtract(filters.deadline.before, research.deadline).toDays() >= 0;
                 }
                 matchDeadline = matchAfter && matchBefore;
+                console.log(
+                    "keyword:  " + matchKeywords, 
+                    "cat:  " + matchCategory, 
+                    "duration:  "  + matchDuration, 
+                    "deadline" + matchDeadline)
                 return matchKeywords && matchCategory && matchDuration && matchDeadline;
             }
         )
@@ -244,7 +249,7 @@ class Search extends React.Component {
                                     ...this.state.filters, type: value
                                 }
                         })}/>
-                    </Grid>
+                </Grid>
                     
                     <Grid item xs={2}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -361,13 +366,12 @@ class Search extends React.Component {
                         </Grid>
                         </Grid>
                     </Paper>
-
-                    {this.state.isFiltered ? 
-                        this.listGenerator(this.state.researchList) : 
-                        this.listGenerator(this.state.filtered)}
+                    
                 </Grid>
-                
-                
+
+                {this.state.isFiltered ? 
+                this.listGenerator(this.state.filtered) :       
+                this.listGenerator(this.state.researchList)}
             </div>
         );
     }
