@@ -52,6 +52,9 @@ class Search extends React.Component {
         const result = [];
         for (let i = 0; i < list.length; i++) {
             const name = list[i].firstName.concat(" ", list[i].lastName);
+            if (name.localeCompare("leo leo") === 0) {
+                continue; // hardcoding to avoid adding test account
+            }
             for (let j = 0; j < list[i].postings.length; j++) {
                 const research = list[i].postings[j];
                 const parsedResearch = {
@@ -102,14 +105,21 @@ class Search extends React.Component {
                     </Typography>
                 </ButtonBase>
                 <Typography variant="subtitle1" gutterBottom>
-                    Introduction
+                    Introduction: {" "}{
+                        research.description === undefined ? "" :
+                            research.description.length <= 200 ? 
+                                research.description :
+                                research.description
+                                .substring(0, 200)
+                                .concat("...")
+                    }
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                     Researcher: {research.researcher}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                     Deadline: {research.deadline}{" "}
-                    Duration: {research.term}
+                    Duration: {research.duration}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                     Positions: {research.positions}
@@ -120,7 +130,7 @@ class Search extends React.Component {
 
     listGenerator(list) {
         return list.map((research) => {
-            return (<Paper style={{ height: 200, width: 1000 }} variant="outlined" square>
+            return (<Paper style={{ height: 250, width: 1000 }} variant="outlined" square>
                 <Grid container spacing={2} justify="center" style={{ marginTop: 25,marginLeft: 25 }}
                     alignItems="center">
                     {this.researchInfo(research)}
@@ -160,28 +170,24 @@ class Search extends React.Component {
 
                 matchDuration = filters.duration.length === 0 ? true : (filters.duration.includes(research.duration));
                 let matchAfter, matchBefore;
+                let ddl = date.parse(research.deadline, "YYYY/MM/DD");
                 if (filters.deadline.after === undefined) {
                     let temp = new Date();
-                    matchAfter = Math.ceil(date.subtract(research.deadline, temp).toDays()) >= 0;
+                    matchAfter = Math.ceil(date.subtract(ddl, temp).toDays()) >= 0;
                 } else if (filters.deadline.after === null) {
                     matchAfter = true;
                 } else {
-                    matchAfter = Math.ceil(date.subtract(research.deadline, filters.deadline.after).toDays()) >= 0;
+                    matchAfter = Math.ceil(date.subtract(ddl, filters.deadline.after).toDays()) >= 0;
                 }
                 if (filters.deadline.before === undefined) {
                     let temp = new Date();
-                    matchBefore = date.subtract(temp, research.deadline).toDays() >= 0;
+                    matchBefore = date.subtract(temp, ddl).toDays() >= 0;
                 } else if (filters.deadline.before === null) {
                     matchBefore = true;
                 } else {
-                    matchBefore = date.subtract(filters.deadline.before, research.deadline).toDays() >= 0;
+                    matchBefore = date.subtract(filters.deadline.before, ddl).toDays() >= 0;
                 }
                 matchDeadline = matchAfter && matchBefore;
-                console.log(
-                    "keyword:  " + matchKeywords,
-                    "cat:  " + matchCategory,
-                    "duration:  " + matchDuration,
-                    "deadline" + matchDeadline)
                 return matchKeywords && matchCategory && matchDuration && matchDeadline;
             }
         )
@@ -246,9 +252,12 @@ class Search extends React.Component {
                     </Grid>
                     <Grid item xs={2}>
                         <Button onClick={() => {
+                            console.log("search clicked")
                             this.setState({ isFiltered: true });
                             const results = this.applyFilters(this.state.list);
-                            this.setState({ filtered: results })
+                            this.setState({ filtered: results });
+                            console.log(this.state.filtered)
+
                         }}
                             className="search__button">Search</Button>
                     </Grid>
@@ -257,7 +266,7 @@ class Search extends React.Component {
                 <Grid style={{ marginTop: 20 }} container justify="center" spacing={3} direction="row">
                     <Grid item xs={4}>
                         <Autocomplete
-                            options={['Research', 'Job']}
+                            options={['Research']}
                             renderInput={params => <TextField {...params} label="Type of Opportunities" variant="outlined" />}
                             onChange={(e, value) => this.setState({
                                 filters: {
