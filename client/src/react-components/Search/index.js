@@ -45,6 +45,7 @@ class Search extends React.Component {
         this.researchInfo.bind(this);
         this.displayList.bind(this);
         this.parseResearches.bind(this);
+        this.sortList.bind(this);
     }
 
     // Parse researches obtained from databse.
@@ -124,7 +125,20 @@ class Search extends React.Component {
                 <Typography variant="body2" color="textSecondary">
                     Positions: {research.positions}
                 </Typography>
-            </Grid>
+                {this.props.userType === "Student" &&
+                <Grid style={{marginTop: 5}} item>
+                    <Button onClick={() => this.setState({ toApplication: true })}className="search__button">Apply</Button>
+                </Grid>
+                }
+                {this.props.userType === "Administrator" &&
+                        <Grid item>
+                            <Grid container direction="column" justify="center">
+                                <div style={{ height: 10 }}></div>
+                                <Button className="search__button">Remove</Button>
+                            </Grid>
+                        </Grid>
+                }
+                </Grid>
         )
     }
 
@@ -134,19 +148,6 @@ class Search extends React.Component {
                 <Grid container spacing={2} justify="center" style={{ marginTop: 25,marginLeft: 25 }}
                     alignItems="center">
                     {this.researchInfo(research)}
-                        {this.userType === "Student" &&
-                            <Grid item>
-                            <Button onClick={() => this.setState({ toApplication: true })}className="search__button">Apply</Button>
-                            </Grid>
-                        }
-                    {this.userType === "Administrator" &&
-                        <Grid item>
-                            <Grid container direction="column" justify="center">
-                                <div style={{ height: 10 }}></div>
-                                <Button className="search__button">Remove</Button>
-                            </Grid>
-                        </Grid>
-                    }
                 </Grid>
                 </Paper>
             );
@@ -217,17 +218,44 @@ class Search extends React.Component {
             return unique.includes(item) ?
                 unique : [...unique, item];
         }, []);
-        categories.sort((a, b) => -b[0].toUpperCase().localeCompare(a[0].toUpperCase()));
+        categories.sort((a, b) => -b.toUpperCase().localeCompare(a.toUpperCase()));
         return categories;
+    }
+
+    sortList(list) {
+        if (this.state.listOrder === 0) {
+            list.sort((a, b) => { // deadline latest first
+                const a_ddl = date.parse(a.deadline, "YYYY/MM/DD");
+                const b_ddl = date.parse(b.deadline, "YYYY/MM/DD");
+                return -date.subtract(a_ddl, b_ddl).toDays();
+            })
+        } else if (this.state.listOrder === 1) {
+            list.sort((a, b) => { // deadline earliest first
+                const a_ddl = date.parse(a.deadline, "YYYY/MM/DD");
+                const b_ddl = date.parse(b.deadline, "YYYY/MM/DD");
+                return date.subtract(a_ddl, b_ddl).toDays();
+            })
+        } else { // sort in alphabet order
+            list.sort((a, b) => -b.title.toUpperCase().localeCompare(a.title.toUpperCase()));
+        }
+        return list;
     }
 
     displayList() {
         if (this.state.list === undefined) {
             //display loading image
         } else if (this.state.isFiltered) {
-            return this.listGenerator(this.state.filtered);
+            if (this.state.listOrder === undefined || this.state.listOrder === -1) {
+                return this.listGenerator(this.state.filtered);
+            } else {
+                return this.listGenerator(this.sortList(this.state.filtered));
+            }
         } else {
-            return this.listGenerator(this.state.list);
+            if (this.state.listOrder === undefined || this.state.listOrder === -1) {
+                return this.listGenerator(this.state.list);
+            } else {
+                return this.listGenerator(this.sortList(this.state.list));
+            }
         }
     }
 
@@ -250,17 +278,22 @@ class Search extends React.Component {
                             })}
                             fullWidth />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1} style={{marginRight: 3}}>
                         <Button onClick={() => {
-                            console.log("search clicked")
                             this.setState({ isFiltered: true });
                             const results = this.applyFilters(this.state.list);
                             this.setState({ filtered: results });
-                            console.log(this.state.filtered)
 
                         }}
-                            className="search__button">Search</Button>
+                        className="search__button">Search</Button>
                     </Grid>
+                    <Grid item xs={1}>
+                        <Button onClick={() => {
+                            this.setState({ isFiltered: false });
+                        }}
+                        className="search__button">show all</Button>
+                    </Grid>
+
                 </Grid>
 
                 <Grid style={{ marginTop: 20 }} container justify="center" spacing={3} direction="row">
@@ -384,14 +417,21 @@ class Search extends React.Component {
                                 opportunities</Typography>
                             </Grid>
 
-                            <Grid item xs={2} style={{ marginBottom: 20 }}>
+                            <Grid item xs={3} style={{ marginBottom: 20 }}>
                                 <Autocomplete
                                     options={[
-                                        { value: 'Deadline: latest first', index: 0 },
-                                        { value: 'Deadline: earliest first', index: 1 },
-                                        { value: 'Title: alphabet order', index: 2 }
+                                        { value: "Deadline: latest first", index: 0 },
+                                        { value: "Deadline: earliest first", index: 1 },
+                                        { value: "Title: alphabet order", index: 2 },
                                     ]}
                                     renderInput={params => <TextField {...params} label="Sorted by" />}
+                                    onChange={(e, value) => { 
+                                        if (value !== null) {
+                                            this.setState({listOrder: value.index})
+                                        } else {
+                                            this.setState({listOrder: -1})
+                                        }
+                                    }}
                                     getOptionLabel={(option) => option.value} />
                             </Grid>
                         </Grid>
