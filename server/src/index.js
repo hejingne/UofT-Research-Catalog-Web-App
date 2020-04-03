@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === "production") {
 
     app.use(express.static(buildDir));
 
-    app.get("/", (req, res) => {
+    app.get("*", (req, res) => {
         res.sendFile(path.join(buildDir, "index.html"));
     });
 }
@@ -59,8 +59,8 @@ db.on("error", (error) =>
 );
 db.once("open", () => console.log("Connected to database"));
 
-app.use("/profile", profileRouter);
-app.use("/user", userRouter);
-app.use("/application", applicationRouter);
+app.use("api/profile", profileRouter);
+app.use("api/user", userRouter);
+app.use("api/application", applicationRouter);
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));

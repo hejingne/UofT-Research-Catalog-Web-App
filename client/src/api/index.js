@@ -12,15 +12,15 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const userApi = axios.create({
-    baseURL: originUrl + "/user"
+    baseURL: originUrl + "api/user"
 });
 
 const profileApi = axios.create({
-    baseURL: originUrl + "/profile"
+    baseURL: originUrl + "api/profile"
 });
 
 const applicationApi = axios.create({
-    baseURL: originUrl + "/application"
+    baseURL: originUrl + "api/application"
 });
 
 export const createUser = (payload) => userApi.post("/create", payload);
