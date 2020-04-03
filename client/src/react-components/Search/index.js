@@ -12,6 +12,9 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import date from 'date-and-time';
 import api from "../../api";
 
@@ -37,6 +40,7 @@ class Search extends React.Component {
                 deadline: {},
                 duration: []
             },
+            switches: [true, true, true, true, true]
         };
         this.listGenerator.bind(this);
         this.applyFilters.bind(this);
@@ -159,13 +163,14 @@ class Search extends React.Component {
         let filteredList = list.filter(
             (research) => {
                 let matchTitle, matchResearcher, matchKeywords,
-                    matchCategory, matchDuration, matchDeadline;
+                    matchCategory, matchDuration, matchDeadline, matchCat;
                 if (filters.keywords.localeCompare('') === 0) {
                     matchKeywords = true;
                 } else {
                     matchTitle = research.title.toLowerCase().indexOf(filters.keywords.toLowerCase()) !== -1;
                     matchResearcher = research.researcher.toLowerCase().indexOf(filters.keywords.toLowerCase()) !== -1;
-                    matchKeywords = matchTitle || matchResearcher;
+                    matchCat = research.category.toLowerCase().indexOf(filters.keywords.toLowerCase()) !== -1;
+                    matchKeywords = matchTitle || matchResearcher || matchCat;
                 }
                 matchCategory = filters.category.length === 0 ? true : (filters.category.includes(research.category));
 
@@ -189,6 +194,10 @@ class Search extends React.Component {
                     matchBefore = date.subtract(filters.deadline.before, ddl).toDays() >= 0;
                 }
                 matchDeadline = matchAfter && matchBefore;
+                matchKeywords = this.state.switches[0] ? matchKeywords : true;
+                matchCategory = this.state.switches[3] ? matchCategory : true;
+                matchDuration = this.state.switches[4] ? matchDuration : true;
+                matchDeadline = this.state.switches[2] ? matchDuration : true;
                 return matchKeywords && matchCategory && matchDuration && matchDeadline;
             }
         )
@@ -267,38 +276,83 @@ class Search extends React.Component {
         }
         return (
             <div>
+                <Grid style={{ marginTop: 40 }} container justify="center">
+                <Paper style={{ height: 50, width: 1000 }} variant="outlined" square>
+                    <Grid container direction="row" xs={12}>
+                    <Grid item xs={1} style={{ margin: 15 }}>
+                        <Typography>
+                            {"Filters: "}
+                        </Typography>
+                    </Grid>
+                    <Grid item style={{ margin: 10 }} xs={9}>
+                    <FormGroup row>
+                        <FormControlLabel
+                            control={<Switch checked={this.state.switches[0]} 
+                            onChange={(e) => {
+                                const newSwitches = this.state.switches;
+                                newSwitches[0] = e.target.checked;
+                                this.setState({switches: newSwitches});
+                            }} color="primary"/>}
+                            label="Keywords"/>
+                        <FormControlLabel
+                            control={<Switch checked={this.state.switches[1]} 
+                            onChange={(e) => {
+                                const newSwitches = this.state.switches;
+                                newSwitches[1] = e.target.checked;
+                                this.setState({switches: newSwitches});
+                            }} 
+                            color="primary" />
+                            }label="Type"/>
+                        <FormControlLabel
+                            control={<Switch checked={this.state.switches[2]} 
+                            onChange={(e) => {
+                                const newSwitches = this.state.switches;
+                                newSwitches[2] = e.target.checked;
+                                this.setState({switches: newSwitches});
+                            }} color="primary"/>}
+                            label="Deadline"/>
+                        <FormControlLabel
+                            control={<Switch checked={this.state.switches[3]} 
+                            onChange={(e) => {
+                                const newSwitches = this.state.switches;
+                                newSwitches[3] = e.target.checked;
+                                this.setState({switches: newSwitches});
+                            }} 
+                            color="primary" />
+                            }label="Category"/>
+                        <FormControlLabel
+                            control={<Switch checked={this.state.switches[4]} 
+                            onChange={(e) => {
+                                const newSwitches = this.state.switches;
+                                newSwitches[4] = e.target.checked;
+                                this.setState({switches: newSwitches});
+                            }} 
+                            color="primary" />
+                            }label="Duration"/>
+                    </FormGroup>
+                    </Grid>
+                    </Grid>
+                </Paper>
+                <Paper style={{ height: 300, width: 1000 }} variant="outlined" square>
                 <Grid style={{ marginTop: 15 }} container justify="center" spacing={3} direction="row">
-                    <Grid item xs={6}>
-                        <TextField label="Enter keywords: research area, researcher..."
+                    <Grid item xs={8}>
+                        <TextField 
+                            label="Enter keywords: research area, researcher..."
                             onChange={(e) => this.setState({
                                 filters: {
                                     ...this.state.filters,
                                     keywords: e.target.value
                                 }
                             })}
+                            style={{display: this.state.switches[0] ? "" : "none"}}
                             fullWidth />
                     </Grid>
-                    <Grid item xs={1} style={{marginRight: 3}}>
-                        <Button onClick={() => {
-                            this.setState({ isFiltered: true });
-                            const results = this.applyFilters(this.state.list);
-                            this.setState({ filtered: results });
-
-                        }}
-                        className="search__button">Search</Button>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <Button onClick={() => {
-                            this.setState({ isFiltered: false });
-                        }}
-                        className="search__button">show all</Button>
-                    </Grid>
-
                 </Grid>
 
                 <Grid style={{ marginTop: 20 }} container justify="center" spacing={3} direction="row">
                     <Grid item xs={4}>
                         <Autocomplete
+                            style={{display: this.state.switches[1] ? "" : "none"}}
                             options={['Research']}
                             renderInput={params => <TextField {...params} label="Type of Opportunities" variant="outlined" />}
                             onChange={(e, value) => this.setState({
@@ -309,10 +363,12 @@ class Search extends React.Component {
                     </Grid>
 
                     <Grid item xs={2}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <MuiPickersUtilsProvider 
+                            utils={DateFnsUtils}>
                             <KeyboardDatePicker
+                                style={{display: this.state.switches[2] ? "" : "none"}}
                                 format="yyyy/MM/dd"
-                                label="Deadline after (including)"
+                                label="Deadline after"
                                 disablePast={true}
                                 placeholder=""
                                 value={this.state.filters.deadline.after}
@@ -330,10 +386,12 @@ class Search extends React.Component {
                         </MuiPickersUtilsProvider>
                     </Grid>
                     <Grid item xs={2}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <MuiPickersUtilsProvider 
+                            utils={DateFnsUtils}>
                             <KeyboardDatePicker
+                                style={{display: this.state.switches[2] ? "" : "none"}}
                                 format="yyyy/MM/dd"
-                                label="Deadline before (including)"
+                                label="Deadline before"
                                 disablePast={true}
                                 value={this.state.filters.deadline.before}
                                 onChange={(date) => this.setState({
@@ -354,6 +412,7 @@ class Search extends React.Component {
                 <Grid style={{ marginTop: 20 }} container justify="center" spacing={3} direction="row" >
                     <Grid item xs={4}>
                         <Autocomplete
+                            style={{display: this.state.switches[3] ? "" : "none"}}
                             multiple
                             classes={{ groupLabel: "group-label", groupUl: 'group-item' }}
                             options={this.getCategoryOptions()}
@@ -378,6 +437,7 @@ class Search extends React.Component {
                     </Grid>
                     <Grid item xs={4}>
                         <Autocomplete
+                            style={{display: this.state.switches[4] ? "" : "none"}}
                             multiple
                             options={this.getTermOptions()}
                             disableCloseOnSelect
@@ -401,6 +461,28 @@ class Search extends React.Component {
                             })} />
                     </Grid>
                 </Grid>
+                </Paper>
+                <Paper style={{ height: 60, width: 1000 }} variant="outlined" square>
+                    <Grid container direction="row" style={{marginTop: 10}} justify="center">
+                    <Grid item xs={1} style={{marginRight: 30}}>
+                        <Button onClick={() => {
+                            this.setState({ isFiltered: true });
+                            const results = this.applyFilters(this.state.list);
+                            this.setState({ filtered: results });
+
+                        }}
+                        className="search__button">Search</Button>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Button onClick={() => {
+                            this.setState({ isFiltered: false });
+                        }}
+                        className="search__button">show all</Button>
+                    </Grid>
+                    </Grid>
+                </Paper>
+                </Grid>
+                
                 <div style={{ height: 40 }} />
                 <Divider />
 
