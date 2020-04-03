@@ -17,7 +17,8 @@ class Header extends React.Component {
         this.state = {
             menuOpenState: false,
             anchorEl: null,
-            userType: ""
+            userType: "",
+            sessionId: ""
         };
     }
 
@@ -25,6 +26,7 @@ class Header extends React.Component {
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");
+        this.setState({ sessionId: sessionId ? sessionId : "" });
         api.getSession(sessionId).then((res) => {
             if (!res.data.success) {
                 return this.props.history.push("/signOut");
@@ -34,6 +36,11 @@ class Header extends React.Component {
     }
 
     handleOnClickMenuIcon(e) {
+        // because we want to refresh header for admin to show manager user tab
+        const sessionId = localStorage.getItem("sessionId")
+            ? localStorage.getItem("sessionId")
+            : sessionStorage.getItem("sessionId");
+        this.setState({ sessionId: sessionId ? sessionId : "" });
         this.setState({ menuOpenState: true });
         this.setState({ anchorEl: e.target });
     }

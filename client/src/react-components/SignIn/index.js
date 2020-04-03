@@ -59,8 +59,6 @@ class SignIn extends React.Component {
                     this.props.history.push({
                         pathname: "/home"
                     });
-                    // because we want to remount header for admin to show manager user tab
-                    window.location.reload();
                 } else {
                     throw new Error();
                 }
