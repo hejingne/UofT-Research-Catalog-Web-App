@@ -41,6 +41,10 @@ app.use(
     })
 );
 
+app.use("/api/profile", profileRouter);
+app.use("/api/user", userRouter);
+app.use("/api/application", applicationRouter);
+
 if (process.env.NODE_ENV === "production") {
     console.log(`Production mode detected: Serving react client`);
     const path = require("path");
@@ -58,9 +62,5 @@ db.on("error", (error) =>
     console.error("MongoDB connection error: " + error.message)
 );
 db.once("open", () => console.log("Connected to database"));
-
-app.use("/api/profile", profileRouter);
-app.use("/api/user", userRouter);
-app.use("/api/application", applicationRouter);
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
