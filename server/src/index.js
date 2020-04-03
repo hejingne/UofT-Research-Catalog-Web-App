@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === "production") {
 
     app.use(express.static(buildDir));
 
-    app.get("*", (req, res) => {
+    app.get("/", (req, res) => {
         res.sendFile(path.join(buildDir, "index.html"));
     });
 }
@@ -50,10 +50,6 @@ db.on("error", (error) =>
     console.error("MongoDB connection error: " + error.message)
 );
 db.once("open", () => console.log("Connected to database"));
-
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
 
 app.use("/profile", profileRouter);
 app.use("/user", userRouter);
