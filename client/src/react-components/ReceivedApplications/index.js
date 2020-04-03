@@ -6,6 +6,11 @@ import Grid from "@material-ui/core/Grid";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 
 import "./styles.css";
 import apis from "../../api";
@@ -14,6 +19,8 @@ class ReceivedApplications extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            dialogState: false,
+            application: {},
             applicationList: []
         };
     }
@@ -26,54 +33,37 @@ class ReceivedApplications extends React.Component {
             if (!res.data.success) {
                 return this.props.history.push("/signOut");
             }
-            apis.getApplicationsByEmail(res.data.user.emailAddress).then(
+            apis.getResearcherByEmail(res.data.user.emailAddress).then(
                 (response) => {
                     if (response.data.success) {
-                        let data = [];
-                        response.data.data.forEach((application) => {
-                            let resumeBytes = new Uint8Array(
-                                application.resume.data.data
+                        const postings = response.data.data.postings;
+                        postings.forEach((posting) => {
+                            apis.getApplicationsByResearchId(posting._id).then(
+                                (r) => {
+                                    if (r.data.success) {
+                                        this.setState({
+                                            applicationList: [
+                                                ...this.state.applicationList,
+                                                ...r.data.data
+                                            ]
+                                        });
+                                    }
+                                }
                             );
-                            let resumeBlob = new Blob([resumeBytes], {
-                                type: "application/pdf"
-                            });
-                            let resumeDownloadUrl = URL.createObjectURL(
-                                resumeBlob
-                            );
-
-                            let transcriptBytes = new Uint8Array(
-                                application.transcript.data.data
-                            );
-                            let transcriptBlob = new Blob([transcriptBytes], {
-                                type: "application/pdf"
-                            });
-                            let transcriptDownloadUrl = URL.createObjectURL(
-                                transcriptBlob
-                            );
-
-                            data.push({
-                                id: application._id,
-                                researchTitle: application.researchTitle,
-                                researchId: application.researchId,
-                                status: application.status,
-                                resume: resumeDownloadUrl,
-                                transcript: transcriptDownloadUrl
-                            });
                         });
-                        this.setState({ applicationList: data });
                     }
                 }
             );
         });
     }
 
-    handleAcceptOffer(id) {
-        apis.acceptApplication(id).then((res) => {
+    handleOfferOffer(id) {
+        apis.offerApplication(id).then((res) => {
             if (res.data.success) {
                 const data = this.state.applicationList;
                 data.forEach((application) => {
-                    if (application.id === id) {
-                        application.status = "accepted";
+                    if (application._id === id) {
+                        application.status = "offered";
                     }
                 });
                 this.setState({ applicationList: data });
@@ -86,7 +76,7 @@ class ReceivedApplications extends React.Component {
             if (res.data.success) {
                 const data = this.state.applicationList;
                 data.forEach((application) => {
-                    if (application.id === id) {
+                    if (application._id === id) {
                         application.status = "rejected";
                     }
                 });
@@ -95,9 +85,198 @@ class ReceivedApplications extends React.Component {
         });
     }
 
+    // move application state to review once a document is downloaded
+    handleReviewOffer(id) {
+        let application;
+        const data = this.state.applicationList;
+        data.forEach((app) => {
+            if (app._id === id) {
+                application = app;
+            }
+        });
+        if (application && application.status === "submitted") {
+            apis.reviewApplication(id).then((res) => {
+                if (res.data.success) {
+                    const data = this.state.applicationList;
+                    data.forEach((application) => {
+                        if (application._id === id) {
+                            application.status = "under review";
+                        }
+                    });
+                    this.setState({ applicationList: data });
+                }
+            });
+        }
+    }
+
+    bufferToUrl(buffer) {
+        let resumeBytes = new Uint8Array(buffer.data.data);
+        let resumeBlob = new Blob([resumeBytes], {
+            type: "application/pdf"
+        });
+        let resumeDownloadUrl = URL.createObjectURL(resumeBlob);
+        return resumeDownloadUrl;
+    }
+
+    renderDialog() {
+        return (
+            <Dialog
+                open={this.state.dialogState}
+                onClose={() => {
+                    this.setState({ dialogState: false, application: {} });
+                }}
+                aria-labelledby="customized-dialog-title"
+                maxWidth="xl"
+            >
+                <DialogTitle
+                    onClose={() => {
+                        this.setState({ dialogState: false, application: {} });
+                    }}
+                >
+                    {"Application Details"}
+                </DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        State: {this.state.application.status}
+                    </Typography>
+                    <Typography>
+                        Submitted Documents:{" "}
+                        <a
+                            style={{ color: "#01579b" }}
+                            href={this.bufferToUrl(
+                                this.state.application.resume
+                            )}
+                            download="Resume"
+                            onClick={() => {
+                                this.handleReviewOffer(
+                                    this.state.application._id
+                                );
+                            }}
+                        >
+                            RESUME
+                        </a>{" "}
+                        <a
+                            style={{ color: "#01579b" }}
+                            href={this.bufferToUrl(
+                                this.state.application.transcript
+                            )}
+                            download="Transcript"
+                            onClick={() => {
+                                this.handleReviewOffer(
+                                    this.state.application._id
+                                );
+                            }}
+                        >
+                            TRANSCRIPT
+                        </a>
+                    </Typography>
+                </DialogContent>
+                <DialogContent id="dialog-content">
+                    <div>
+                        <DialogContentText className="questions">
+                            Applicant Name
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.applicantName}
+                        </DialogContentText>
+                        <DialogContentText className="questions">
+                            Applicant Email Address
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.emailAddress}
+                        </DialogContentText>
+                        <DialogContentText className="questions">
+                            Applicant Phone Number
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.phoneNumber}
+                        </DialogContentText>
+                        <DialogContentText className="questions">
+                            Applicant Area Of Study
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.areaOfStudy}
+                        </DialogContentText>
+                    </div>
+                    <div id="placeholder"></div>
+                    <div>
+                        <DialogContentText className="questions">
+                            1. What interests you about this research?
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.answers.questionOne}
+                        </DialogContentText>
+                        <DialogContentText className="questions">
+                            2. What skills can you bring to the laboratory?
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.answers.questionTwo}
+                        </DialogContentText>
+                        <DialogContentText className="questions">
+                            3. Do you have any previous research experience? If
+                            yes, please briefly describe the project, including
+                            your role in the project.
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.answers.questionThree}
+                        </DialogContentText>
+                        <DialogContentText className="questions">
+                            4. How many hours in a week can you commit to being
+                            in the lab?
+                        </DialogContentText>
+                        <DialogContentText>
+                            {this.state.application.answers.questionFour}
+                        </DialogContentText>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    {this.state.application.status === "under review" && (
+                        <div>
+                            <Button
+                                onClick={() => {
+                                    this.handleOfferOffer(
+                                        this.state.application._id
+                                    );
+                                }}
+                                color="primary"
+                                autoFocus
+                            >
+                                SEND OFFER
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    this.handleRejectOffer(
+                                        this.state.application._id
+                                    );
+                                }}
+                                color="primary"
+                                autoFocus
+                            >
+                                REJECT APPLICATION
+                            </Button>
+                        </div>
+                    )}
+                    <Button
+                        onClick={() => {
+                            this.setState({
+                                dialogState: false,
+                                application: {}
+                            });
+                        }}
+                        color="primary"
+                        autoFocus
+                    >
+                        CLOSE
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
     render() {
         return (
             <List id="research-container">
+                {this.state.dialogState && this.renderDialog()}
                 {this.state.applicationList.map((application) => {
                     return (
                         <div>
@@ -108,14 +287,37 @@ class ReceivedApplications extends React.Component {
                                             <Link
                                                 style={{ color: "#01579b" }}
                                                 href=""
+                                                onClick={() => {
+                                                    this.setState({
+                                                        dialogState: true,
+                                                        application: application
+                                                    });
+                                                }}
                                             >
                                                 {application.researchTitle}
                                             </Link>
                                         </Typography>
                                     </ButtonBase>
-                                    {/*<Typography variant="subtitle1" gutterBottom>*/}
-                                    {/*    Introduction*/}
-                                    {/*</Typography>*/}
+                                    <Typography
+                                        variant="subtitle1"
+                                        gutterBottom
+                                    >
+                                        Status: {application.status}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        Applicant Name:
+                                        {application.applicantName}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                    >
+                                        Applicant Area of Study:
+                                        {application.areaOfStudy}
+                                    </Typography>
                                     <Typography
                                         variant="body2"
                                         color="textSecondary"
@@ -126,50 +328,58 @@ class ReceivedApplications extends React.Component {
                                         variant="body2"
                                         color="textSecondary"
                                     >
-                                        Status: {application.status}
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                    >
                                         Submitted Documents:{" "}
                                         <a
                                             style={{ color: "#01579b" }}
-                                            href={application.resume}
+                                            href={this.bufferToUrl(
+                                                application.resume
+                                            )}
                                             download="Resume"
+                                            onClick={() => {
+                                                this.handleReviewOffer(
+                                                    application._id
+                                                );
+                                            }}
                                         >
                                             RESUME
                                         </a>{" "}
                                         <a
                                             style={{ color: "#01579b" }}
-                                            href={application.transcript}
+                                            href={this.bufferToUrl(
+                                                application.transcript
+                                            )}
                                             download="Transcript"
+                                            onClick={() => {
+                                                this.handleReviewOffer(
+                                                    application._id
+                                                );
+                                            }}
                                         >
                                             TRANSCRIPT
                                         </a>
                                     </Typography>
                                 </div>
-                                {application.status === "offered" && (
+                                {application.status === "under review" && (
                                     <div id="action-btn">
                                         <Button
                                             className="login__button"
                                             onClick={() => {
-                                                this.handleAcceptOffer(
-                                                    application.id
+                                                this.handleOfferOffer(
+                                                    application._id
                                                 );
                                             }}
                                         >
-                                            ACCEPT OFFER
+                                            SEND OFFER
                                         </Button>
                                         <Button
                                             className="login__button"
                                             onClick={() => {
                                                 this.handleRejectOffer(
-                                                    application.id
+                                                    application._id
                                                 );
                                             }}
                                         >
-                                            REJECT OFFER
+                                            REJECT APPLICATION
                                         </Button>
                                     </div>
                                 )}

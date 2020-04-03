@@ -15,15 +15,3 @@
 #action-btn{
     margin-left: auto;
 }
-
-#dialog-content{
-    display: flex;
-}
-
-#placeholder{
-    width: 20px;
-}
-
-#dialog-content .questions{
-    color: black;
-}

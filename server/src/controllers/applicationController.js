@@ -50,15 +50,14 @@ getApplicationsByEmail = async (req, res) => {
     });
 };
 
-getApplicationsByEmailAndResearchId = async (req, res) => {
+getApplicationsByResearchId = async (req, res) => {
     if (!req.session.user) {
         return res
             .status(401)
             .json({ success: false, message: "user unauthorized" });
     }
-    await Application.findOne(
+    await Application.find(
         {
-            emailAddress: req.params.emailAddress,
             researchId: req.params.researchId
         },
         (error, applications) => {
@@ -220,6 +219,70 @@ rejectApplication = async (req, res) => {
         });
 };
 
+reviewApplication = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "user unauthorized"
+        });
+    }
+
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    await Application.findOneAndUpdate(
+        { _id: id },
+        { $set: { status: "under review" } },
+        { new: true }
+    )
+        .then((restaurant) => {
+            if (!restaurant) {
+                res.status(404).send();
+            } else {
+                res.status(200).json({
+                    success: true
+                });
+            }
+        })
+        .catch((error) => {
+            res.status(400).send();
+        });
+};
+
+offerApplication = async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message: "user unauthorized"
+        });
+    }
+
+    const id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    await Application.findOneAndUpdate(
+        { _id: id },
+        { $set: { status: "offered" } },
+        { new: true }
+    )
+        .then((restaurant) => {
+            if (!restaurant) {
+                res.status(404).send();
+            } else {
+                res.status(200).json({
+                    success: true
+                });
+            }
+        })
+        .catch((error) => {
+            res.status(400).send();
+        });
+};
+
 deleteApplicationById = async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({
@@ -249,9 +312,11 @@ deleteApplicationById = async (req, res) => {
 module.exports = {
     getApplications,
     getApplicationsByEmail,
-    getApplicationsByEmailAndResearchId,
+    getApplicationsByResearchId,
     createApplications,
     deleteApplicationById,
     acceptApplication,
-    rejectApplication
+    rejectApplication,
+    reviewApplication,
+    offerApplication
 };

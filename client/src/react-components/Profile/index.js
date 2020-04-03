@@ -11,7 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import { Done, Edit } from "@material-ui/icons";
-import api from "../../api";
+import apis from "../../api";
 
 import "./styles.css";
 
@@ -40,9 +40,9 @@ class Profile extends React.Component {
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");
-        api.getSession(sessionId).then((response) => {
+        apis.getSession(sessionId).then((response) => {
             if (response.data.success) {
-                api.getProfileByEmail(response.data.user.emailAddress).then(
+                apis.getProfileByEmail(response.data.user.emailAddress).then(
                     (res) => {
                         if (res.data.success) {
                             let imagePath = require("./static/no-profile-picture-icon.png");
@@ -94,9 +94,9 @@ class Profile extends React.Component {
             const sessionId = localStorage.getItem("sessionId")
                 ? localStorage.getItem("sessionId")
                 : sessionStorage.getItem("sessionId");
-            api.getSession(sessionId).then((response) => {
+            apis.getSession(sessionId).then((response) => {
                 if (response.data.success) {
-                    api.updateDescription({
+                    apis.updateDescription({
                         emailAddress: response.data.user.emailAddress,
                         description: this.state.personalInfo.description
                     });
@@ -181,7 +181,7 @@ class Profile extends React.Component {
                                 )
                             }}
                         />
-                        <InterestsChips />
+                        <InterestsChips id="interests" />
                     </div>
                     <img
                         id="profile-pic"

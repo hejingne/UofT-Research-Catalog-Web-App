@@ -43,10 +43,12 @@ export const deleteApplicationById = (id) =>
     applicationApi.delete(`/delete/${id}`);
 export const getApplicationsByEmail = (emailAddress) =>
     applicationApi.get(`/applications/${emailAddress}`);
-export const getApplicationsByEmailAndResearchId = (emailAddress, researchId) =>
-    applicationApi.get(`/applications/${emailAddress}/${researchId}`);
+export const getApplicationsByResearchId = (researchId) =>
+    applicationApi.get(`/applications/researchId/${researchId}`);
 export const acceptApplication = (id) => applicationApi.patch(`/accept/${id}`);
 export const rejectApplication = (id) => applicationApi.patch(`/reject/${id}`);
+export const reviewApplication = (id) => applicationApi.patch(`/review/${id}`);
+export const offerApplication = (id) => applicationApi.patch(`/offer/${id}`);
 
 const apis = {
     createUser,
@@ -66,9 +68,11 @@ const apis = {
     createApplications,
     deleteApplicationById,
     getApplicationsByEmail,
-    getApplicationsByEmailAndResearchId,
+    getApplicationsByResearchId,
     acceptApplication,
-    rejectApplication
+    rejectApplication,
+    reviewApplication,
+    offerApplication
 };
 
 export default apis;
