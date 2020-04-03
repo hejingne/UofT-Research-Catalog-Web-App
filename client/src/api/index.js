@@ -1,15 +1,17 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
+
+const port = process.env.PORT || 3001;
 const userApi = axios.create({
-    baseURL: "http://localhost:3001/user"
+    baseURL: "http://localhost:" + port + "/user"
 });
 
 const profileApi = axios.create({
-    baseURL: "http://localhost:3001/profile"
+    baseURL: "http://localhost:" + port + "/profile"
 });
 
 const applicationApi = axios.create({
-    baseURL: "http://localhost:3001/application"
+    baseURL: "http://localhost:" + port + "/application"
 });
 
 export const createUser = (payload) => userApi.post("/create", payload);
