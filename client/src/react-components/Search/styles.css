@@ -42,3 +42,9 @@ li.research-info-container {
     font-size: 14px;
     color: rgb(26, 76, 119);
 }
+
+
+
+.researcher-icon .MuiAvatar-colorDefault	{
+    background-color: "#9575cd"
+}

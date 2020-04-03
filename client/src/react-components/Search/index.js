@@ -15,8 +15,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Avatar from '@material-ui/core/Avatar';
 import date from 'date-and-time';
 import api from "../../api";
+
 
 import './styles.css'
 import Dialog from "@material-ui/core/Dialog";
@@ -70,7 +72,8 @@ class Search extends React.Component {
                     deadline: research.deadline,
                     category: research.areaOfStudy,
                     positions: research.positions,
-                    id: research._id
+                    id: research._id,
+                    email: list[i].email
                 };
                 result.push(parsedResearch);
             }
@@ -101,7 +104,7 @@ class Search extends React.Component {
 
     researchInfo(research) {
         return (
-            <Grid item xs>
+            <Grid item xs={9}>
                 <ButtonBase>
                     <Typography gutterBottom variant="h6">
                         <Link style={{ color: '#01579b' }}
@@ -120,9 +123,7 @@ class Search extends React.Component {
                                 .concat("...")
                     }
                 </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    Researcher: {research.researcher}
-                </Typography>
+
                 <Typography variant="body2" color="textSecondary">
                     Deadline: {research.deadline}
                 </Typography>
@@ -160,10 +161,26 @@ class Search extends React.Component {
 
     listGenerator(list) {
         return list.map((research) => {
-            return (<Paper style={{ height: 250, width: 1000 }} variant="outlined" square>
-                <Grid container spacing={2} justify="center" style={{ marginTop: 25,marginLeft: 25 }}
-                    alignItems="center">
+            return (<Paper style={{ height: 300, width: 1000 }} variant="outlined" square>
+                <Grid container spacing={2} justify="center" style={{ marginTop: 25,marginLeft: 25 }} direction="row" alignItems="center">
                     {this.researchInfo(research)}
+                    <Grid item xs={2}>
+                    <Avatar className="researcher-icon">{research.researcher[0]}</Avatar>
+                    <Typography variant="subtitle2" color="primary">
+                    Researcher: 
+                    </Typography>
+                    <ButtonBase>
+                    <Typography gutterBottom variant="subtitle2">
+                    <Link style={{ color: 'primary' }} 
+                        onClick={() => this.setState({toProfile: {
+                            value: true,
+                            data: { otherUser: true, email: research.email }
+                        }})}>
+                            {research.researcher}
+                    </Link> 
+                    </Typography>
+                    </ButtonBase>
+                    </Grid>
                 </Grid>
                 </Paper>
             );
@@ -284,11 +301,16 @@ class Search extends React.Component {
 
     render() {
         
-        if (this.state.toApplication === true) {
-            console.log(this.state.chosenId, this.state.chosenTitle)
+        if (this.state.toApplication) {
             return <Redirect to={{
                 pathname: "/application",
                 state: { id: this.state.chosenId, title: this.state.chosenTitle }
+            }}/>;
+        }
+        if (this.state.toProfile !== undefined && this.state.toProfile.value) {
+            return <Redirect to={{
+                pathname: "/profile",
+                state: this.state.toProfile.data
             }}/>;
         }
         return (
