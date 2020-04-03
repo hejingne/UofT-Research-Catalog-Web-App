@@ -2,16 +2,25 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const port = process.env.PORT || 3001;
+
+let originUrl;
+
+if (process.env.NODE_ENV === "production") {
+    originUrl = "https://limitless-retreat-03123.herokuapp.com";
+} else {
+    originUrl = "http://localhost:" + port;
+}
+
 const userApi = axios.create({
-    baseURL: "http://localhost:" + port + "/user"
+    baseURL: originUrl + "/user"
 });
 
 const profileApi = axios.create({
-    baseURL: "http://localhost:" + port + "/profile"
+    baseURL: originUrl + "/profile"
 });
 
 const applicationApi = axios.create({
-    baseURL: "http://localhost:" + port + "/application"
+    baseURL: originUrl + "/application"
 });
 
 export const createUser = (payload) => userApi.post("/create", payload);
