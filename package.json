@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "npm --prefix client install && npm --prefix server install",
     "start:dev": "concurrently 'npm run --prefix client start' 'npm run --prefix server start'",
-    "heroku-postbuild": "npm run --prefix server start",
-    "start": "npm run --prefix client start"
+    "heroku-postbuild": "npm run --prefix client start",
+    "start": "npm run --prefix server build"
   }
 }
