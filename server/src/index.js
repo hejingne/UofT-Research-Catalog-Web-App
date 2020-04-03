@@ -42,7 +42,7 @@ app.use(
 );
 
 if (process.env.NODE_ENV === "production") {
-    console.log(`Production mode detected: Serving react-ui`);
+    console.log(`Production mode detected: Serving react client`);
     const path = require("path");
 
     const buildDir = path.join(__dirname, "../../client/build");
@@ -59,8 +59,8 @@ db.on("error", (error) =>
 );
 db.once("open", () => console.log("Connected to database"));
 
-app.use("api/profile", profileRouter);
-app.use("api/user", userRouter);
-app.use("api/application", applicationRouter);
+app.use("/api/profile", profileRouter);
+app.use("/api/user", userRouter);
+app.use("/api/application", applicationRouter);
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
