@@ -1,12 +1,10 @@
 {
-  "name": "server",
+  "name": "CSC309",
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "postinstall":
-    "npm --prefix client install && npm --prefix server install",
-    "start:dev":
-    "concurrently 'npm run --prefix client start' 'npm run --prefix server start'",
+    "postinstall": "npm --prefix client install && npm --prefix server install",
+    "start:dev": "concurrently 'npm run --prefix client start' 'npm run --prefix server start'",
     "heroku-postbuild": "npm run --prefix client build",
     "start": "npm run --prefix server start"
   }
