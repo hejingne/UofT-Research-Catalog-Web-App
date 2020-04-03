@@ -7,6 +7,7 @@ const db = require("./database");
 const profileRouter = require("./routes/profileRouter");
 const userRouter = require("./routes/userRouter");
 const applicationRouter = require("./routes/applicationRouter");
+const postingRouter = require("./routes/postingRouter");
 
 const app = express();
 const apiPort = 3001;
@@ -45,5 +46,6 @@ app.get("/", (req, res) => {
 app.use("/profile", profileRouter);
 app.use("/user", userRouter);
 app.use("/application", applicationRouter);
+app.use("/manage-posting", postingRouter);
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));

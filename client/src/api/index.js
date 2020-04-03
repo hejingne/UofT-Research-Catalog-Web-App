@@ -12,6 +12,13 @@ const applicationApi = axios.create({
     baseURL: "http://localhost:3001/application"
 });
 
+const postingApi = axios.create({
+    baseURL: "http://localhost:3001/manage-posting"
+});
+
+
+export const getAllResearches = () => postingApi.get("/postings");
+
 export const createUser = (payload) => userApi.post("/create", payload);
 export const authenticateUser = (payload) =>
     userApi.post("/authenticate", payload);
@@ -50,6 +57,8 @@ export const rejectApplication = (id) => applicationApi.patch(`/reject/${id}`);
 export const reviewApplication = (id) => applicationApi.patch(`/review/${id}`);
 export const offerApplication = (id) => applicationApi.patch(`/offer/${id}`);
 
+
+
 const apis = {
     createUser,
     authenticateUser,
@@ -72,7 +81,8 @@ const apis = {
     acceptApplication,
     rejectApplication,
     reviewApplication,
-    offerApplication
+    offerApplication,
+    getAllResearches
 };
 
 export default apis;
