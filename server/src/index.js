@@ -33,6 +33,19 @@ app.use(
     })
 );
 
+if (process.env.NODE_ENV === "production") {
+    console.log(`Production mode detected: Serving react-ui`);
+    const path = require("path");
+
+    const buildDir = path.join(__dirname, "../../client/build");
+
+    app.use(express.static(buildDir));
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(buildDir, "index.html"));
+    });
+}
+
 db.on("error", (error) =>
     console.error("MongoDB connection error: " + error.message)
 );
