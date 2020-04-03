@@ -11,10 +11,12 @@ router.get(
     applicationController.getApplicationsByEmail
 );
 router.get(
-    "/applications/:emailAddress/:researchId",
-    applicationController.getApplicationsByEmailAndResearchId
+    "/applications/researchId/:researchId",
+    applicationController.getApplicationsByResearchId
 );
-
 router.patch("/accept/:id", applicationController.acceptApplication);
+router.patch("/reject/:id", applicationController.rejectApplication);
+router.patch("/review/:id", applicationController.reviewApplication);
+router.patch("/offer/:id", applicationController.offerApplication);
 
 module.exports = router;

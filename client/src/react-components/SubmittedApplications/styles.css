@@ -1,0 +1,29 @@
+#research-container {
+    padding: 0px 40px 40px;
+    margin-top: 0px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#research-item {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#action-btn{
+    margin-left: auto;
+}
+
+#dialog-content{
+    display: flex;
+}
+
+#placeholder{
+    width: 20px;
+}
+
+#dialog-content .questions{
+    color: black;
+}

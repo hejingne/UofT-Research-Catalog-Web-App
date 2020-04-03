@@ -10,7 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import "./styles.css";
 import apis from "../../api";
 
-class Applications extends React.Component {
+class SubmittedApplications extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,34 +31,7 @@ class Applications extends React.Component {
                     if (response.data.success) {
                         let data = [];
                         response.data.data.forEach((application) => {
-                            let resumeBytes = new Uint8Array(
-                                application.resume.data.data
-                            );
-                            let resumeBlob = new Blob([resumeBytes], {
-                                type: "application/pdf"
-                            });
-                            let resumeDownloadUrl = URL.createObjectURL(
-                                resumeBlob
-                            );
-
-                            let transcriptBytes = new Uint8Array(
-                                application.transcript.data.data
-                            );
-                            let transcriptBlob = new Blob([transcriptBytes], {
-                                type: "application/pdf"
-                            });
-                            let transcriptDownloadUrl = URL.createObjectURL(
-                                transcriptBlob
-                            );
-
-                            data.push({
-                                id: application._id,
-                                researchTitle: application.researchTitle,
-                                researchId: application.researchId,
-                                status: application.status,
-                                resume: resumeDownloadUrl,
-                                transcript: transcriptDownloadUrl
-                            });
+                            data.push(application);
                         });
                         this.setState({ applicationList: data });
                     }
@@ -67,18 +40,41 @@ class Applications extends React.Component {
         });
     }
 
-    handleOnClick(id) {
+    handleAcceptOffer(id) {
         apis.acceptApplication(id).then((res) => {
             if (res.data.success) {
                 const data = this.state.applicationList;
                 data.forEach((application) => {
-                    if (application.id === id) {
+                    if (application._id === id) {
                         application.status = "accepted";
                     }
                 });
                 this.setState({ applicationList: data });
             }
         });
+    }
+
+    handleRejectOffer(id) {
+        apis.rejectApplication(id).then((res) => {
+            if (res.data.success) {
+                const data = this.state.applicationList;
+                data.forEach((application) => {
+                    if (application._id === id) {
+                        application.status = "rejected";
+                    }
+                });
+                this.setState({ applicationList: data });
+            }
+        });
+    }
+
+    bufferToUrl(buffer) {
+        let resumeBytes = new Uint8Array(buffer.data.data);
+        let resumeBlob = new Blob([resumeBytes], {
+            type: "application/pdf"
+        });
+        let resumeDownloadUrl = URL.createObjectURL(resumeBlob);
+        return resumeDownloadUrl;
     }
 
     render() {
@@ -99,9 +95,6 @@ class Applications extends React.Component {
                                             </Link>
                                         </Typography>
                                     </ButtonBase>
-                                    {/*<Typography variant="subtitle1" gutterBottom>*/}
-                                    {/*    Introduction*/}
-                                    {/*</Typography>*/}
                                     <Typography
                                         variant="body2"
                                         color="textSecondary"
@@ -121,14 +114,18 @@ class Applications extends React.Component {
                                         Submitted Documents:{" "}
                                         <a
                                             style={{ color: "#01579b" }}
-                                            href={application.resume}
+                                            href={this.bufferToUrl(
+                                                application.resume
+                                            )}
                                             download="Resume"
                                         >
                                             RESUME
                                         </a>{" "}
                                         <a
                                             style={{ color: "#01579b" }}
-                                            href={application.transcript}
+                                            href={this.bufferToUrl(
+                                                application.transcript
+                                            )}
                                             download="Transcript"
                                         >
                                             TRANSCRIPT
@@ -136,15 +133,28 @@ class Applications extends React.Component {
                                     </Typography>
                                 </div>
                                 {application.status === "offered" && (
-                                    <Button
-                                        id="accept-btn"
-                                        className="login__button"
-                                        onClick={() => {
-                                            this.handleOnClick(application.id);
-                                        }}
-                                    >
-                                        ACCEPT OFFER
-                                    </Button>
+                                    <div id="action-btn">
+                                        <Button
+                                            className="login__button"
+                                            onClick={() => {
+                                                this.handleAcceptOffer(
+                                                    application._id
+                                                );
+                                            }}
+                                        >
+                                            ACCEPT OFFER
+                                        </Button>
+                                        <Button
+                                            className="login__button"
+                                            onClick={() => {
+                                                this.handleRejectOffer(
+                                                    application._id
+                                                );
+                                            }}
+                                        >
+                                            REJECT OFFER
+                                        </Button>
+                                    </div>
                                 )}
                             </Grid>
                             <Divider />
@@ -156,4 +166,4 @@ class Applications extends React.Component {
     }
 }
 
-export default withRouter(Applications);
+export default withRouter(SubmittedApplications);

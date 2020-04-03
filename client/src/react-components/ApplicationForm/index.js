@@ -64,12 +64,15 @@ class ApplicationForm extends React.Component {
                         });
                         const mostRecentApplication =
                             applications[applications.length - 1];
-                        this.setState({
-                            phoneNumber: mostRecentApplication.phoneNumber,
-                            areaOfStudy: mostRecentApplication.areaOfStudy,
-                            existingResume: mostRecentApplication.resume,
-                            existingTranscript: mostRecentApplication.transcript
-                        });
+                        if (mostRecentApplication) {
+                            this.setState({
+                                phoneNumber: mostRecentApplication.phoneNumber,
+                                areaOfStudy: mostRecentApplication.areaOfStudy,
+                                existingResume: mostRecentApplication.resume,
+                                existingTranscript:
+                                    mostRecentApplication.transcript
+                            });
+                        }
                     }
                 }
             );
@@ -399,20 +402,35 @@ class ApplicationForm extends React.Component {
                                             aria-label="quiz"
                                             name="quiz"
                                         >
-                                            <FormControlLabel
-                                                value="best"
-                                                control={
-                                                    <Radio
-                                                        color="default"
-                                                        onChange={() => {
-                                                            this.setState({
-                                                                uploadNewDocument: false
-                                                            });
-                                                        }}
-                                                    />
-                                                }
-                                                label="Use existing CV and Transcript (from the most recent submitted application)"
-                                            />
+                                            {// if there is no existing documents, hide use existing documents option
+                                            !(
+                                                Object.keys(
+                                                    this.state.existingResume
+                                                ).length === 0 &&
+                                                this.state.existingResume
+                                                    .constructor === Object &&
+                                                Object.keys(
+                                                    this.state
+                                                        .existingTranscript
+                                                ).length === 0 &&
+                                                this.state.existingTranscript
+                                                    .constructor === Object
+                                            ) && (
+                                                <FormControlLabel
+                                                    value="best"
+                                                    control={
+                                                        <Radio
+                                                            color="default"
+                                                            onChange={() => {
+                                                                this.setState({
+                                                                    uploadNewDocument: false
+                                                                });
+                                                            }}
+                                                        />
+                                                    }
+                                                    label="Use existing CV and Transcript (from the most recent submitted application)"
+                                                />
+                                            )}
                                             <FormControlLabel
                                                 value="worst"
                                                 control={

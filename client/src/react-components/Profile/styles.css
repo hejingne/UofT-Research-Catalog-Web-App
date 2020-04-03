@@ -12,7 +12,6 @@
     font-size: 36px;
     font-weight: bold;
     display: block;
-
 }
 
 #description {
@@ -21,6 +20,9 @@
     display: block;
 }
 
+#interests{
+    display: block;
+}
 
 #profile-pic {
     margin-right: 20%;
