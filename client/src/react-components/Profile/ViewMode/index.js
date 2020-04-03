@@ -1,12 +1,13 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Dashboard from "../../Dashboard";
-import InterestsChips from "../../InterestsChips";
-import SubmittedApplications from "../../SubmittedApplications";
-import ReceivedApplications from "../../ReceivedApplications";
 import Divider from "@material-ui/core/Divider";
 import { Grid, Typography, Paper, Tabs, Tab, Link, ButtonBase } from '@material-ui/core';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 import apis from "../../../api";
 
 import "./styles.css";
@@ -15,25 +16,30 @@ class ViewProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            openDialog: false,
             userType: "",
             personalInfo: {
                 firstName: "",
                 lastName: "",
                 description: "",
                 profilePicture: null,
-                interests: []
+                interests: [],
+                email: ""
             },
-            selectedTab: 0
+            selectedTab: 0,
+            appliedList: [],
+            postedList: [],
+            selectedResearch: {}
         };
         this.displayContent.bind(this);
-        this.fetchResearches.bind(this);
-        this.fetchApplications.bind(this);
+        this.fetchPosted.bind(this);
+        this.fetchApplied.bind(this);
         this.listGenerator.bind(this);
         this.researchInfo.bind(this);
     }
 
 
-    fetchResearches() {
+    fetchPosted() {
         apis.getAllResearches().then(
             (res) => {
                 if (res.data.success) {
@@ -41,17 +47,43 @@ class ViewProfile extends React.Component {
                     posting.firstName.localeCompare(this.state.personalInfo.firstName) === 0 &&
                     posting.lastName.localeCompare(this.state.personalInfo.lastName) === 0
                     );
-                    
                     this.setState({
-                        list: result.postings
+                        postedList: result.postings
                     });
                 }
             }
         );
     }
 
-    fetchApplications() {
-
+    fetchApplied(email) {
+        apis.getApplicationsByEmail(email).then(
+            (response) => {
+                if (response.data.success) {
+                    let data = [];
+                    response.data.data.forEach((application) => {
+                        data.push(application);
+                    });
+                    const ids = data.map((application) => application.researchId);
+                    apis.getAllResearches().then(
+                        (res) => {
+                            if (res.data.success) {
+                                const result = [];
+                                const list = res.data.data;
+                                for (let i = 0; i < list.length; i++) {
+                                    let subset = list[i].postings.filter((research) => 
+                                        ids.includes(research._id)
+                                    );
+                                    result.concat(subset);
+                                }
+                                this.setState({
+                                    appliedList: result
+                                });
+                            }
+                        }
+                    );
+                }
+            }
+        );
     }
 
     componentDidMount() {
@@ -87,8 +119,9 @@ class ViewProfile extends React.Component {
                             });
                             this.setState({ userType: res.data.data.userType });
                             if (this.state.userType.localeCompare("Researcher") === 0) {
-                                this.fetchResearches();
+                                this.fetchPosted();
                             } if (this.state.userType.localeCompare("Student") === 0) {
+                                this.fetchApplied(this.state.personalInfo.email);
                             }
                         }
                     }
@@ -105,7 +138,11 @@ class ViewProfile extends React.Component {
                 <ButtonBase>
                     <Typography gutterBottom variant="h6">
                         <Link style={{ color: '#01579b' }}
-                            onClick={() => this.setState({ openDialog: true })}>
+                            onClick={() => this.setState({ 
+                                ...this.state,
+                                openDialog: true,
+                                selectedResearch: research 
+                            })}>
                             {research.title}
                         </Link>
                     </Typography>
@@ -165,9 +202,8 @@ class ViewProfile extends React.Component {
     }
 
     displayContent() {
-        if (this.state.userType.localeCompare("Researcher") === 0) {
-            if (this.state.selectedTab === 0) {
-                return <Grid item>
+        if (this.state.selectedTab === 0) {
+            return <Grid item>
                     <Typography style={{color: "#424242"}}>
                         {this.state.personalInfo.description.length > 0 ? 
                         this.state.personalInfo.description :
@@ -175,15 +211,11 @@ class ViewProfile extends React.Component {
                         }
                     </Typography>
                 </Grid>
-            } else {
-                return this.listGenerator(this.state.list);
-            }
+        }
+        if (this.state.userType.localeCompare("Researcher") === 0) {
+            return this.listGenerator(this.state.postedList);
         } else if (this.state.userType.localeCompare("Student") === 0) {
-            if (this.state.selectedTab === 0) {
-
-            } else {
-
-            }
+            return this.listGenerator(this.state.appliedList);
         }
     }
 
@@ -191,6 +223,11 @@ class ViewProfile extends React.Component {
         return (
             <Grid>
                 <Grid container direction="row" justify="center" spacing={3}>
+                    <Grid item style={{margin: 30}} >
+                        <img
+                        id="profile-pic"
+                        src={this.state.personalInfo.profilePicture}/>
+                    </Grid>
                     <Grid item style={{margin: 30}}>
                         <Typography style={{fontSize: 30, fontWeight: "bold", color: "#424242"}}>
                         {this.state.personalInfo.firstName +
@@ -209,11 +246,6 @@ class ViewProfile extends React.Component {
                             this.state.personalInfo.interests.join(", ")
                         }</Typography>}
                     </Grid>
-                    <Grid item style={{margin: 30}} >
-                        <img
-                        id="profile-pic"
-                        src={this.state.personalInfo.profilePicture}/>
-                    </Grid>
                 </Grid>
                 <Divider></Divider>
                 <Grid style={{ marginTop: 40 }} container justify="center">
@@ -223,7 +255,7 @@ class ViewProfile extends React.Component {
                             onChange={(e, value) => this.setState({selectedTab: value})}>
                                 <Tab label="About Me" />
                                 {this.state.userType.localeCompare("Student") === 0 &&
-                                <Tab label="Submitted Applications" />
+                                <Tab label="Applied Opportunities" />
                                 }
                                 {this.state.userType.localeCompare("Researcher") === 0 &&
                                 <Tab label="Posted Opportunities" />
@@ -235,6 +267,36 @@ class ViewProfile extends React.Component {
                 <Grid style={{marginTop: 30}} container justify="center">
                     {this.displayContent()}
                 </Grid>
+                <Dialog
+                id="application-detail-dialog"
+                open={this.state.openDialog}
+                onClose={() => this.setState({openDialog: false})}>
+                <DialogTitle>
+                    {this.state.selectedResearch.title}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Introduction:
+                        <DialogContentText>
+                            {this.state.selectedResearch.description}
+                        </DialogContentText>
+                    </DialogContentText>
+                    <DialogContentText>
+                        Researcher: {this.state.selectedResearch.researcher}
+                    </DialogContentText>
+                    <DialogContentText>
+                        Deadline: {this.state.selectedResearch.deadline}
+                    </DialogContentText>
+                    <DialogContentText>
+                        Duration: {this.state.selectedResearch.duration}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={() => this.setState({openDialog: false})} color="primary">
+                        CLOSE
+                    </Button>
+                </DialogActions>
+                </Dialog>
                 <div style={{height: 300}}></div>
             </Grid>
         );

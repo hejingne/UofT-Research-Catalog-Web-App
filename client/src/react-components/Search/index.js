@@ -36,13 +36,14 @@ class Search extends React.Component {
             openDialog: false,
             isFiltered: false,
             filters: {
-                keywords: '',
-                type: '',
+                keywords: "",
+                type: "",
                 category: [],
                 deadline: {},
                 duration: []
             },
-            switches: [true, true, false, true, true]
+            switches: [true, true, false, true, true],
+            selectedResearch: {}
         };
         this.listGenerator.bind(this);
         this.applyFilters.bind(this);
@@ -108,7 +109,11 @@ class Search extends React.Component {
                 <ButtonBase>
                     <Typography gutterBottom variant="h6">
                         <Link style={{ color: '#01579b' }}
-                            onClick={() => this.setState({ openDialog: true })}>
+                            onClick={() => this.setState({ 
+                                ...this.state,
+                                openDialog: true,
+                                selectedResearch: research
+                            })}>
                             {research.title}
                         </Link>
                     </Typography>
@@ -133,6 +138,7 @@ class Search extends React.Component {
                 <Typography variant="body2" color="textSecondary">
                     Positions: {research.positions}
                 </Typography>
+                
                 {this.props.userType === "Student" &&
                 <Grid style={{marginTop: 5}} item>
                     <Button 
@@ -166,11 +172,11 @@ class Search extends React.Component {
                     {this.researchInfo(research)}
                     <Grid item xs={2}>
                     <Avatar className="researcher-icon">{research.researcher[0]}</Avatar>
-                    <Typography variant="subtitle2" color="primary">
+                    <Typography variant="subtitle1" color="primary">
                     Researcher: 
                     </Typography>
                     <ButtonBase>
-                    <Typography gutterBottom variant="subtitle2">
+                    <Typography gutterBottom variant="subtitle1">
                     <Link style={{ color: 'primary' }} 
                         onClick={() => this.setState({toProfile: {
                             value: true,
@@ -559,6 +565,36 @@ class Search extends React.Component {
                     </Paper>
                     {this.displayList()}
                 </Grid>
+                <Dialog
+                id="application-detail-dialog"
+                open={this.state.openDialog}
+                onClose={() => this.setState({openDialog: false})}>
+                <DialogTitle>
+                    {this.state.selectedResearch.title}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Introduction:
+                        <DialogContentText>
+                            {this.state.selectedResearch.description}
+                        </DialogContentText>
+                    </DialogContentText>
+                    <DialogContentText>
+                        Researcher: {this.state.selectedResearch.researcher}
+                    </DialogContentText>
+                    <DialogContentText>
+                        Deadline: {this.state.selectedResearch.deadline}
+                    </DialogContentText>
+                    <DialogContentText>
+                        Duration: {this.state.selectedResearch.duration}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={() => this.setState({openDialog: false})} color="primary">
+                        CLOSE
+                    </Button>
+                </DialogActions>
+                </Dialog>
             </div>
         );
     }
