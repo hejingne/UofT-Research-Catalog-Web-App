@@ -2,6 +2,7 @@
   "name": "CSC309",
   "version": "1.0.0",
   "description": "",
+  "homepage": ".",
   "scripts": {
     "postinstall": "npm --prefix client install && npm --prefix server install",
     "start:dev": "concurrently 'npm run --prefix client start' 'npm run --prefix server start'",
