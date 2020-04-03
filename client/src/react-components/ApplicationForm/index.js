@@ -41,8 +41,10 @@ class ApplicationForm extends React.Component {
     }
 
     componentDidMount() {
-        // hardcode for now
-        this.setState({ researchId: "id", researchTitle: "title" });
+        this.setState({ 
+            researchId: this.props.location.state.id, 
+            researchTitle: this.props.location.state.title
+        });
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");

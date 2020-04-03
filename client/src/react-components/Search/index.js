@@ -40,7 +40,7 @@ class Search extends React.Component {
                 deadline: {},
                 duration: []
             },
-            switches: [true, true, true, true, true]
+            switches: [true, true, false, true, true]
         };
         this.listGenerator.bind(this);
         this.applyFilters.bind(this);
@@ -69,7 +69,8 @@ class Search extends React.Component {
                     duration: research.term,
                     deadline: research.deadline,
                     category: research.areaOfStudy,
-                    positions: research.positions
+                    positions: research.positions,
+                    id: research._id
                 };
                 result.push(parsedResearch);
             }
@@ -112,10 +113,10 @@ class Search extends React.Component {
                 <Typography variant="subtitle1" gutterBottom>
                     Introduction: {" "}{
                         research.description === undefined ? "" :
-                            research.description.length <= 200 ? 
+                            research.description.length <= 100 ? 
                                 research.description :
                                 research.description
-                                .substring(0, 200)
+                                .substring(0, 100)
                                 .concat("...")
                     }
                 </Typography>
@@ -123,7 +124,9 @@ class Search extends React.Component {
                     Researcher: {research.researcher}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                    Deadline: {research.deadline}{" "}
+                    Deadline: {research.deadline}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
                     Duration: {research.duration}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
@@ -131,7 +134,16 @@ class Search extends React.Component {
                 </Typography>
                 {this.props.userType === "Student" &&
                 <Grid style={{marginTop: 5}} item>
-                    <Button onClick={() => this.setState({ toApplication: true })}className="search__button">Apply</Button>
+                    <Button 
+                    onClick={(e) => {
+                        this.setState({ 
+                            ...this.state, 
+                            toApplication: true,
+                            chosenTitle: research.title,
+                            chosenId: research.id
+                        });
+                    }}
+                    className="search__button">Apply</Button>
                 </Grid>
                 }
                 {this.props.userType === "Administrator" &&
@@ -271,8 +283,13 @@ class Search extends React.Component {
 
 
     render() {
+        
         if (this.state.toApplication === true) {
-            return <Redirect to="/application" />;
+            console.log(this.state.chosenId, this.state.chosenTitle)
+            return <Redirect to={{
+                pathname: "/application",
+                state: { id: this.state.chosenId, title: this.state.chosenTitle }
+            }}/>;
         }
         return (
             <div>
