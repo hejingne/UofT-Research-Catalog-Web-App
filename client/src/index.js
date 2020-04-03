@@ -8,7 +8,8 @@ import Home from "./react-components/Home";
 import SignIn from "./react-components/SignIn";
 import PostManagerPage from "./react-components/PostManagerPage/AllPosts";
 
-import Profile from "./react-components/Profile";
+import Profile from "./react-components/Profile/EditMode";
+import ViewProfile from "./react-components/Profile/ViewMode"
 import SignUp from "./react-components/SignUp";
 import ApplicationForm from "./react-components/ApplicationForm";
 import UserManagement from "./react-components/UserManagement";
@@ -48,6 +49,12 @@ const routing = (
                 path="/profile"
                 component={() =>
                     getSignInState() ? <Profile /> : <Redirect to="/home" />
+                }
+            />
+            <Route
+                path="/view-profile"
+                component={() =>
+                    getSignInState() ? <ViewProfile /> : <Redirect to="/home" />
                 }
             />
             <Route

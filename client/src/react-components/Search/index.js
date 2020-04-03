@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import { Typography, ButtonBase, TextField, Button, Divider } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
-import { Pagination, Autocomplete } from '@material-ui/lab';
+import { Autocomplete } from '@material-ui/lab';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -309,7 +309,7 @@ class Search extends React.Component {
         }
         if (this.state.toProfile !== undefined && this.state.toProfile.value) {
             return <Redirect to={{
-                pathname: "/profile",
+                pathname: "/view-profile",
                 state: this.state.toProfile.data
             }}/>;
         }
