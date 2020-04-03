@@ -6,7 +6,7 @@ import InterestsChips from "../../InterestsChips";
 import SubmittedApplications from "../../SubmittedApplications";
 import ReceivedApplications from "../../ReceivedApplications";
 import Divider from "@material-ui/core/Divider";
-import { Grid, Typography, Paper, Tabs, Tab } from '@material-ui/core';
+import { Grid, Typography, Paper, Tabs, Tab, Link, ButtonBase } from '@material-ui/core';
 import apis from "../../../api";
 
 import "./styles.css";
@@ -25,7 +25,33 @@ class ViewProfile extends React.Component {
             },
             selectedTab: 0
         };
-        this.displayContent.bind(this)
+        this.displayContent.bind(this);
+        this.fetchResearches.bind(this);
+        this.fetchApplications.bind(this);
+        this.listGenerator.bind(this);
+        this.researchInfo.bind(this);
+    }
+
+
+    fetchResearches() {
+        apis.getAllResearches().then(
+            (res) => {
+                if (res.data.success) {
+                    const result = res.data.data.find((posting) => 
+                    posting.firstName.localeCompare(this.state.personalInfo.firstName) === 0 &&
+                    posting.lastName.localeCompare(this.state.personalInfo.lastName) === 0
+                    );
+                    
+                    this.setState({
+                        list: result.postings
+                    });
+                }
+            }
+        );
+    }
+
+    fetchApplications() {
+
     }
 
     componentDidMount() {
@@ -60,6 +86,10 @@ class ViewProfile extends React.Component {
                                 }
                             });
                             this.setState({ userType: res.data.data.userType });
+                            if (this.state.userType.localeCompare("Researcher") === 0) {
+                                this.fetchResearches();
+                            } if (this.state.userType.localeCompare("Student") === 0) {
+                            }
                         }
                     }
                 );
@@ -67,6 +97,71 @@ class ViewProfile extends React.Component {
                 return this.props.history.push("/signOut");
             }
         });
+    }
+
+    researchInfo(research) {
+        return (
+            <Grid item xs={9}>
+                <ButtonBase>
+                    <Typography gutterBottom variant="h6">
+                        <Link style={{ color: '#01579b' }}
+                            onClick={() => this.setState({ openDialog: true })}>
+                            {research.title}
+                        </Link>
+                    </Typography>
+                </ButtonBase>
+                <Typography variant="subtitle1" gutterBottom>
+                    Introduction: {" "}{
+                        research.description === undefined ? "" :
+                            research.description.length <= 100 ? 
+                                research.description :
+                                research.description
+                                .substring(0, 100)
+                                .concat("...")
+                    }
+                </Typography>
+
+                <Typography variant="body2" color="textSecondary">
+                    Deadline: {research.deadline}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                    Duration: {research.term}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                    Positions: {research.positions}
+                </Typography>
+                {this.props.userType === "Student" &&
+                <Grid style={{marginTop: 5}} item>
+                    <Button 
+                    onClick={(e) => {
+                        this.setState({ 
+                            ...this.state, 
+                            toApplication: true,
+                            chosenTitle: research.title,
+                            chosenId: research.id
+                        });
+                    }}
+                    className="search__button">Apply</Button>
+                </Grid>
+                }
+                </Grid>
+        )
+    }
+
+    listGenerator(list) {
+        return list.map((research) => {
+            return (<Paper style={{ height: 200, width: 1000 }} variant="outlined" square>
+                <Grid container 
+                spacing={2} 
+                justify="center" 
+                style={{ marginTop: 25,marginLeft: 25 }} 
+                direction="row" 
+                alignItems="center">
+                    {this.researchInfo(research)}
+                </Grid>
+                </Paper>
+            );
+        })
     }
 
     displayContent() {
@@ -81,7 +176,7 @@ class ViewProfile extends React.Component {
                     </Typography>
                 </Grid>
             } else {
-
+                return this.listGenerator(this.state.list);
             }
         } else if (this.state.userType.localeCompare("Student") === 0) {
             if (this.state.selectedTab === 0) {
@@ -140,7 +235,7 @@ class ViewProfile extends React.Component {
                 <Grid style={{marginTop: 30}} container justify="center">
                     {this.displayContent()}
                 </Grid>
-            
+                <div style={{height: 300}}></div>
             </Grid>
         );
     }
