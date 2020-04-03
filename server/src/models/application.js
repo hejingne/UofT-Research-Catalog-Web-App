@@ -11,7 +11,7 @@ const applicationSchema = new Schema({
     answers: { type: Object, required: true },
     resume: { data: Buffer, contentType: String },
     transcript: { data: Buffer, contentType: String },
-    status: { type: String, required: true } // submitted, under review, offered/refused, confirmed
+    status: { type: String, required: true } // submitted, under review, offered/rejected, accepted
 });
 
 const Application = mongoose.model(

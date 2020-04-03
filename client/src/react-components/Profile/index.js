@@ -3,14 +3,15 @@ import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dashboard from "../Dashboard";
 import InterestsChips from "../InterestsChips";
-import Applications from "../Applications";
+import SubmittedApplications from "../SubmittedApplications";
+import ReceivedApplications from "../ReceivedApplications";
 import AccountSettings from "../AccountSettings";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import { Done, Edit } from "@material-ui/icons";
-import api from "../../api";
+import apis from "../../api";
 
 import "./styles.css";
 
@@ -39,9 +40,9 @@ class Profile extends React.Component {
         const sessionId = localStorage.getItem("sessionId")
             ? localStorage.getItem("sessionId")
             : sessionStorage.getItem("sessionId");
-        api.getSession(sessionId).then((response) => {
+        apis.getSession(sessionId).then((response) => {
             if (response.data.success) {
-                api.getProfileByEmail(response.data.user.emailAddress).then(
+                apis.getProfileByEmail(response.data.user.emailAddress).then(
                     (res) => {
                         if (res.data.success) {
                             let imagePath = require("./static/no-profile-picture-icon.png");
@@ -93,9 +94,9 @@ class Profile extends React.Component {
             const sessionId = localStorage.getItem("sessionId")
                 ? localStorage.getItem("sessionId")
                 : sessionStorage.getItem("sessionId");
-            api.getSession(sessionId).then((response) => {
+            apis.getSession(sessionId).then((response) => {
                 if (response.data.success) {
-                    api.updateDescription({
+                    apis.updateDescription({
                         emailAddress: response.data.user.emailAddress,
                         description: this.state.personalInfo.description
                     });
@@ -114,7 +115,10 @@ class Profile extends React.Component {
             return <Dashboard />;
         }
         if (this.state.selectedTab === "SUBMITTED APPLICATIONS") {
-            return <Applications userType={"Student"} />;
+            return <SubmittedApplications />;
+        }
+        if (this.state.selectedTab === "RECEIVED APPLICATIONS") {
+            return <ReceivedApplications />;
         }
         if (this.state.selectedTab === "MANAGE POSTING") {
             this.props.history.push("/manage-posting");
@@ -177,7 +181,7 @@ class Profile extends React.Component {
                                 )
                             }}
                         />
-                        <InterestsChips />
+                        <InterestsChips id="interests" />
                     </div>
                     <img
                         id="profile-pic"
@@ -201,6 +205,16 @@ class Profile extends React.Component {
                             }}
                         >
                             MANAGE POSTING
+                        </Button>
+                    )}
+                    {this.state.userType === "Researcher" && (
+                        <Button
+                            className="login__button"
+                            onClick={(e) => {
+                                this.handleOnClick(e);
+                            }}
+                        >
+                            RECEIVED APPLICATIONS
                         </Button>
                     )}
                     {this.state.userType === "Student" && (

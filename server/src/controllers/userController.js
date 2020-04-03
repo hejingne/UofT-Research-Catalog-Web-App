@@ -24,7 +24,9 @@ createUser = (req, res) => {
         userType: body.userType,
         firstName: body.firstName,
         lastName: body.lastName,
-        description: body.description ? body.description : "",
+        description: body.description
+            ? body.description
+            : "Say something about your self",
         interests: body.interests ? body.interests : [],
         currentEmployer: body.currentEmployer ? body.currentEmployer : "N/A",
         currentPosition: body.currentPosition ? body.currentPosition : "N/A"
