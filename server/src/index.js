@@ -7,6 +7,7 @@ const db = require("./database");
 const profileRouter = require("./routes/profileRouter");
 const userRouter = require("./routes/userRouter");
 const applicationRouter = require("./routes/applicationRouter");
+const postingRouter = require("./routes/postingRouter");
 
 const app = express();
 const apiPort = process.env.PORT || 3001;
@@ -44,6 +45,7 @@ app.use(
 app.use("/api/profile", profileRouter);
 app.use("/api/user", userRouter);
 app.use("/api/application", applicationRouter);
+app.use("/api/manage-posting", postingRouter);
 
 if (process.env.NODE_ENV === "production") {
     console.log(`Production mode detected: Serving react client`);

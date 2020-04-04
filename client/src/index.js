@@ -6,9 +6,11 @@ import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
 import Header from "./react-components/Header";
 import Home from "./react-components/Home";
 import SignIn from "./react-components/SignIn";
-import PostManagerPage from "./react-components/PostManagerPage/AllPosts";
+import PostsDashboard from "./react-components/PostManagerPage/PostsDashboard";
+import PostEditingPage from "./react-components/PostManagerPage/PostEditingPage";
 
-import Profile from "./react-components/Profile";
+import Profile from "./react-components/Profile/EditMode";
+import ViewProfile from "./react-components/Profile/ViewMode"
 import SignUp from "./react-components/SignUp";
 import ApplicationForm from "./react-components/ApplicationForm";
 import UserManagement from "./react-components/UserManagement";
@@ -51,10 +53,26 @@ const routing = (
                 }
             />
             <Route
+                path="/view-profile"
+                component={() =>
+                    getSignInState() ? <ViewProfile /> : <Redirect to="/home" />
+                }
+            />
+            <Route
                 path="/manage-posting"
                 component={() =>
                     getSignInState() ? (
-                        <PostManagerPage />
+                        <PostsDashboard />
+                    ) : (
+                        <Redirect to="/home" />
+                    )
+                }
+            />
+            <Route
+                path="/edit-posting-for-researcher"
+                component={() =>
+                    getSignInState() ? (
+                        <PostEditingPage />
                     ) : (
                         <Redirect to="/home" />
                     )

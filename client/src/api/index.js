@@ -23,6 +23,19 @@ const applicationApi = axios.create({
     baseURL: originUrl + "/api/application"
 });
 
+const postingApi = axios.create({
+    baseURL: "http://localhost:3001/manage-posting"
+});
+
+
+export const getAllResearches = () => postingApi.get("/postings");
+
+export const startMakingPosts = (payload) => postingApi.post("/postings", payload);
+export const getResearcherByEmail = (email) => postingApi.get(`/${email}`);
+export const createPostForResearcher = (payload) => postingApi.post("/createPosting", payload);
+export const deletePostForResearcher = (id, index) => postingApi.delete(`/deletePosting/${id}/${index}`);
+export const editPost = (payload) => postingApi.put("/updatePosting", payload);
+
 export const createUser = (payload) => userApi.post("/create", payload);
 export const authenticateUser = (payload) =>
     userApi.post("/authenticate", payload);
@@ -61,7 +74,15 @@ export const rejectApplication = (id) => applicationApi.patch(`/reject/${id}`);
 export const reviewApplication = (id) => applicationApi.patch(`/review/${id}`);
 export const offerApplication = (id) => applicationApi.patch(`/offer/${id}`);
 
+
+
 const apis = {
+    startMakingPosts,
+    getResearcherByEmail,
+    createPostForResearcher,
+    deletePostForResearcher,
+    editPost,
+    
     createUser,
     authenticateUser,
     updatePassword,
@@ -83,7 +104,8 @@ const apis = {
     acceptApplication,
     rejectApplication,
     reviewApplication,
-    offerApplication
+    offerApplication,
+    getAllResearches
 };
 
 export default apis;

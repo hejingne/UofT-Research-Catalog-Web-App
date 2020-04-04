@@ -2,43 +2,55 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import { removePost } from "./../action/PostModification";
+import { removePost } from "./../action/posts";
 import "./styles.css";
+import PostEditingPage from "./../PostEditingPage";
 
-/* class representing each line of CurrentPostList*/
 class Post extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {id: 0};
-  //   this.randomIdGenerator = this.randomIdGenerator.bind(this);
-  // }
-  //
-  // randomIdGenerator() {
-  //   const min = 1;
-  //   const max = 100;
-  //   const rand = min+Math.random()*(max-min);
-  //   this.setState({id: this.state.id+rand});
-  // }
+  constructor(props) {
+    super(props);
+    this.editPost = this.editPost.bind(this);
+  }
+
+  editPost(index) {
+    this.props.history.push("/edit-posting-for-researcher");
+    return <PostEditingPage index={index} key={'key'+index}/>;
+  }
 
   render() {
-    const { post, component } = this.props;
+    const { post, dashboard, index, history } = this.props;
+    const {
+      title,
+      term,
+      areaOfStudy,
+      deadline,
+      positions,
+      description
+    } = post;
 
     return (
-      <TableRow className="post" key={post.title}>
-        <TableCell component="th" scope="row">{post.areaOfStudy}</TableCell>
-        <TableCell component="th" scope="row">2020-2021</TableCell>
-        <TableCell component="th" scope="row">{post.id}</TableCell>
-        <TableCell component="th" scope="row">{post.title}</TableCell>
-        <TableCell component="th" scope="row">{post.positions}</TableCell>
-        <TableCell component="th" scope="row">{post.deadline}</TableCell>
-        <TableCell component="th" scope="row">
+      <TableRow className="post">
+        <TableCell component="th" scope="row" >{areaOfStudy}</TableCell>
+        <TableCell component="th" scope="row" >{term}</TableCell>
+        <TableCell component="th" scope="row" >{title}</TableCell>
+        <TableCell component="th" scope="row" >{positions}</TableCell>
+        <TableCell component="th" scope="row" >{deadline}</TableCell>
+        <TableCell component="th" scope="row" >{description}</TableCell>
+        <TableCell component="th" scope="row" >
           <Button
             variant="contained"
             color="primary"
-            onClick={removePost.bind(this, component, post)}>remove
+            onClick={() => this.editPost(index)}>edit
+          </Button>
+          </TableCell>
+          <TableCell component="th" scope="row" >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => removePost(dashboard, index)}>remove
           </Button>
         </TableCell>
-      </TableRow>
+        </TableRow>
     );
   }
 }
