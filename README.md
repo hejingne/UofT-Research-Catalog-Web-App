@@ -27,15 +27,12 @@ npx nodemon server
 default login credentials:
 
 **Student**  
-
 Email: **user** &ensp; &ensp; Password: **user**
 
-**Student**  
-
+**Researcher**  
 Email: **user2** &ensp; &ensp; Password: **user2**
 
 **Administrator** 
-
 Email: **admin** &ensp; &ensp; Password: **admin**
 
 #### 2. Searching
