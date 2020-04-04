@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "postinstall": "npm --prefix client install && npm --prefix server install",
-    "start:dev": "concurrently 'npm run --prefix client start' 'npm run --prefix server start'",
+    "start:dev": "concurrently 'npm run --prefix client start' 'npm run --prefix server start:dev'",
     "heroku-postbuild": "npm run --prefix client build",
     "start": "npm run --prefix server start"
   },
