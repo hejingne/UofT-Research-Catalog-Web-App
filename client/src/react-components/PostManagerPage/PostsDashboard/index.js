@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Input from "./../Input";
-import { Tab, Tabs, TableRow, TableCell, 
+import { Tab, Tabs, TableRow, TableCell,
     TableBody, Table, Paper, TextareaAutosize } from "@material-ui/core";
 import Post from "./../Post/CurrentPost";
 import RemovedPost from "./../Post/RemovedPost";
@@ -31,7 +31,7 @@ class PostsDashboard extends React.Component {
             deadline: "",
             positions: "",
             description: "",
-            
+
             researcher_id: 0,
             currentPostings: [],
             removedPostings: [],
@@ -58,7 +58,7 @@ class PostsDashboard extends React.Component {
                             });
                             api.getResearcherByEmail(this.state.postManager.email).then((res) => {
                                 if (res.data.success) {
-                                    this.setState({ 
+                                    this.setState({
                                         ...this.state,
                                         currentPostings: res.data.data.postings,
                                         researcher_id: res.data.data._id,
@@ -96,7 +96,7 @@ class PostsDashboard extends React.Component {
             })
         })
       }
-    
+
     addPost() {
         api.createPostForResearcher(this.state).then((res) => {
             if (res.data.success) {
@@ -111,41 +111,31 @@ class PostsDashboard extends React.Component {
         const {title, term, areaOfStudy, deadline, positions, description} = this.state;
         if (this.state.selectedTab === 0) {
             return <Grid style={{marginTop: 40}}>
-                <Grid className="post-form__button-grid" 
-                      style={{marginLeft: 610, marginTop: 20, marginBottom: 30}}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.addPost}
-                        className="post-form__submit-button app_horizontal-center">
-                        submit
-                    </Button>
-                </Grid>
                 <Grid justify="center" container direcion="row">
                     <Grid item xs={3}>
-                        <Input name="title" value={title} 
+                        <Input name="title" value={title}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Post Title" />
                     </Grid>
                     <Grid item xs={3}>
-                        <Input name="areaOfStudy" value={areaOfStudy} 
+                        <Input name="areaOfStudy" value={areaOfStudy}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Area Of Study" />
                     </Grid>
                     <Grid item xs={3}>
-                        <Input name="positions" value={description} 
+                        <Input name="positions" value={description}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Number Of Positions" />
                     </Grid>
                 </Grid>
                 <Grid justify="center" container direcion="row">
                     <Grid item xs={3}>
-                        <Input name="term" value={term} 
+                        <Input name="term" value={term}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Term (e.g. 2021 Summer)" />
                     </Grid>
                     <Grid item xs={3}>
-                        <Input name="deadline" value={deadline} 
+                        <Input name="deadline" value={deadline}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Deadline (YYYY/MM/DD)" />
                     </Grid>
@@ -154,11 +144,21 @@ class PostsDashboard extends React.Component {
                 <TextareaAutosize
                     rowsMax={100}
                     rowsMin={10}
-                    style={{width: 650, fontSize: 18, marginLeft: 400, marginTop: 50}}
+                    style={{width: 650, fontSize: 18, marginLeft: 300, marginTop: 30}}
                     placeholder="Description of this research..."
                     onChange={(e) => updatePostForm(this, {
                         value: e.target.value, name: "description"})}/>
 
+                        <Grid className="post-form__button-grid"
+                              style={{marginLeft: 500}}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={this.addPost}
+                                className="post-form__submit-button app_horizontal-center">
+                                submit
+                            </Button>
+                        </Grid>
                 </Grid>
         } else if (this.state.selectedTab === 1) {
             this.updatePostings();
