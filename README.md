@@ -1,15 +1,16 @@
 # team28
 # Table of Contents
 1. [Deployed App URL](#url)
-2. [uild and Run Locally](#build)
+2. [Build and Run Locally](#build)
 3. [Usage](#usage)
 4. [Routes in Express Server](#routes)
 
-## Deployed App URL <a name="url"></a>
+<a name="url"></a>
+## Deployed App URL 
 https://limitless-retreat-03123.herokuapp.com
 
-
-## Build and Run Locally <a name="build"></a>
+<a name="build"></a>
+## Build and Run Locally 
 In root directory, run
 ```bash
 npm i
@@ -19,7 +20,8 @@ npm run start:dev
 **note:** When you run it locally, please make sure your NODE_ENV is not set to `production`.
 
 
-## Usage <a name="usage"></a>
+<a name="usage"></a>
+## Usage 
 ### Common features for all users:
 
 #### 1. Login and Sign up
