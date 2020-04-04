@@ -1,9 +1,17 @@
 # team28
-# Table of Contents
+# [Table of Contents](#top)
 1. [Deployed App URL](#url)
 2. [Build and Run Locally](#build)
 3. [Usage](#usage)
+   * [Common features for all users](#common)
+   * [Specific features](#specific)
 4. [Routes in Express Server](#routes)
+   * [Users Related](#users)
+   * [Profiles Related](#profiles)
+   * [Applications Related](#applications)
+   * [Postings Related](#postings)
+5. [Access Database](#db)
+
 
 <a name="url"></a>
 ## Deployed App URL 
@@ -22,6 +30,8 @@ npm run start:dev
 
 <a name="usage"></a>
 ## Usage 
+
+<a name="common"></a>
 ### Common features for all users:
 
 #### 1. Login and Sign up
@@ -48,12 +58,13 @@ One can also click on research title to get more information.
 
 #### 4. Manage Profile
 Click on `My Profile` on the menu to manage your account. Operations include
-  * update self-introduction by moving your mouse to the description region under name
+  * [new]update self-introduction by moving your mouse to the description region under name
   * maintain an interest-list by clicking on the plus icon
   * view and editing account information by clicking on `DASHBOARD`
   * changing password and profile picture by cliking on `ACCOUNT SETTINGS`
-  
-  
+
+ 
+<a name="specific"></a>  
 ### Specific features:
 #### student
 
@@ -78,9 +89,59 @@ Click on `My Profile` on the menu to manage your account. Operations include
     * add and remove users
     * handle change password request
 
-## Routes in Express Server <a name="routes"></a>
-| Route        | Method         | Usage  |
-| ------------- |:-------------:| -----:|
-|      |  |  |
-|       |  |    |
-|  |     |     |
+<a name="routes"></a>
+## Routes in Express Server 
+
+<a name="users"></a>
+### Users 
+| Route        | Method         | Usage  | Data Involved
+|:------:|:-----:|:---------:|:-------------------------:|
+| /api/user/create | POST | create a new user | |
+| /api/user/authenticate | POST | authenticate a user | |
+| /api/user/updatePassword| PUT | upate password |  |
+| /api/user/updateEmailAddressAndUserType|  PUT | update email and user type| |
+| /api/user/signOut| GET | sign out  | |
+| /api/user/session/:sessionId| GET | get current signed in user |  |
+| /api/user/users| GET | fetch all users in database||
+| /api/user/delete/:emailAddress| DELETE| delete a user with emailAddress| |
+
+<a name="profiles"></a>
+### Profiles
+| Route        | Method         | Usage  | Data Involved
+|:------:|:-----:|:---------:|:-------------------------:|
+| /api/profile/:emailAddress | GET | | |
+| /api/profile/updateInterests | PUT | | |
+| /api/profile/updateProfilePicture| PUT | | |
+| /api/profile/updateDescription|  PUT   | |  |
+| /api/profile/updateEmploymentInfo| PUT | |  |
+
+<a name="applications"></a>
+### Applications
+| Route        | Method         | Usage  | Data Involved
+|:------:|:-----:|:---------:|:-------------------------:|
+| /api/application/applications | GET |  |  |
+| /api/application/create | POST|  |  |
+| /api/application/delete/:id| DELETE |  | |
+| /api/application/applications/:emailAddress| GET |   |  |
+| /api/application/applications/researchId/:researchId| GET |  |   |
+| /api/application/accept/:id| PATCH |   |  |
+| /api/application/reject/:id| PATCH   |   |  |
+| /api/application/review/:id| PATCH   |   |  |
+| /api/application//offer/:id| PATCH |  |   |
+
+<a name="postings"></a>
+### Postings
+| Route        | Method         | Usage  | Data Involved
+|:------:|:-----:|:---------:|:-------------------------:|
+| /api/manage-posting/postings | GET |  |  |
+| /api/manage-posting/postings | POST |  |   |
+| /api/manage-posting/:email| GET |  |   |
+| /api/manage-posting/createPosting|  POST   |  |   |
+| /api/manage-posting/deletePosting| DELETE |  |  |
+
+
+<a name="db"></a>
+## Access Database
+In MongoDB Compass, connect to this url
+
+   >mongodb+srv://admin:admin@csc309-uoftresearchcatalogue-sql0-gzdxk.mongodb.net/uoftresearchcatalogue
