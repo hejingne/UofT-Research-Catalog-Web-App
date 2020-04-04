@@ -35,6 +35,8 @@ export const getResearcherByEmail = (email) => postingApi.get(`/${email}`);
 export const createPostForResearcher = (payload) => postingApi.post("/createPosting", payload);
 export const deletePostForResearcher = (id, index) => postingApi.delete(`/deletePosting/${id}/${index}`);
 export const editPost = (payload) => postingApi.put("/updatePosting", payload);
+export const updateIndexForResearcher = (id, index) => postingApi.patch(`/updateIndex/${id}/${index}`);
+export const restorePostForResearcher = (id, index) => postingApi.delete(`/restorePosting/${id}/${index}`);
 
 export const createUser = (payload) => userApi.post("/create", payload);
 export const authenticateUser = (payload) =>
@@ -81,6 +83,8 @@ const apis = {
     getResearcherByEmail,
     createPostForResearcher,
     deletePostForResearcher,
+    updateIndexForResearcher,
+    restorePostForResearcher,
     editPost,
     
     createUser,
