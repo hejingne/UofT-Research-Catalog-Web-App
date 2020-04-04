@@ -44,6 +44,7 @@ class Dashboard extends React.Component {
                 return this.props.history.push("/signOut");
             }
             let numOfApplicationSubmitted = 0;
+            let numOfResearchPosted = 0;
             apis.getApplicationsByEmail(response.data.user.emailAddress).then(
                 (res) => {
                     if (res.data.success) {
@@ -52,6 +53,13 @@ class Dashboard extends React.Component {
                 }
             );
 
+            apis.getResearcherByEmail(response.data.user.emailAddress).then(
+                (res) => {
+                    if (res.data.success) {
+                        numOfResearchPosted = res.data.data.postings.length;
+                    }
+                }
+            );
             apis.getProfileByEmail(response.data.user.emailAddress).then(
                 (res) => {
                     if (res.data.success) {
@@ -65,13 +73,12 @@ class Dashboard extends React.Component {
                             dashboardInfo: {
                                 "User Type": res.data.data.userType,
                                 "Number of Applications Submitted": numOfApplicationSubmitted,
-                                "Number of Opportunities Posted":
-                                    "to be implemented",
+                                "Number of Opportunities Posted": numOfResearchPosted,
                                 "Current Employment State": currentEmploymentState,
                                 "Current Employer":
-                                    res.data.data.currentEmployer,
+                                res.data.data.currentEmployer,
                                 "Current Position":
-                                    res.data.data.currentPosition
+                                res.data.data.currentPosition
                             }
                         });
                     }

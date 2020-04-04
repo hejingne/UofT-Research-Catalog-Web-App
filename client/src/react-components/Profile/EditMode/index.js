@@ -122,7 +122,6 @@ class Profile extends React.Component {
             return <ReceivedApplications />;
         }
         if (this.state.selectedTab === "MANAGE POSTING") {
-            this.props.history.push("/manage-posting");
             return <PostsDashboard />;
         }
         if (this.state.selectedTab === "ACCOUNT SETTINGS") {
