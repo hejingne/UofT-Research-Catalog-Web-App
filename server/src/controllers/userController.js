@@ -243,11 +243,28 @@ updateEmailAddressAndUserType = async (req, res) => {
 
             existingUser
                 .save()
-                .then(() => {
-                    return res.status(200).json({
-                        success: true,
-                        id: existingUser._id,
-                        message: "user's email address and user type updated"
+                .then(async () => {
+                    await Profile.findOne({
+                        emailAddress: body.emailAddress
+                    }).then((existingProfile) => {
+                        if (!existingProfile) {
+                            return res.status(404).json({
+                                success: false,
+                                error: "user not found"
+                            });
+                        }
+
+                        existingProfile.emailAddress = body.emailAddress;
+                        existingProfile.userType = body.userType;
+
+                        existingProfile.save().then(() => {
+                            return res.status(200).json({
+                                success: true,
+                                id: existingUser._id,
+                                message:
+                                    "user's email address and user type updated"
+                            });
+                        });
                     });
                 })
                 .catch((error) => {
