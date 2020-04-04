@@ -14,8 +14,8 @@ class Input extends React.Component {
         <TextField
           name={name}
           label={label}
-          id="margin-normal"
-          defaultValue={value || ""}
+          // id="margin-normal"
+          defaultValue={value}
           className="input"
           margin="normal"
           onChange={onChange}
