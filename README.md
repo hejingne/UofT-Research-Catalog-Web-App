@@ -107,9 +107,6 @@ Click on `My Profile` on the menu to manage your account. Operations include
 | /api/user/delete/:emailAddress| DELETE| delete a user with emailAddress| 
 
 <a name="profiles"></a>
- given an email, fetch the corresponding user's profile|
- update interest-list stored in a profile to the provided one |
- update profile picture to the provided one | 
 ### Profiles
 | Route        | Method         | Description|
 |:------:|:-----:|:---------|
