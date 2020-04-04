@@ -93,10 +93,6 @@ class PostsDashboard extends React.Component {
             body: "Success: new post created",
             type: "success"
           }
-          // ,
-          // postManager: {
-          //   postings: res.data.data.postings    //update postings
-          // }
         })
       }
     }, (error) => {
@@ -112,8 +108,6 @@ class PostsDashboard extends React.Component {
     const { title, term, areaOfStudy, deadline, positions, description } = this.state;
     return (
       <React.Fragment key="table">
-        <span id="username"> {this.state.postManager.firstName+" "+this.state.postManager.lastName} </span>  //test
-        <span id="researcherId"> ID is: {this.state.researcher_id} </span> //test
         <Grid className="post-form" container spacing={4}>
           <Input
             name="title"
