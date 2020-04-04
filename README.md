@@ -1,5 +1,6 @@
 # team28
-# [Table of Contents](#top)
+[](#top)
+# Table of Contents
 1. [Deployed App URL](#url)
 2. [Build and Run Locally](#build)
 3. [Usage](#usage)
