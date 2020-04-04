@@ -59,7 +59,7 @@ One can also click on research title to get more information.
 
 #### 4. Manage Profile
 Click on `My Profile` on the menu to manage your account. Operations include
-  * [new]update self-introduction by moving your mouse to the description region under name
+  * [new] update self-introduction by moving your mouse to the description region under name
   * maintain an interest-list by clicking on the plus icon
   * view and editing account information by clicking on `DASHBOARD`
   * changing password and profile picture by cliking on `ACCOUNT SETTINGS`
@@ -81,6 +81,7 @@ Click on `My Profile` on the menu to manage your account. Operations include
     * create a new post
     * view current posts
     * [new] edit, remove current posts
+    * [new] view removed posts
  
  2. [new] Handle submitted applications under `RECIEVED APPLICATIONS` tab.
 
