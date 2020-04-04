@@ -1,13 +1,5 @@
 /* Styles for the PostsDashboard React component */
 
-.post-form {
-  justify-content: center;
-}
-
-.post-form .MuiGrid-root {
-  text-align: center;
-}
-
 .MuiButton-root.post-form__submit-button {
   background-color: #282c34;
   margin-top:  20px;
@@ -29,7 +21,9 @@
 .MuiTable-root.post-list {
   /* margin: auto;
   width: 400px; */
-  margin-top: 5%
+  margin-top: 5%;
+  width: 1300px;
+  margin-left: 60px;
 }
 
 .MuiButton-root.post-list__button{
