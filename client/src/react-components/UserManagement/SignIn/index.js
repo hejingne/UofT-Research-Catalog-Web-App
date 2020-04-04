@@ -10,7 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import api from "../../api";
+import api from "../../../api";
 
 import "./styles.css";
 

@@ -4,17 +4,17 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
 import Header from "./react-components/Header";
-import Home from "./react-components/Home";
-import SignIn from "./react-components/SignIn";
+import Home from "./react-components/Home/Home";
+import SignIn from "./react-components/UserManagement/SignIn";
 import PostsDashboard from "./react-components/PostManagerPage/PostsDashboard";
 import PostEditingPage from "./react-components/PostManagerPage/PostEditingPage";
 
 import Profile from "./react-components/Profile/EditMode";
 import ViewProfile from "./react-components/Profile/ViewMode"
-import SignUp from "./react-components/SignUp";
+import SignUp from "./react-components/UserManagement/SignUp";
 import ApplicationForm from "./react-components/ApplicationForm";
-import UserManagement from "./react-components/UserManagement";
-import SignOut from "./react-components/SignOut";
+import UserManagement from "./react-components/UserManagement/UserManagement";
+import SignOut from "./react-components/UserManagement/SignOut";
 
 function getSignInState() {
     const hasSignIn =

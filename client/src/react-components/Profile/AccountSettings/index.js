@@ -7,7 +7,7 @@ import { Container } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import Divider from "@material-ui/core/Divider";
 // import fs from "fs";
-import api from "../../api";
+import api from "../../../api";
 
 import "./styles.css";
 

@@ -1,12 +1,9 @@
 import React from "react";
-import {} from "react-bootstrap";
 import {withRouter} from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 
 import Search from "../Search"
-
-
 
 import './styles.css'
 
@@ -17,11 +14,8 @@ class HomePage extends React.Component {
         super(props);
         this.state = {};
     }
-
     
-    render() {  
-    
-
+    render() {
         return (
             <div>
                 <Carousel infiniteLoop={true}
@@ -48,9 +42,7 @@ class HomePage extends React.Component {
                 </Carousel>
                 <br></br>
                 <div id="search-box"><Search userType={this.props.userType}/></div>
-                
                 <Footer/>
-
             </div>  
         );
       }

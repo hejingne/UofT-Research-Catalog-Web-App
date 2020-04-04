@@ -1,11 +1,11 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Dashboard from "../../Dashboard";
-import InterestsChips from "../../InterestsChips";
-import SubmittedApplications from "../../SubmittedApplications";
-import ReceivedApplications from "../../ReceivedApplications";
-import AccountSettings from "../../AccountSettings";
+import Dashboard from "../Dashboard";
+import InterestsChips from "../InterestsChips";
+import SubmittedApplications from "../SubmittedApplications";
+import ReceivedApplications from "../ReceivedApplications";
+import AccountSettings from "../AccountSettings";
 import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";

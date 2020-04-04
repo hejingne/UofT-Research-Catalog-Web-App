@@ -1,6 +1,5 @@
 import React from "react";
-import {} from "react-bootstrap";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Avatar from "@material-ui/core/Avatar";
@@ -15,7 +14,7 @@ import "./styles.css";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import api from "../../api";
+import api from "../../../api";
 
 class SignUp extends React.Component {
     constructor(props) {

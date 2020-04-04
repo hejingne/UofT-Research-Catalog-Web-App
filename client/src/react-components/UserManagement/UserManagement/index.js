@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import MaterialTable from "material-table";
-import apis from "../../api";
+import apis from "../../../api";
 
 import "./styles.css";
 

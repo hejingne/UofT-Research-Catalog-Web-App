@@ -8,7 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import TextField from "@material-ui/core/TextField";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import api from "../../api";
+import api from "../../../api";
 
 import "./styles.css";
 

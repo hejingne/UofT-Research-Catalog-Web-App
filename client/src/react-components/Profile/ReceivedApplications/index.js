@@ -13,7 +13,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 import "./styles.css";
-import apis from "../../api";
+import apis from "../../../api";
 
 class ReceivedApplications extends React.Component {
     constructor(props) {

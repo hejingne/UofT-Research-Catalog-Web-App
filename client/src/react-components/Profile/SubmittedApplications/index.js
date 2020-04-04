@@ -8,7 +8,7 @@ import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 
 import "./styles.css";
-import apis from "../../api";
+import apis from "../../../api";
 
 class SubmittedApplications extends React.Component {
     constructor(props) {

@@ -13,7 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 
 import "./styles.css";
-import apis from "../../api";
+import apis from "../../../api";
 
 class Dashboard extends React.Component {
     constructor(props) {

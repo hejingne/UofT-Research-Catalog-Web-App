@@ -17,7 +17,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Avatar from '@material-ui/core/Avatar';
 import date from 'date-and-time';
-import api from "../../api";
+import api from "../../../api";
 
 
 import './styles.css'
