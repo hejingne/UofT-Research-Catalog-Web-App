@@ -1,5 +1,54 @@
 const Posting = require("../models/posting")
 
+updateIndexForResearcher = async (req, res) => {
+    const id = req.params.id;
+    const newIndex = req.params.index;
+
+    await Posting.findOneAndUpdate(
+        { _id: id },
+        { $set: { index: newIndex } },
+        { new: true }
+    )
+        .then((researcher) => {
+            if (!researcher) {
+                res.status(404).send();
+            } else {
+                res.status(200).json({
+                    success: true
+                });
+            }
+        })
+        .catch((error) => {
+            res.status(400).send();
+        });
+};
+
+restorePostForResearcher = async (req, res) => {
+  await Posting.findOne(    // findOne instead of find
+    { _id: req.params.id},
+    (error, researcher) => {
+      if (error) {
+        return res.status(400).json({success: false, error: error});
+      }
+      if (!researcher) {
+        return res.status(404).json({success: false, error: "researcher not found"});
+      }
+      const index = req.params.index;
+      const restoredPost = researcher.removedPostings[index]
+      if (researcher.removedPostings.length !== 0) {
+        researcher.removedPostings.splice(index, 1);
+      }
+      researcher.postings.push(restoredPost);   // add to postings
+      researcher.save((error) => {
+      if (error) {return res.status(400).json({success: false, error: "can not save new changes"});}
+      else {return res.status(200).json({success: true, data: researcher});}
+      })
+    }
+  ).catch((error) => {
+    return res.status(404).json({success: false, error});
+  })
+}
+
 getResearches = async (req, res) => {
     if (!req.session.user) {
         return res
@@ -116,9 +165,11 @@ deletePostForResearcher = async (req, res) => {
                 return res.status(404).json({ success: false, error: "researcher not found" });
             }
             const index = req.params.index;
+            const deletedPost = researcher.postings[index];
             if (researcher.postings.length !== 0) {
                 researcher.postings.splice(index, 1);
             }
+            researcher.removedPostings.push(deletedPost);   // add to removedPostings
             researcher.save((error) => {
                 if (error) { return res.status(400).json({ success: false, error: "can not save new changes" }); }
                 else { return res.status(200).json({ success: true, data: researcher }); }
@@ -166,7 +217,9 @@ startMakingPosts = async (req, res) => {
         email: body.email,
         firstName: body.firstName,
         lastName: body.lastName,
-        postings: []
+        index: 0,
+        postings: [],
+        removedPostings: []
     })
     posting.save().then(() => {
         return res.status(200).json({
@@ -189,5 +242,7 @@ module.exports = {
     getResearcherByEmail,
     startMakingPosts,
     deletePostForResearcher,
-    editPost
+    editPost,
+    restorePostForResearcher,
+    updateIndexForResearcher
 };
