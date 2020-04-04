@@ -10,20 +10,12 @@
   line-height: 5;
 }
 
-.post-form__message--success {
-  color: blue;
-}
-
-.post-form__message--error {
-  color: red;
-}
-
 .MuiTable-root.post-list {
   /* margin: auto;
   width: 400px; */
   margin-top: 5%;
-  width: 1300px;
-  margin-left: 60px;
+  /* width: 1300px; */
+  /* margin-left: 60px; */
 }
 
 .MuiButton-root.post-list__button{
