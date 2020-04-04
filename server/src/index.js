@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     cors({
-        origin: [originUrl],
+        origin: [originUrl, "http://localhost:3000"],
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true // enable set cookie
     })
