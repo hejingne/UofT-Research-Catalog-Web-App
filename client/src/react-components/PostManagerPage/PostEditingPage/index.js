@@ -97,7 +97,7 @@ class PostEditingPage extends React.Component {
                     Provide information to update posting: 
                 </Typography>
                 </Grid>
-                <Grid style={{marginTop: 30}}>
+                <Grid>
                 <Grid className="post-form__button-grid" 
                       style={{marginLeft: 610, marginBottom: 30}}>
                     <Button
@@ -129,24 +129,24 @@ class PostEditingPage extends React.Component {
                     <Grid item xs={3}>
                         <Input name="term" value={term} 
                         onChange={e => updatePostForm(this, e.target)}
-                        label="Term" />
+                        label="Term (e.g., 2021 Summer)" />
                     </Grid>
                     <Grid item xs={3}>
                         <Input name="deadline" value={deadline} 
                         onChange={e => updatePostForm(this, e.target)}
-                        label="deadline (YYYY/MM/DD)" />
+                        label="Deadline (YYYY/MM/DD)" />
                     </Grid>
                     <Grid item xs={3}></Grid>
                 </Grid>
                 <TextareaAutosize
                     rowsMax={100}
                     rowsMin={10}
-                    style={{width: 650, fontSize: 18, marginLeft: 400, marginTop: 40}}
+                    style={{width: 650, fontSize: 18, marginLeft: 400, marginTop: 50}}
                     placeholder="Description of this research..."
                     onChange={(e) => updatePostForm(this, {
                         value: e.target.value, name: "description"})}/>
                 </Grid>
-                <div style={{height: 200}}></div>
+                <div style={{height: 170}}></div>
             </React.Fragment>
         )
     }

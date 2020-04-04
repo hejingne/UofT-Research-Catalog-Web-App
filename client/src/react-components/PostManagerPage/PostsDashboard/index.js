@@ -137,19 +137,19 @@ class PostsDashboard extends React.Component {
                     <Grid item xs={3}>
                         <Input name="term" value={term} 
                         onChange={e => updatePostForm(this, e.target)}
-                        label="Term" />
+                        label="Term (e.g. 2021 Summer)" />
                     </Grid>
                     <Grid item xs={3}>
                         <Input name="deadline" value={deadline} 
                         onChange={e => updatePostForm(this, e.target)}
-                        label="deadline (YYYY/MM/DD)" />
+                        label="Deadline (YYYY/MM/DD)" />
                     </Grid>
                     <Grid item xs={3}></Grid>
                 </Grid>
                 <TextareaAutosize
                     rowsMax={100}
                     rowsMin={10}
-                    style={{width: 650, fontSize: 18, marginLeft: 400, marginTop: 40}}
+                    style={{width: 650, fontSize: 18, marginLeft: 400, marginTop: 50}}
                     placeholder="Description of this research..."
                     onChange={(e) => updatePostForm(this, {
                         value: e.target.value, name: "description"})}/>
@@ -202,7 +202,7 @@ class PostsDashboard extends React.Component {
                 <p style={{marginLeft: 100, marginTop: 40}} className={`post-form__message--${this.state.message.type}`}>
                     {this.state.message.body}
                 </p>    
-                <div style={{ height: 300 }}></div>
+                <div style={{ height: 170 }}></div>
             </Grid>
         )
     }
