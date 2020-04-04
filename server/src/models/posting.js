@@ -12,7 +12,9 @@ const PostingForResearcherSchema = new Schema({
   email: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  postings: [PostingSchema]
+  index: { type: Number, required: true }, // index of the posting being modified
+  postings: [PostingSchema],
+  removedPostings: [PostingSchema]
 })
 const Posting = mongoose.model('Posting', PostingForResearcherSchema, "postings");
 module.exports = Posting;
