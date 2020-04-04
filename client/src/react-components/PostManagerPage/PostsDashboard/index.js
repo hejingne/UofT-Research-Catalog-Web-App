@@ -4,7 +4,8 @@ import Button from "@material-ui/core/Button";
 import Input from "./../Input";
 import { Tab, Tabs, TableRow, TableCell, 
     TableBody, Table, Paper, TextareaAutosize } from "@material-ui/core";
-import Post from "./../Post";
+import Post from "./../Post/CurrentPost";
+import RemovedPost from "./../Post/RemovedPost";
 import "./styles.css";
 import { updatePostForm } from "./../action/posts"
 import { withRouter } from "react-router-dom";
@@ -14,13 +15,14 @@ class PostsDashboard extends React.Component {
     constructor(props) {
         super(props);
         this.addPost = this.addPost.bind(this);
+        this.updatePostings = this.updatePostings.bind(this);
+        this.updateRemovedPostings = this.updateRemovedPostings.bind(this);
 
         this.state = {
             postManager: {
                 email: "",
                 firstName: "",
                 lastName: "",
-                postings: []  // only used for startMakingPosts
             },
 
             title: "",  //key
@@ -29,13 +31,10 @@ class PostsDashboard extends React.Component {
             deadline: "",
             positions: "",
             description: "",
-
-            message: {
-                body: "",
-                type: ""
-            },
+            
             researcher_id: 0,
             currentPostings: [],
+            removedPostings: [],
             selectedTab: 0
         };
         this.displayContent.bind(this);
@@ -82,23 +81,29 @@ class PostsDashboard extends React.Component {
         });
     }
 
+      updateRemovedPostings() {
+        api.getResearcherByEmail(this.state.postManager.email).then((res) => {
+            this.setState({
+              removedPostings: res.data.data.removedPostings
+            })
+        })
+      }
+
+      updatePostings() {
+        api.getResearcherByEmail(this.state.postManager.email).then((res) => {
+            this.setState({
+              currentPostings: res.data.data.postings
+            })
+        })
+      }
+    
     addPost() {
         api.createPostForResearcher(this.state).then((res) => {
             if (res.data.success) {
-                this.setState({
-                    message: {
-                        body: "Success: new post created",
-                        type: "success"
-                    }
-                })
+                alert("Success: new post created successfully")
             }
         }, (error) => {
-            this.setState({
-                message: {
-                    body: "Error: can not create post. Correctly provide all information to resolve error",
-                    type: "error"
-                }
-            })
+            alert("Error: Can not create post. Correctly provide all information to resolve error")
         })
     }
 
@@ -155,7 +160,8 @@ class PostsDashboard extends React.Component {
                         value: e.target.value, name: "description"})}/>
 
                 </Grid>
-        } else {
+        } else if (this.state.selectedTab === 1) {
+            this.updatePostings();
             return <Grid>
             <Table className="post-list" id="table">
             <TableBody>
@@ -172,15 +178,40 @@ class PostsDashboard extends React.Component {
                 {this.state.currentPostings.map(post => {
                     const i = this.state.currentPostings.indexOf(post);
                     return <Post post={post}
-                        dashboard={this}
                         index={i}
+                        dashboard={this}
                         history={this.props.history}
                         key={'key' + i} /> //key
                 })}
             </TableBody>
             </Table>
             </Grid>
-        }
+        } else {
+            this.updateRemovedPostings();
+            return <Grid>
+            <Table className="post-list" id="table">
+            <TableBody>
+                <TableRow className="post" id="header">
+                    <TableCell component="th" scope="row">Area of Study</TableCell>
+                    <TableCell component="th" scope="row">Term</TableCell>
+                    <TableCell component="th" scope="row">Title</TableCell>
+                    <TableCell component="th" scope="row">Positions</TableCell>
+                    <TableCell component="th" scope="row">Deadline</TableCell>
+                    <TableCell component="th" scope="row">Description</TableCell>
+                    <TableCell component="th" scope="row"></TableCell>
+                    <TableCell component="th" scope="row"></TableCell>
+                </TableRow>
+                {this.state.removedPostings.map(post => {
+                    const i = this.state.removedPostings.indexOf(post);
+                    return <RemovedPost post={post}
+                        index={i}
+                        dashboard={this}
+                        key={'key' + i} /> //key
+                })}
+            </TableBody>
+            </Table>
+            </Grid>
+         }
     }
 
     render() {
@@ -193,15 +224,13 @@ class PostsDashboard extends React.Component {
                                 onChange={(e, value) => this.setState({ selectedTab: value })}>
                                 <Tab label="Create Post" />
                                 <Tab label="Current Postings" />
+                                <Tab label="Removed Postings" />
                             }
                         </Tabs>
                         </Paper>
                     </Grid>
                 </Grid>
                 {this.displayContent()}
-                <p style={{marginLeft: 100, marginTop: 40}} className={`post-form__message--${this.state.message.type}`}>
-                    {this.state.message.body}
-                </p>    
                 <div style={{ height: 170 }}></div>
             </Grid>
         )
