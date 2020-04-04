@@ -24,7 +24,7 @@ const applicationApi = axios.create({
 });
 
 const postingApi = axios.create({
-    baseURL: "http://localhost:3001/manage-posting"
+    baseURL: originUrl + "/api/manage-posting"
 });
 
 
