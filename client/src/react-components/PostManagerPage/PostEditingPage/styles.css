@@ -1,0 +1,49 @@
+.post-form .MuiGrid-root {
+  text-align: center;
+}
+
+.MuiButton-root.post-form__submit-button {
+  background-color: #282c34;
+  margin-top:  20px;
+  margin-left : 60px;
+}
+
+.post-form__button-grid {
+  line-height: 5;
+}
+
+.post-form__message--success {
+  color: blue;
+}
+
+.post-form__message--error {
+  color: red;
+}
+
+.MuiTable-root.post-list {
+  /* margin: auto;
+  width: 400px; */
+  margin-top: 5%
+}
+
+.post {
+  margin-bottom: 5px;
+  font-size: 150%;
+}
+
+.post .MuiTableCell-root {
+  font-size: 0.75em;
+  color: darkslategray;
+}
+
+.MuiButton-root.save-button{
+  margin-top: 50px;
+  /* margin-left : 10px; */
+  /* background-color: lightblue; */
+}
+
+.MuiButton-root.back-button{
+  margin-top: 50px;
+  margin-left : 30px;
+  /* background-color: lightblue; */
+}
