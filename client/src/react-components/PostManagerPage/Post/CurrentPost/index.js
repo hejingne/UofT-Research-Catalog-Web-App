@@ -16,7 +16,7 @@ class Post extends React.Component {
   editPost(dashboard, newIndex) {
     this.props.history.push("/edit-posting-for-researcher");
     api.updateIndexForResearcher(dashboard.state.researcher_id, newIndex).then((res) => {
-        alert("Index updated"); //test
+        console.log("Index updated"); //test
     })
     return <PostEditingPage dashboard={dashboard} key={'key-for-editing'}/>;
   }
