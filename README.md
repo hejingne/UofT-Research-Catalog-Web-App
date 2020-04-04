@@ -1,11 +1,15 @@
 # team28
+# Table of Contents
+1. [Deployed App URL](#url)
+2. [uild and Run Locally](#build)
+3. [Usage](#usage)
+4. [Routes in Express Server](#routes)
 
-
-## Deployed App URL
+## Deployed App URL <a name="url"></a>
 https://limitless-retreat-03123.herokuapp.com
 
 
-## Build and Run Locally
+## Build and Run Locally <a name="build"></a>
 In root directory, run
 ```bash
 npm i
@@ -15,7 +19,7 @@ npm run start:dev
 **note:** When you run it locally, please make sure your NODE_ENV is not set to `production`.
 
 
-## Usage
+## Usage <a name="usage"></a>
 ### Common features for all users:
 
 #### 1. Login and Sign up
@@ -72,7 +76,7 @@ Click on `My Profile` on the menu to manage your account. Operations include
     * add and remove users
     * handle change password request
 
-## Routes in express server:
+## Routes in Express Server <a name="routes"></a>
 | Route        | Method         | Usage  |
 | ------------- |:-------------:| -----:|
 |      |  |  |
