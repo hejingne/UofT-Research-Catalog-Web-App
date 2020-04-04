@@ -1,0 +1,49 @@
+/* Styles for the PostsDashboard React component */
+
+.post-form {
+  justify-content: center;
+}
+
+.post-form .MuiGrid-root {
+  text-align: center;
+}
+
+.MuiButton-root.post-form__submit-button {
+  background-color: #282c34;
+  margin-top:  20px;
+  margin-left : 60px;
+}
+
+.post-form__button-grid {
+  line-height: 5;
+}
+
+.post-form__message--success {
+  color: blue;
+}
+
+.post-form__message--error {
+  color: red;
+}
+
+.MuiTable-root.post-list {
+  /* margin: auto;
+  width: 400px; */
+  margin-top: 5%
+}
+
+.MuiButton-root.post-list__button{
+  margin-top: 50px;
+  margin-left : 100px;
+  background-color: lightblue;
+}
+
+.post {
+  margin-bottom: 5px;
+  font-size: 150%;
+}
+
+.post .MuiTableCell-root {
+  font-size: 0.75em;
+  color: darkslategray;
+}
