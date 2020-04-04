@@ -25,15 +25,11 @@ npx nodemon server
 
 #### 1. Login and Sign up
 default login credentials:
+  * [Student] email: **user** &ensp; &ensp; password: **user**
 
-**Student**  
-Email: **user** &ensp; &ensp; Password: **user**
+  * [Researcher] email: **user2** &ensp; &ensp; password: **user2**
 
-**Researcher**  
-Email: **user2** &ensp; &ensp; Password: **user2**
-
-**Administrator** 
-Email: **admin** &ensp; &ensp; Password: **admin**
+  * [Admin] email: **admin** &ensp; &ensp; password: **admin**
 
 #### 2. Searching
 User can apply filters when searching for research opportunities; sort results in different ways; click on research title to get more information; visit researcher's profile by clicking on researcher's name
