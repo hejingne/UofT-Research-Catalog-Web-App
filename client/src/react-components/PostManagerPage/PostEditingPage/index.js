@@ -67,10 +67,7 @@ class PostEditingPage extends React.Component {
         return (
             <React.Fragment key="inputs">
                 <h3> (Preview) This posting will be saved as: </h3>
-                <Grid style={{marginLeft: 100, marginTop: 70}}>
-                <Typography variant="h6" style={{color: "#424242", fontWeight: "bold"}}> 
-                    This posting will be saved as: 
-                </Typography>
+                <Grid style={{marginLeft: 100, marginTop: 30}}>
                 </Grid>
                 <Table className="post-list" id="table">
                     <TableBody>
@@ -92,50 +89,36 @@ class PostEditingPage extends React.Component {
                         </TableRow>
                     </TableBody>
                 </Table>
-                <div style={{height: 60}}></div>
                 <Divider></Divider>
                 <h3> Provide information to update posting: </h3>
-                <Grid style={{marginLeft: 100, marginTop: 40}}>
-                <Typography variant="h6" style={{color: "#424242", fontWeight: "bold"}}> 
-                    Provide information to update posting: 
-                </Typography>
+                <Grid style={{marginLeft: 100, marginTop: 10}}>
                 </Grid>
                 <Grid>
-                <Grid className="post-form__button-grid" 
-                      style={{marginLeft: 610, marginBottom: 30}}>
-                    <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => editPost(this)}
-                    className="save-button app_horizontal-center">
-                    Save Post
-                    </Button>
-                </Grid>
                 <Grid justify="center" container direcion="row">
                     <Grid item xs={3}>
-                        <Input name="title" value={title} 
+                        <Input name="title" value={title}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Post Title" />
                     </Grid>
                     <Grid item xs={3}>
-                        <Input name="areaOfStudy" value={areaOfStudy} 
+                        <Input name="areaOfStudy" value={areaOfStudy}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Area Of Study" />
                     </Grid>
                     <Grid item xs={3}>
-                        <Input name="positions" value={description} 
+                        <Input name="positions" value={description}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Number Of Positions" />
                     </Grid>
                 </Grid>
                 <Grid justify="center" container direcion="row">
                     <Grid item xs={3}>
-                        <Input name="term" value={term} 
+                        <Input name="term" value={term}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Term (e.g., 2021 Summer)" />
                     </Grid>
                     <Grid item xs={3}>
-                        <Input name="deadline" value={deadline} 
+                        <Input name="deadline" value={deadline}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Deadline (YYYY/MM/DD)" />
                     </Grid>
@@ -144,10 +127,20 @@ class PostEditingPage extends React.Component {
                 <TextareaAutosize
                     rowsMax={100}
                     rowsMin={10}
-                    style={{width: 650, fontSize: 18, marginLeft: 400, marginTop: 50}}
+                    style={{width: 650, fontSize: 18, marginLeft: 300, marginTop: 30}}
                     placeholder="Description of this research..."
                     onChange={(e) => updatePostForm(this, {
                         value: e.target.value, name: "description"})}/>
+                </Grid>
+                <Grid className="post-form__button-grid"
+                      style={{marginLeft: 550}}>
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => editPost(this)}
+                    className="save-button app_horizontal-center">
+                    Save Post
+                    </Button>
                 </Grid>
                 <div style={{height: 170}}></div>
             </React.Fragment>
