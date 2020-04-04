@@ -19,6 +19,12 @@ const postingApi = axios.create({
 
 export const getAllResearches = () => postingApi.get("/postings");
 
+export const startMakingPosts = (payload) => postingApi.post("/postings", payload);
+export const getResearcherByEmail = (email) => postingApi.get(`/${email}`);
+export const createPostForResearcher = (payload) => postingApi.post("/createPosting", payload);
+export const deletePostForResearcher = (id, index) => postingApi.delete(`/deletePosting/${id}/${index}`);
+export const editPost = (payload) => postingApi.put("/updatePosting", payload);
+
 export const createUser = (payload) => userApi.post("/create", payload);
 export const authenticateUser = (payload) =>
     userApi.post("/authenticate", payload);
@@ -60,6 +66,12 @@ export const offerApplication = (id) => applicationApi.patch(`/offer/${id}`);
 
 
 const apis = {
+    startMakingPosts,
+    getResearcherByEmail,
+    createPostForResearcher,
+    deletePostForResearcher,
+    editPost,
+    
     createUser,
     authenticateUser,
     updatePassword,

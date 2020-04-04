@@ -12,6 +12,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import { Done, Edit } from "@material-ui/icons";
 import apis from "../../../api";
+import PostsDashboard from "../PostManagerPage/PostsDashboard";
 
 import "./styles.css";
 
@@ -122,6 +123,7 @@ class Profile extends React.Component {
         }
         if (this.state.selectedTab === "MANAGE POSTING") {
             this.props.history.push("/manage-posting");
+            return <PostsDashboard />;
         }
         if (this.state.selectedTab === "ACCOUNT SETTINGS") {
             return <AccountSettings />;
