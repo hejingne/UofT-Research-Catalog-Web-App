@@ -95,54 +95,57 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 <a name="users"></a>
 ### Users 
-| Route        | Method         | Usage  | Data Involved
-|:------:|:-----:|:---------:|:-------------------------:|
-| /api/user/create | POST | create a new user | |
-| /api/user/authenticate | POST | authenticate a user | |
-| /api/user/updatePassword| PUT | upate password |  |
-| /api/user/updateEmailAddressAndUserType|  PUT | update email and user type| |
-| /api/user/signOut| GET | sign out  | |
-| /api/user/session/:sessionId| GET | get current signed in user |  |
-| /api/user/users| GET | fetch all users in database||
-| /api/user/delete/:emailAddress| DELETE| delete a user with emailAddress| |
+| Route        | Method         | Description|
+|:------:|:-----:|:---------|
+| /api/user/create | POST | create a new user and profile;<br> save them in databse | 
+| /api/user/authenticate | POST | authenticate a user by comparing provided data (email, password) with that in database | 
+| /api/user/updatePassword| PUT | given a new (email, password) pair, find the right user and store new pwd in database|  
+| /api/user/updateEmailAddressAndUserType|  PUT | update email and user type| 
+| /api/user/signOut| GET | sign out  | 
+| /api/user/session/:sessionId| GET | get current signed in user |  
+| /api/user/users| GET | fetch all users in database|
+| /api/user/delete/:emailAddress| DELETE| delete a user with emailAddress| 
 
 <a name="profiles"></a>
+ given an email, fetch the corresponding user's profile|
+ update interest-list stored in a profile to the provided one |
+ update profile picture to the provided one | 
 ### Profiles
-| Route        | Method         | Usage  | Data Involved
-|:------:|:-----:|:---------:|:-------------------------:|
-| /api/profile/:emailAddress | GET | | |
-| /api/profile/updateInterests | PUT | | |
-| /api/profile/updateProfilePicture| PUT | | |
-| /api/profile/updateDescription|  PUT   | |  |
-| /api/profile/updateEmploymentInfo| PUT | |  |
+| Route        | Method         | Description|
+|:------:|:-----:|:---------|
+| /api/profile/:emailAddress | GET |fetch a user's profile given email|
+| /api/profile/updateInterests | PUT |update the list of interests in profile with input from user|
+| /api/profile/updateProfilePicture| PUT |change profile picture to the one uploaded by user|
+| /api/profile/updateDescription| PUT  |change description of a user given input from user|
+| /api/profile/updateEmploymentInfo| PUT | update employment information provided by the user|
 
 <a name="applications"></a>
 ### Applications
-| Route        | Method         | Usage  | Data Involved
-|:------:|:-----:|:---------:|:-------------------------:|
-| /api/application/applications | GET |  |  |
-| /api/application/create | POST|  |  |
-| /api/application/delete/:id| DELETE |  | |
-| /api/application/applications/:emailAddress| GET |   |  |
-| /api/application/applications/researchId/:researchId| GET |  |   |
-| /api/application/accept/:id| PATCH |   |  |
-| /api/application/reject/:id| PATCH   |   |  |
-| /api/application/review/:id| PATCH   |   |  |
-| /api/application//offer/:id| PATCH |  |   |
+| Route        | Method         | Description
+|:------:|:-----:|:---------|
+| /api/application/applications | GET |  fetch all applications stored in database  |
+| /api/application/create | POST|  create a new application given information filled by the user |
+| /api/application/delete/:id| DELETE | delete an application with _id |
+| /api/application/applications/:emailAddress| GET | fetch an application given user's email from database |
+| /api/application/applications/researchId/:researchId| GET |   get an application with id researchId  |
+| /api/application/accept/:id| PATCH | change the status of the application with _id to "accepted" |
+| /api/application/reject/:id| PATCH   |  change the status of the application with _id to "rejected" |
+| /api/application/review/:id| PATCH   |  change the status of the application with _id to "under review" |
+| /api/application/offer/:id| PATCH |change the status of the application with _id to "offered"|
 
 <a name="postings"></a>
 ### Postings
-| Route        | Method         | Usage  | Data Involved
-|:------:|:-----:|:---------:|:-------------------------:|
-| /api/manage-posting/postings | GET |  |  |
-| /api/manage-posting/postings | POST |  |   |
-| /api/manage-posting/:email| GET |  |   |
-| /api/manage-posting/createPosting|  POST   |  |   |
-| /api/manage-posting/deletePosting| DELETE |  |  |
+| Route        | Method         | Description|
+|:------:|:-----:|:---------|
+| /api/manage-posting/postings | GET |fetch all postings  |
+| /api/manage-posting/postings | POST | initialize a new posting with empty postings and save it in database |
+| /api/manage-posting/:email| GET | fetch a posting with corresponding email |   
+| /api/manage-posting/createPosting|  POST   | create a new posting and store it in database    |
+| /api/manage-posting/deletePosting| DELETE |  delete a research for a researcher, given research's _id |
 
 
 <a name="db"></a>
 ## Access Database
-In MongoDB Compass, connect to this url
+In MongoDB Compass, connect to this url:
 
    >mongodb+srv://admin:admin@csc309-uoftresearchcatalogue-sql0-gzdxk.mongodb.net/uoftresearchcatalogue
