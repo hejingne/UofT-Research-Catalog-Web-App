@@ -1,14 +1,12 @@
 import React from "react";
-import { Link, Redirect, withRouter } from "react-router-dom";
-import { Container, Nav } from "react-bootstrap";
-import { MDBCol } from "mdbreact";
-
-import "./styles.css";
+import { withRouter } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuIcon from "@material-ui/icons/Menu";
 import api from "../../api";
+
+import "./styles.css";
 
 class Header extends React.Component {
     constructor(props) {
@@ -75,7 +73,12 @@ class Header extends React.Component {
 
         return (
             <div id="banner">
-                <img id="logo" src={logoUrl} onClick={this.redirectToHome} />
+                <img
+                    id="logo"
+                    alt=""
+                    src={logoUrl}
+                    onClick={this.redirectToHome}
+                />
                 <span id="title" onClick={this.redirectToHome}>
                     U of T Research Catalogue
                 </span>

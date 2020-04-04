@@ -186,6 +186,7 @@ class Profile extends React.Component {
                     </div>
                     <img
                         id="profile-pic"
+                        alt="profile picture"
                         src={this.state.personalInfo.profilePicture}
                     />
                 </div>

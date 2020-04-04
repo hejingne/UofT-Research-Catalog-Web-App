@@ -1,12 +1,10 @@
 import React from "react";
-import {} from "react-bootstrap";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Container } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import Divider from "@material-ui/core/Divider";
-// import fs from "fs";
 import api from "../../../api";
 
 import "./styles.css";
