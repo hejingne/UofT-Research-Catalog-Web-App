@@ -37,16 +37,17 @@ class PostEditingPage extends React.Component {
                             const email = res.data.data.emailAddress;
                             api.getResearcherByEmail(email).then((res) => {
                                 if (res.data.success) {
-                                    const posting = res.data.data.postings[this.state.index]
+                                    const newIndex = res.data.data.index;
+                                    const posting = res.data.data.postings[newIndex]
                                     this.setState({
-                                        title: posting.title,
-                                        term: posting.term,
-                                        areaOfStudy: posting.areaOfStudy,
-                                        deadline: posting.deadline,
-                                        positions: posting.positions,
-                                        description: posting.description,
-                                        researcher_id: res.data.data._id,
-                                        index: this.props.index
+                                      title: posting.title,
+                                      term: posting.term,
+                                      areaOfStudy: posting.areaOfStudy,
+                                      deadline: posting.deadline,
+                                      positions: posting.positions,
+                                      description: posting.description,
+                                      researcher_id: res.data.data._id,
+                                      index: newIndex
                                     })
                                 }
                             }
@@ -60,10 +61,12 @@ class PostEditingPage extends React.Component {
     }
 
     render() {
+        const { dashboard } = this.props;
         const { title, term, areaOfStudy, deadline, positions, description } = this.state;
 
         return (
             <React.Fragment key="inputs">
+                <h3> (Preview) This posting will be saved as: </h3>
                 <Grid style={{marginLeft: 100, marginTop: 70}}>
                 <Typography variant="h6" style={{color: "#424242", fontWeight: "bold"}}> 
                     This posting will be saved as: 
@@ -91,7 +94,7 @@ class PostEditingPage extends React.Component {
                 </Table>
                 <div style={{height: 60}}></div>
                 <Divider></Divider>
-
+                <h3> Provide information to update posting: </h3>
                 <Grid style={{marginLeft: 100, marginTop: 40}}>
                 <Typography variant="h6" style={{color: "#424242", fontWeight: "bold"}}> 
                     Provide information to update posting: 
