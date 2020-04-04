@@ -5,20 +5,15 @@
 https://limitless-retreat-03123.herokuapp.com
 
 
-## Build and Run
-1. launch server
+## Build and Run Locally
+In root directory, run
 ```bash
-cd server
 npm i
-cd src
-npx nodemon server
+npm run start:dev
 ```
-2. run client
-```bash
- cd client
- npm i
- npm start
-```
+
+**note:** When you run it locally, please make sure your NODE_ENV is not set to `production`.
+
 
 ## Usage
 ### Common features for all users:
@@ -32,7 +27,9 @@ default login credentials:
   * [Admin] email: **admin** &ensp; &ensp; password: **admin**
 
 #### 2. Searching
-User can apply filters when searching for research opportunities; sort results in different ways; click on research title to get more information; visit researcher's profile by clicking on researcher's name
+[new feature] User can apply filters when searching for research opportunities; sort results in different ways; visit researcher's profile by clicking on researcher's name
+
+One can also click on research title to get more information.
 
 #### 3. Navigation Tool
 
@@ -54,21 +51,30 @@ Click on `My Profile` on the menu to manage your account. Operations include
 ### Specific features:
 #### student
 
- 1. View submitted applications and their status in `My Profile` under `SUBMITTED APPLICATION` tab.
+ 1. [new] View submitted applications and their status in `My Profile` under `SUBMITTED APPLICATION` tab.
     
- 2. Submit applications by clicking on `APPLY` button for the researcn. When filling out the application form, the information stored in databse (name, email, file, etc) is auto-filled for the user.
+ 2. Submit applications by clicking on `APPLY` button for the researcn. 
+ 
+ [new] When filling out the application form, the information stored in databse (name, email, file, etc) is auto-filled for the user.
 
 #### researcher
 
  1. Manage posting in `My Profile` under `MANAGE POSTING`. Under this tab, a researcher can
     * create a new post
     * view current posts
-    * edit, remove current posts
+    * [new] edit, remove current posts
  
- 2. Handle submitted applications under `RECIEVED APPLICATIONS` tab.
+ 2. [new] Handle submitted applications under `RECIEVED APPLICATIONS` tab.
 
 #### admin
 
 1. Manage users in `My Profile`. Under this tab, an admin can
     * add and remove users
     * handle change password request
+
+## Routes in express server:
+| Route        | Method         | Usage  |
+| ------------- |:-------------:| -----:|
+|      |  |  |
+|       |  |    |
+|  |     |     |
