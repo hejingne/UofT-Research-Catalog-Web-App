@@ -14,17 +14,17 @@ const apiPort = process.env.PORT || 3001;
 
 let originUrl;
 
-// if (process.env.NODE_ENV === "production") {
-//     originUrl = "https://limitless-retreat-03123.herokuapp.com";
-// } else {
+if (process.env.NODE_ENV === "production") {
+    originUrl = "https://limitless-retreat-03123.herokuapp.com";
+} else {
     originUrl = "http://localhost:" + apiPort;
-// }
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     cors({
-        origin: [originUrl,"http://localhost:3000"],
+        origin: [originUrl],
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true // enable set cookie
     })
