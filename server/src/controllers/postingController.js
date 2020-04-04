@@ -89,16 +89,12 @@ createPostForResearcher = async (req, res) => {
         { _id: body.researcher_id },
         (error, researcher) => {
             if (error) {
-                console.log(error)
                 return res.status(400).json({ success: false, error: error });
             }
             if (!researcher) {
-                console.log("!researcher")
                 return res.status(404).json({ success: false, erorr: "researcher not found" });
             }
-            console.log("find one succeed")
             researcher.postings.push(postingSchema);
-            console.log(postingSchema)
             researcher.save((error) => {
                 if (error) { return res.status(400).json({ success: false, error: "can not save new changes" }); }
                 else { return res.status(200).json({ success: true, data: researcher }); }
