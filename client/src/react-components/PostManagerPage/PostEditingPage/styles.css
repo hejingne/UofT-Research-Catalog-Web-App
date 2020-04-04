@@ -47,3 +47,13 @@
   margin-left : 30px;
   /* background-color: lightblue; */
 }
+
+h3 {
+  margin-top: 25px;
+  color: #25355A;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+#header {
+  background-color: lightblue;
+}
