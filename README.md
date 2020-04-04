@@ -52,13 +52,13 @@ Click on `My Profile` on the menu to manage your account. Operations include
   
   
 ### Specific features:
-#### As a student, you can
+#### student
 
  1. View submitted applications and their status in `My Profile` under `SUBMITTED APPLICATION` tab.
     
  2. Submit applications by clicking on `APPLY` button for the researcn. When filling out the application form, the information stored in databse (name, email, file, etc) is auto-filled for the user.
 
-#### As a researcher, you can
+#### researcher
 
  1. Manage posting in `My Profile` under `MANAGE POSTING`. Under this tab, a researcher can
     * create a new post
@@ -67,7 +67,7 @@ Click on `My Profile` on the menu to manage your account. Operations include
  
  2. Handle submitted applications under `RECIEVED APPLICATIONS` tab.
 
-#### As an administrator, you can
+#### admin
 
 1. Manage users in `My Profile`. Under this tab, an admin can
     * add and remove users
