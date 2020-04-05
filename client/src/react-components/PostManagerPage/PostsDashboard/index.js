@@ -30,7 +30,7 @@ class PostsDashboard extends React.Component {
             areaOfStudy: "",
             deadline: "",
             positions: "",
-            description: "",
+            description: "N/A",
 
             researcher_id: 0,
             currentPostings: [],
