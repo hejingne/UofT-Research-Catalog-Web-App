@@ -286,7 +286,7 @@ class Search extends React.Component {
             matchKeywords = this.state.switches[0] ? matchKeywords : true;
             matchCategory = this.state.switches[3] ? matchCategory : true;
             matchDuration = this.state.switches[4] ? matchDuration : true;
-            matchDeadline = this.state.switches[2] ? matchDuration : true;
+            matchDeadline = this.state.switches[2] ? matchDeadline : true;
             return (
                 matchKeywords && matchCategory && matchDuration && matchDeadline
             );
@@ -583,7 +583,7 @@ class Search extends React.Component {
                                         value={
                                             this.state.filters.deadline.after
                                         }
-                                        onChange={(date) =>
+                                        onChange={(date) => {
                                             this.setState({
                                                 filters: {
                                                     ...this.state.filters,
@@ -594,6 +594,8 @@ class Search extends React.Component {
                                                     }
                                                 }
                                             })
+                                            console.log(date)
+                                        }
                                         }
                                         KeyboardButtonProps={{
                                             "aria-label": "change date"
