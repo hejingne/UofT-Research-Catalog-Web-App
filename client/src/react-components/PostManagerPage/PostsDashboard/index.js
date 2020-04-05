@@ -35,7 +35,9 @@ class PostsDashboard extends React.Component {
             researcher_id: 0,
             currentPostings: [],
             removedPostings: [],
-            selectedTab: 0
+            selectedTab: 0,
+            post_updated: false,
+            removed_updated: false
         };
         this.displayContent.bind(this);
     }
@@ -56,15 +58,11 @@ class PostsDashboard extends React.Component {
                                     lastName: res.data.data.lastName
                                 }
                             });
-                            api.getResearcherByEmail(this.state.postManager.email).then((res) => {
-                                if (res.data.success) {
-                                    this.setState({
-                                        ...this.state,
-                                        currentPostings: res.data.data.postings,
-                                        researcher_id: res.data.data._id,
-                                    }) // retrieve id
-                                }
-                            }
+                            if (this.state.researcher_id === 0) {
+                              api.getResearcherByEmail(this.state.postManager.email).then((res) => {
+                                if (res.data.success && this.state.researcher_id === 0) {
+                                    this.setState({researcher_id: res.data.data._id}) // retrieve id
+                                }}
                                 , (error) => {
                                     api.startMakingPosts(this.state.postManager).then((res) => {
                                         if (res.data.success) {
@@ -72,9 +70,8 @@ class PostsDashboard extends React.Component {
                                         }
                                     })
                                 }
-                            )
-                        }
-                    });
+                            )}
+                        }});
             } else {
                 return this.props.history.push("/signOut");
             }
@@ -82,19 +79,27 @@ class PostsDashboard extends React.Component {
     }
 
       updateRemovedPostings() {
+      if (!this.state.removed_updated) {
         api.getResearcherByEmail(this.state.postManager.email).then((res) => {
             this.setState({
               removedPostings: res.data.data.removedPostings
             })
-        })
+        });
+        this.setState({
+          removed_updated: true
+        })}
       }
 
       updatePostings() {
-        api.getResearcherByEmail(this.state.postManager.email).then((res) => {
+        if (!this.state.post_updated){
+          api.getResearcherByEmail(this.state.postManager.email).then((res) => {
             this.setState({
               currentPostings: res.data.data.postings
             })
-        })
+        });
+        this.setState({
+          post_updated: true
+        })}
       }
 
     addPost() {
