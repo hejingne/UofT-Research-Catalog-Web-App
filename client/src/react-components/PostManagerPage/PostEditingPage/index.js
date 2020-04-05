@@ -18,7 +18,7 @@ class PostEditingPage extends React.Component {
             areaOfStudy: "",
             deadline: "",
             positions: "",
-            description: "",
+            description: "N/A",
 
             researcher_id: 0,
             index: 0
@@ -106,7 +106,7 @@ class PostEditingPage extends React.Component {
                         label="Area Of Study" />
                     </Grid>
                     <Grid item xs={3}>
-                        <Input name="positions" value={description}
+                        <Input name="positions" value={positions}
                         onChange={e => updatePostForm(this, e.target)}
                         label="Number Of Positions" />
                     </Grid>
