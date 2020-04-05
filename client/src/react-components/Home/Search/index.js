@@ -133,7 +133,9 @@ class Search extends React.Component {
                         ? research.description
                         : research.description.substring(0, 100).concat("...")}
                 </Typography>
-
+                <Typography variant="body2" color="textSecondary">
+                    Category: {research.category}
+                </Typography>
                 <Typography variant="body2" color="textSecondary">
                     Deadline: {research.deadline}
                 </Typography>
@@ -159,14 +161,6 @@ class Search extends React.Component {
                         >
                             Apply
                         </Button>
-                    </Grid>
-                )}
-                {this.props.userType === "Administrator" && (
-                    <Grid item>
-                        <Grid container direction="column" justify="center">
-                            <div style={{ height: 10 }}></div>
-                            <Button className="search__button">Remove</Button>
-                        </Grid>
                     </Grid>
                 )}
             </Grid>

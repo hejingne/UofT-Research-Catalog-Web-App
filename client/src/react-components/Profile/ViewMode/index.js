@@ -185,23 +185,6 @@ class ViewProfile extends React.Component {
                 <Typography variant="body2" color="textSecondary">
                     Positions: {research.positions}
                 </Typography>
-                {this.props.userType === "Student" && (
-                    <Grid style={{ marginTop: 5 }} item>
-                        <Button
-                            onClick={(e) => {
-                                this.setState({
-                                    ...this.state,
-                                    toApplication: true,
-                                    chosenTitle: research.title,
-                                    chosenId: research.id
-                                });
-                            }}
-                            className="search__button"
-                        >
-                            Apply
-                        </Button>
-                    </Grid>
-                )}
             </Grid>
         );
     }
