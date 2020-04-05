@@ -92,7 +92,8 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 1. Manage users in `My Profile`. Under this tab, an admin can
     * add and remove users
-    * handle change password request
+    * [new] change user type
+    * [new] view list of applications and their status; delete applications
 
 <a name="routes"></a>
 ## Routes in Express Server 
