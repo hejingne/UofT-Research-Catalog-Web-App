@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
+import { Helmet } from "react-helmet";
+
 import Header from "./react-components/Header";
 import Home from "./react-components/Home/Home";
 import SignIn from "./react-components/UserManagement/SignIn";
@@ -10,7 +12,7 @@ import PostsDashboard from "./react-components/PostManagerPage/PostsDashboard";
 import PostEditingPage from "./react-components/PostManagerPage/PostEditingPage";
 
 import Profile from "./react-components/Profile/EditMode";
-import ViewProfile from "./react-components/Profile/ViewMode"
+import ViewProfile from "./react-components/Profile/ViewMode";
 import SignUp from "./react-components/UserManagement/SignUp";
 import ApplicationForm from "./react-components/ApplicationForm";
 import UserManagement from "./react-components/UserManagement/UserManagement";
@@ -25,6 +27,9 @@ function getSignInState() {
 
 const routing = (
     <Router>
+        <Helmet>
+            <title>{"U of T Research Catalogue"}</title>
+        </Helmet>
         <Header />
         <div>
             <Route path="/home" component={Home} />
