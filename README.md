@@ -83,8 +83,10 @@ Click on `My Profile` on the menu to manage your account. Operations include
     * [new] edit, remove current posts
     * [new] view removed posts
  
- 2. [new] Handle submitted applications under `RECIEVED APPLICATIONS` tab.
-  One can click on research title to view applicant's information.
+ 2. [new] Handle submitted applications under `RECIEVED APPLICATIONS` tab. Under this tab, user can
+    * click on research title to view applicant's information
+        * click on submitted files (CV or transcript) to change the application status to `under review`, so that the action buttons are displayed (e.g., SEND OFFER)
+    
 
 #### admin
 
@@ -120,7 +122,7 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 <a name="applications"></a>
 ### Applications
-| Route        | Method         | Description
+| Route        | Method         | Description｜
 |:------:|:-----:|:---------|
 | /api/application/applications | GET |  fetch all applications stored in database  |
 | /api/application/create | POST|  create a new application given information filled by the user |
@@ -134,7 +136,7 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 <a name="postings"></a>
 ### Postings
-| Route        | Method         | Description|
+| Route        | Method         | Description｜
 |:------:|:-----:|:---------|
 | /api/manage-posting/postings | GET |fetch all postings  |
 | /api/manage-posting/postings | POST | initialize a new posting with empty postings and save it in database |
