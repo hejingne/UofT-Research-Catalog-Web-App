@@ -99,8 +99,8 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 <a name="users"></a>
 ### Users 
-| Route        | Method         | Description|
-|:------:|:-----:|:---------|
+| Route        | Method         | Description
+|:------:|:-----:|:---------:|
 | /api/user/create | POST | create a new user and profile;<br> save them in databse | 
 | /api/user/authenticate | POST | authenticate a user by comparing provided data (email, password) with that in database | 
 | /api/user/updatePassword| PUT | given a new (email, password) pair, find the right user and store new pwd in database|  
@@ -112,8 +112,8 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 <a name="profiles"></a>
 ### Profiles
-| Route        | Method         | Description|
-|:------:|:-----:|:---------|
+| Route        | Method         | Description
+|:------:|:-----:|:---------:|
 | /api/profile/:emailAddress | GET |fetch a user's profile given email|
 | /api/profile/updateInterests | PUT |update the list of interests in profile with input from user|
 | /api/profile/updateProfilePicture| PUT |change profile picture to the one uploaded by user|
@@ -122,8 +122,8 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 <a name="applications"></a>
 ### Applications
-| Route        | Method         | Description｜
-|:------:|:-----:|:---------|
+| Route        | Method         | Description
+|:------:|:-----:|:---------:|
 | /api/application/applications | GET |  fetch all applications stored in database  |
 | /api/application/create | POST|  create a new application given information filled by the user |
 | /api/application/delete/:id| DELETE | delete an application with _id |
@@ -136,8 +136,8 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 <a name="postings"></a>
 ### Postings
-| Route        | Method         | Description｜
-|:------:|:-----:|:---------|
+| Route        | Method         | Description
+|:------:|:-----:|:---------:|
 | /api/manage-posting/postings | GET |fetch all postings  |
 | /api/manage-posting/postings | POST | initialize a new posting with empty postings and save it in database |
 | /api/manage-posting/:email| GET | fetch a posting with corresponding email |   
