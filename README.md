@@ -84,6 +84,7 @@ Click on `My Profile` on the menu to manage your account. Operations include
     * [new] view removed posts
  
  2. [new] Handle submitted applications under `RECIEVED APPLICATIONS` tab.
+  One can click on research title to view applicant's information.
 
 #### admin
 
