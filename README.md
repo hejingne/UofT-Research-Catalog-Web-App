@@ -16,7 +16,7 @@
 
 <a name="url"></a>
 ## Deployed App URL 
-https://limitless-retreat-03123.herokuapp.com
+https://uoftresearchcatalogue.herokuapp.com
 
 <a name="build"></a>
 ## Build and Run Locally 
