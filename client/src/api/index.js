@@ -6,7 +6,7 @@ const port = process.env.PORT || 3001;
 let originUrl;
 
 if (process.env.NODE_ENV === "production") {
-    originUrl = "https://limitless-retreat-03123.herokuapp.com";
+    originUrl = "https://uoftresearchcatalogue.herokuapp.com";
 } else {
     originUrl = "http://localhost:" + port;
 }
