@@ -1,4 +1,4 @@
-# team28
+# UofT-Research-Catalogue-Web-App
 [](#top)
 # Table of Contents
 1. [Deployed App URL](#url)
