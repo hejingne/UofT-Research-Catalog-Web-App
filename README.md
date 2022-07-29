@@ -11,7 +11,6 @@
    * [Profiles Related](#profiles)
    * [Applications Related](#applications)
    * [Postings Related](#postings)
-5. [Access Database](#db)
 
 
 <a name="url"></a>
@@ -36,12 +35,7 @@ npm run start:dev
 ### Common features for all users:
 
 #### 1. Login and Sign up
-default login credentials:
-  * [Student] email: **user** &ensp; &ensp; password: **user**
-
-  * [Researcher] email: **user2** &ensp; &ensp; password: **user2**
-
-  * [Admin] email: **admin** &ensp; &ensp; password: **admin**
+As Student / Researcher / Admin 
 
 #### 2. Searching
 [new feature] User can apply filters when searching for research opportunities; sort results in different ways; visit researcher's profile by clicking on researcher's name
@@ -147,7 +141,3 @@ Click on `My Profile` on the menu to manage your account. Operations include
 
 
 <a name="db"></a>
-## Access Database
-In MongoDB Compass, connect to this url:
-
-   >mongodb+srv://admin:admin@csc309-uoftresearchcatalogue-sql0-gzdxk.mongodb.net/uoftresearchcatalogue
